@@ -1,0 +1,75 @@
+.DS_Store
+.thumbs.db
+node_modules
+
+# Quasar core related directories
+.quasar
+/dist
+
+# Cordova related directories and files
+/src-cordova/node_modules
+/src-cordova/platforms
+/src-cordova/plugins
+/src-cordova/www
+
+# Capacitor related directories and files
+/src-capacitor2/www
+/src-capacitor2/node_modules
+
+# BEX related directories and files
+/src-bex/www
+/src-bex/js/core
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+/config/.env.local
+/.env
+/releases/0.1.0/Packaged.tabsets.zip
+/releases/0.1.0/Packaged.tabsets/
+/releases/0.1.1/
+/releases/0.1.2/
+/releases/0.2.0/
+/releases/0.2.1/
+/releases/0.2.2/
+/releases/0.2.3/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/releases/0.2.4 (first public)/
+/releases/0.2.5/
+/e2e/screenshots/
+/releases/0.2.6/
+/releases/0.2.7/
+/releases/0.2.8/
+/releases/0.2.9/
+/releases/0.2.10/
+/releases/0.2.11/
+/releases/0.2.12/
+/releases/0.3.0/
+/releases/0.3.1/
+/releases/0.3.2/
+/releases/0.4.0/
+/public/cat.png
+/public/models/Xenova/distilbert-base-uncased-finetuned-sst-2-english/model.safetensors
+/public/models/Xenova/distilbert-base-uncased-finetuned-sst-2-english/pytorch_model.bin
+/public/models/Xenova/distilbert-base-uncased-finetuned-sst-2-english/rust_model.ot
+/public/models/Xenova/distilbert-base-uncased-finetuned-sst-2-english/tf_model.h5
+/public/vids/
+/coverage/
+/docs/vids/
+/Tabsets - Manage Tabs and Bookmarks with Ease/
+/.dev.env
+/.prd.env
+/.env.tmp
+/.tabsets-backend-prd.env
+/.env.tmp

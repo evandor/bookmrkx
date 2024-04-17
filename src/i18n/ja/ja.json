@@ -1,0 +1,16 @@
+{
+  "activate_bookmarks_integration": "ブックマーク統合を有効にする",
+  "activate_browser_notifications": "ブラウザ通知を有効にする",
+  "add_new_tabset": "新しいタブセットを追加する",
+  "add_tabset": "タブセット追加",
+  "create_your_first_ts": "最初のタブセットを作成する！",
+  "documentation": "ドキュメンテーション",
+  "experimental": "実験的",
+  "language": "言語",
+  "no_space_selected": "スペース選択なし",
+  "no_special_chars_and_length": "特殊文字は使用しないでください。",
+  "optionally": "オプション",
+  "provide_name_add_later": "名前を入力し、後でタブを追加する",
+  "tabset_name": "タブセット名",
+  "welcome_to_tabsets": "タブセッツへようこそ",
+}

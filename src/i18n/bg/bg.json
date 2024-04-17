@@ -1,0 +1,16 @@
+{
+  "activate_bookmarks_integration": "Активиране на интеграцията на отметките",
+  "activate_browser_notifications": "Активиране на известия от браузъра",
+  "add_new_tabset": "Добавяне на нов Tabset",
+  "add_tabset": "Добавяне на Tabset",
+  "create_your_first_ts": "Създайте първия си Tabset!",
+  "documentation": "Документация",
+  "experimental": "експериментален",
+  "language": "Език",
+  "no_space_selected": "Не е избрано място",
+  "no_special_chars_and_length": "Моля, не използвайте специални символи, максималната дължина е 32",
+  "optionally": "По избор",
+  "provide_name_add_later": "Посочете име и добавете табове по-късно",
+  "tabset_name": "Име на таблицата",
+  "welcome_to_tabsets": "Добре дошли в Tabsets",
+}

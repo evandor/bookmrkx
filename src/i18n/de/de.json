@@ -1,0 +1,16 @@
+{
+  "activate_bookmarks_integration": "Bookmark Integration aktivieren",
+  "activate_browser_notifications": "Browser Notifications aktivieren",
+  "add_new_tabset": "Neues Tabset erstellen",
+  "add_tabset": "Tabset hinzufügen",
+  "create_your_first_ts": "Erstelle Deinen ersten Tabset",
+  "documentation": "Dokumentation",
+  "experimental": "experimental",
+  "language": "Sprache",
+  "no_space_selected": "Kein Space gewählt",
+  "no_special_chars_and_length": "Bitte nur Standardzeichen, max. Länge ist 32",
+  "optionally": "Optional:",
+  "provide_name_add_later": "Vergebe einen Namen (und füge die Tabs später hinzu)",
+  "tabset_name": "Tabset Name",
+  "welcome_to_tabsets": "Willkommen zu Tabsets"
+}
