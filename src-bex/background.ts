@@ -1,7 +1,5 @@
 import {bexBackground} from 'quasar/wrappers';
 import OnInstalledReason = chrome.runtime.OnInstalledReason;
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
 
 // https://stackoverflow.com/questions/49739438/when-and-how-does-a-pwa-update-itself
 const updateTrigger = 10

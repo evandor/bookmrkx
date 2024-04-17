@@ -5,9 +5,6 @@
     :style="offsetBottom()">
 
     <div class="row fit q-mb-sm" v-if="showLogin">
-      <keep-alive>
-        <SidePanelLoginWidget @hide-login="showLogin = false"/>
-      </keep-alive>
     </div>
 
     <div class="row fit q-mb-sm" v-if="showWindowTable">
@@ -102,7 +99,7 @@
           <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>
         </q-btn>
 
-        <span v-if="usePermissionsStore().hasFeature(FeatureIdent.STANDALONE_APP) && useAuthStore().isAuthenticated()">
+        <span v-if="usePermissionsStore().hasFeature(FeatureIdent.STANDALONE_APP)">
           <q-icon
             name="o_open_in_new"
             :class="rightButtonClass()"
@@ -132,49 +129,6 @@
           <q-tooltip class="tooltip" anchor="top left" self="bottom left">Tabsets as full-page app</q-tooltip>
         </q-btn>
 
-        <span class="q-my-xs q-ml-xs q-mr-none cursor-pointer" v-if="authStore.isAuthenticated()">
-          <q-avatar size="18px" v-if="authStore.user?.photoURL">
-            <q-img :src="authStore.user.photoURL"/>
-            <q-tooltip :delay="2000" anchor="center left" self="center right" class="tooltip-small">You're logged in as {{
-                authStore.user?.email
-              }}</q-tooltip>
-          </q-avatar>
-          <q-icon v-else name="o_person" size="20px">
-            <q-tooltip :delay="2000" anchor="center left" self="center right" class="tooltip-small">You're logged in as {{
-                authStore.user?.email
-              }}</q-tooltip>
-          </q-icon>
-
-          <q-menu :offset="[0, 7]" fit>
-            <q-list dense style="min-width: 150px;min-height:50px">
-              <q-item clickable v-close-popup v-if="useAuthStore().getAccount()?.products">
-                <q-item-section @click="gotoStripe()">Subscriptions</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup v-else>
-                <q-item-section class="text-grey">Subscriptions</q-item-section>
-              </q-item>
-              <!--              <q-item clickable v-close-popup>-->
-              <!--                <q-item-section @click="subscribe()">Subscribe</q-item-section>-->
-              <!--              </q-item>-->
-              <q-item clickable v-close-popup>
-                <q-item-section class="ellipsis" @click="logout()">Logout {{
-                    authStore.user?.email
-                  }}</q-item-section>
-              </q-item>
-            </q-list>
-
-          </q-menu>
-        </span>
-        <q-btn v-else-if="showLoginBtn()"
-               icon="login"
-               :class="rightButtonClass()"
-               flat
-               color="blue"
-               :size="getButtonSize()"
-               @click="toggleShowLogin()">
-          <q-tooltip class="tooltip">Log in or Sign up</q-tooltip>
-        </q-btn>
-
       </div>
     </div>
 
@@ -200,7 +154,6 @@ import {ToastType} from "src/models/Toast";
 import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftButtons.vue";
 import {Account} from "src/models/Account";
 import {useNotificationHandler} from "src/services/ErrorHandler";
-import SidePanelLoginWidget from "components/helper/SidePanelLoginWidget.vue";
 import SidePanelWindowMarkupTable from "components/helper/SidePanelWindowMarkupTable.vue";
 import SidePanelStatsMarkupTable from "components/helper/SidePanelStatsMarkupTable.vue"
 import {Window} from "src/models/Window"

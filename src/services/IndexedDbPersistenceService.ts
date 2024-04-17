@@ -19,86 +19,6 @@ import {Message} from "src/models/Message";
 import {Account} from "src/models/Account";
 import {Entity} from "src/models/Entity";
 import {Api} from "src/models/Api";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as url from "node:url";
-import {data} from "autoprefixer";
-import * as url from "node:url";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as url from "node:url";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as console from "node:console";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as url from "node:url";
-import * as console from "node:console";
-import firebase from "firebase/compat";
-import Blob = firebase.firestore.Blob;
-import * as url from "node:url";
-import * as console from "node:console";
-import * as console from "node:console";
-import {b} from "vitest/dist/suite-ynYMzeLu";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import {store} from "quasar/wrappers";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import * as console from "node:console";
-import {s} from "vitest/dist/reporters-LqC_WI4d";
-import * as console from "node:console";
-import * as console from "node:console";
-import {name} from "axios";
-import * as console from "node:console";
-import {e} from "mathjs";
-import * as console from "node:console";
-import {api} from "boot/axios";
 
 class IndexedDbPersistenceService implements PersistenceService {
   private db: IDBPDatabase = null as unknown as IDBPDatabase
@@ -507,14 +427,6 @@ class IndexedDbPersistenceService implements PersistenceService {
     return await openDB(dbName, INDEX_DB_VERSION, {
       // upgrading see https://stackoverflow.com/questions/50193906/create-index-on-already-existing-objectstore
       upgrade(db) {
-        if (!db.objectStoreNames.contains('tabsets')) {
-          console.log("creating db tabsets")
-          db.createObjectStore('tabsets');
-        }
-        /*        if (!db.objectStoreNames.contains('tabs')) {
-                  console.log("creating db tabs")
-                  db.createObjectStore('tabs');
-                }*/
         if (!db.objectStoreNames.contains('thumbnails')) {
           console.log("creating db thumbnails")
           let store = db.createObjectStore('thumbnails');
@@ -524,14 +436,6 @@ class IndexedDbPersistenceService implements PersistenceService {
           console.log("creating db content")
           let store = db.createObjectStore('content');
           store.createIndex("expires", "expires", {unique: false});
-        }
-        if (!db.objectStoreNames.contains('spaces')) {
-          console.log("creating db spaces")
-          db.createObjectStore('spaces');
-        }
-        if (!db.objectStoreNames.contains('mhtml')) {
-          console.log("creating db mhtml")
-          db.createObjectStore('mhtml');
         }
         if (!db.objectStoreNames.contains('requests')) {
           console.log("creating db requests")
@@ -543,11 +447,6 @@ class IndexedDbPersistenceService implements PersistenceService {
           const store = db.createObjectStore('metalinks');
           store.createIndex("expires", "expires", {unique: false});
         }
-        if (!db.objectStoreNames.contains('links')) {
-          console.log("creating db links")
-          const store = db.createObjectStore('links');
-          store.createIndex("expires", "expires", {unique: false});
-        }
         if (!db.objectStoreNames.contains('notifications')) {
           console.log("creating db notifications")
           db.createObjectStore('notifications');
@@ -555,14 +454,6 @@ class IndexedDbPersistenceService implements PersistenceService {
         if (!db.objectStoreNames.contains('suggestions')) {
           console.log("creating db suggestions")
           db.createObjectStore('suggestions');
-        }
-        if (!db.objectStoreNames.contains('blobs')) {
-          console.log("creating blobs suggestions")
-          db.createObjectStore('blobs');
-        }
-        if (!db.objectStoreNames.contains('groups')) {
-          console.log("creating db groups")
-          db.createObjectStore('groups');
         }
         if (!db.objectStoreNames.contains('windows')) {
           console.log("creating db windows")
@@ -572,19 +463,7 @@ class IndexedDbPersistenceService implements PersistenceService {
           console.log("creating db messages")
           db.createObjectStore('messages');
         }
-        if (!db.objectStoreNames.contains('accounts')) {
-          console.log("creating db accounts")
-          db.createObjectStore('accounts');
-        }
-        if (!db.objectStoreNames.contains('entities')) {
-          console.log("creating db entities")
-          db.createObjectStore('entities');
-        }
-        if (!db.objectStoreNames.contains('apis')) {
-          console.log("creating db apis")
-          db.createObjectStore('apis');
-        }
-      },
+      }
     });
   }
 
