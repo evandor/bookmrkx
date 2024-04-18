@@ -66,24 +66,9 @@
     :in-side-panel="true"/>
 
 
-  <!--      <OpenTabs v-else-if="tab ===  DrawerTabs.OPEN_TABS" :filter="filter"/>-->
-  <!--      <UnassignedTabs v-else-if="tab ===  DrawerTabs.UNASSIGNED_TABS" :filter="filter"/>-->
-  <!--  <SavedTabs v-else-if="tab ===  DrawerTabs.SAVED_TABS"/>-->
-  <SavedPdfs v-else-if="tab ===  DrawerTabs.SAVED_TABS_AS_PDF"/>
-<!--  <TabsetAsSidebar v-else-if="tab ===  DrawerTabs.SIDEBAR"/>-->
-<!--  <NewTabUrls v-else-if="tab ===  DrawerTabs.NEW_TAB_URLS"/>-->
-  <!--      <ScheduledTabs v-else-if="tab ===  DrawerTabs.SCHEDULED"/>-->
   <Features v-else-if="tab ===  DrawerTabs.FEATURES"/>
-  <TabDetails v-else-if="tab ===  DrawerTabs.TAB_DETAILS"/>
-  <TabsetDetails v-else-if="tab ===  DrawerTabs.TABSET_DETAILS"/>
-
-  <TagsListViewer v-else-if="tab ===  DrawerTabs.TAGS_VIEWER"/>
-  <TagListViewer v-else-if="tab ===  DrawerTabs.TAG_VIEWER"/>
 
   <TabsetHelp v-else-if="tab ===  DrawerTabs.HELP"/>
-
-  <!-- only in sidepanel in chrome extension-->
-  <!--  <TagsViewer v-else-if="tab ===  DrawerTabs.TAGS_VIEWER"/>-->
 
   <div v-else>unknown tab name '{{ tab }}' {{ typeof tab }}</div>
 

@@ -5,7 +5,7 @@
     <div class="row fit">
       <q-toolbar-title>
         <div class="row justify-start items-baseline">
-          <div class="col-10">Tabsets Extension Settings</div>
+          <div class="col-10">Bookmrkx Extension Settings</div>
           <div class="col-2 text-right">
             <OpenRightDrawerWidget/>
           </div>
@@ -31,7 +31,7 @@
 
     <div class="q-pa-md q-gutter-sm">
       <q-banner rounded style="border:1px solid orange">On this settings page, you can adjust the general appearance of
-        the tabsets extension.
+        the bookmrkx extension.
       </q-banner>
 
       <div class="row items-baseline q-ma-md q-gutter-md">
@@ -147,15 +147,6 @@
 
     </div>
 
-  </div>
-
-  <div v-if="tab === 'account'">
-    <AccountSettings/>
-  </div>
-
-  <div v-if="tab === 'subscription'">
-    <SubscriptionBexSettings v-if="inBexMode()"/>
-    <SubscriptionSettings v-else/>
   </div>
 
   <div v-if="tab === 'internals'">
@@ -276,7 +267,6 @@ const {t} = useI18n()
 
 const {sendMsg, inBexMode} = useUtils()
 
-const searchStore = useSearchStore()
 const settingsStore = useSettingsStore()
 
 const localStorage = useQuasar().localStorage
@@ -423,22 +413,8 @@ watchEffect(() => {
 })
 
 watchEffect(() => {
-  // @ts-ignore
-  indexSize.value = searchStore?.getIndex()?.size()
-})
-
-watchEffect(() => {
   LocalStorage.set("ui.tabSwitcher", autoSwitcherOption.value)
 })
-
-const downloadIndex = () => {
-  const data = JSON.stringify(searchStore?.getIndex())
-}
-
-const clearIndex = () => searchStore.init()
-
-const archivedTabsets = () => {
-}
 
 const simulateNewVersion = (version: string) => NavigationService.updateAvailable({version: version})
 
