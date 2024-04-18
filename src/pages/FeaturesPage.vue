@@ -36,22 +36,16 @@
       <div class="text-h6">{{ text.get(feature)?.name }}</div>
       <div>
         Status: {{ hasFeature() ? 'active' : 'inactive' }}
-        <span v-if="needsAccountAndUserNotLoggedIn()" class="text-warning"> - You need a (free) account to use this feature</span>
       </div>
     </div>
 
     <div class="col text-right q-mr-xl">
       <div v-if="!text.get(feature)?.planned">
         <q-btn v-if="!hasFeature()" color="warning"
-               label="Activate Feature" @click="grant(feature)" :disable="needsAccountAndUserNotLoggedIn()"/>
+               label="Activate Feature" @click="grant(feature)" />
         <q-btn v-else
                label="Deactivate Feature" @click="revoke(feature)"/>
       </div>
-    </div>
-
-    <div class="col-12 q-my-lg" v-if="needsAccountAndUserNotLoggedIn()">
-      Click on the login icon in the sidepanel to sign up for an account:<br><br>
-      <q-img src="signup.png" width="100px" />
     </div>
 
     <div class="col-12 q-my-sm">
