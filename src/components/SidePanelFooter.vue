@@ -101,33 +101,17 @@ import {usePermissionsStore} from "src/stores/permissionsStore";
 import {FeatureIdent} from "src/models/AppFeature";
 import NavigationService from "src/services/NavigationService";
 import {openURL, uid, useQuasar} from "quasar";
-import {useUtils} from "src/services/Utils";
-import {useWindowsStore} from "src/stores/windowsStore";
 import {useSuggestionsStore} from "stores/suggestionsStore";
 import _ from "lodash";
 import {SuggestionState} from "src/models/Suggestion";
 import SuggestionDialog from "components/dialogues/SuggestionDialog.vue";
-import {TabsetStatus} from "src/models/Tabset";
 import {ToastType} from "src/models/Toast";
-import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftButtons.vue";
-import {Account} from "src/models/Account";
-import {useNotificationHandler} from "src/services/ErrorHandler";
-import SidePanelWindowMarkupTable from "components/helper/SidePanelWindowMarkupTable.vue";
-import SidePanelStatsMarkupTable from "components/helper/SidePanelStatsMarkupTable.vue"
-import {Window} from "src/models/Window"
-
-const {handleSuccess, handleError} = useNotificationHandler()
-
-const {inBexMode} = useUtils()
+import {} from "src/services/ErrorHandler";
 
 const $q = useQuasar()
-const route = useRoute()
 
 const router = useRouter()
 
-const currentChromeTabs = ref<chrome.tabs.Tab[]>([])
-const currentTabs = ref<Tab[]>([])
-const currentChromeTab = ref<chrome.tabs.Tab>(null as unknown as chrome.tabs.Tab)
 const showSuggestionButton = ref(false)
 const showSuggestionIcon = ref(false)
 const doShowSuggestionButton = ref(false)
@@ -135,19 +119,11 @@ const transitionGraceTime = ref(false)
 const showWindowTable = ref(false)
 const showStatsTable = ref(false)
 const showLogin = ref(false)
-const account = ref<Account | undefined>(undefined)
 const randomKey = ref<string>(uid())
 const progressValue = ref<number>(0.0)
 const progressLabel = ref<string>('')
 const animateSettingsButton = ref<boolean>(false)
 
-watchEffect(() => {
-  const windowId = useWindowsStore().currentChromeWindow?.id || 0
-  if (useWindowsStore().windowForId(windowId)?.open) {
-    //console.log("setting showWindowTable to ", useWindowsStore().windowForId(windowId)?.open)
-    showWindowTable.value = useWindowsStore().windowForId(windowId)?.open || false
-  }
-})
 
 watchEffect(() => {
   showLogin.value = useUiStore().showLoginTable
@@ -193,15 +169,9 @@ const openOptionsPage = () => {
     NavigationService.openOrCreateTab([chrome.runtime.getURL('www/index.html#/mainpanel/settings')], undefined, [], true, true)
 }
 
-const openExtensionTab = () =>
-  //NavigationService.openOrCreateTab([chrome.runtime.getURL('www/index.html#/fullpage')])
-  openURL(chrome.runtime.getURL('www/index.html#/fullpage'))
-
 const settingsTooltip = () => {
   return "Open Settings of Bookmrkx " + import.meta.env.PACKAGE_VERSION
 }
-
-const rightButtonClass = () => "q-my-xs q-px-xs q-mr-none"
 
 const dependingOnStates = () =>
   _.find(useSuggestionsStore().getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED]), s => s.state === SuggestionState.NEW) ? 'warning' : 'primary'
@@ -267,31 +237,7 @@ const toastBannerClass = () => {
   }
 }
 
-const toggleShowLogin = () => showLogin.value = !showLogin.value
-
-const toggleShowWindowTable = () => {
-  showWindowTable.value = !showWindowTable.value
-  if (showWindowTable.value) {
-    randomKey.value = uid()
-    showStatsTable.value = false
-  }
-  const windowId = useWindowsStore().currentChromeWindow?.id || 0
-  const currentWindow: Window | undefined = useWindowsStore().windowForId(windowId)
-  if (currentWindow) {
-    currentWindow.open = showWindowTable.value
-    useWindowsStore().upsertTabsetWindow(currentWindow)
-  }
-}
-
-const toggleShowStatsTable = () => {
-  showStatsTable.value = !showStatsTable.value
-  if (showWindowTable.value) {
-    showWindowTable.value = false
-  }
-}
-
 const offsetBottom = () => ($q.platform.is.capacitor || $q.platform.is.cordova) ? 'margin-bottom:20px;' : ''
-const openPwaUrl = () => NavigationService.openOrCreateTab([process.env.TABSETS_PWA_URL || 'https://www.skysail.io'])
 </script>
 
 <style>

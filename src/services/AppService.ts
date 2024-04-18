@@ -9,7 +9,6 @@ import {useSuggestionsStore} from "stores/suggestionsStore";
 import ChromeApi from "src/services/ChromeApi";
 import {useSettingsStore} from "stores/settingsStore";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
-import {useWindowsStore} from "src/stores/windowsStore";
 import {Router} from "vue-router";
 import {useMessagesStore} from "src/stores/messagesStore";
 import {useAppStore} from "stores/appStore";
@@ -32,7 +31,6 @@ class AppService {
 
     if (this.initialized) {
       await ChromeListeners.resetListeners()
-      await useWindowsStore().resetListeners()
     }
 
     this.initialized = true
@@ -91,15 +89,8 @@ class AppService {
   }
 
   private async initCoreSerivces(quasar: any, store: PersistenceService, router: Router) {
-    const windowsStore = useWindowsStore()
-
     ChromeApi.init(router)
-
-    await windowsStore.initialize(useDB(undefined).db)
-    windowsStore.initListeners()
-
     useUiStore().appLoading = undefined
-
   }
 
 }
