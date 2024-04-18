@@ -11,36 +11,7 @@ import {uid} from "quasar";
 import {FeatureIdent} from "src/models/AppFeature";
 import {RequestInfo} from "src/models/RequestInfo";
 import {useWindowsStore} from "stores/windowsStore";
-import {MonitoringType} from "src/models/Monitor";
 import {Router, useRoute, useRouter} from "vue-router";
-
-function runHousekeeping() {
-  //housekeeping()
-
-  console.log("housekeeping now...")
-
-  persistenceService.cleanUpTabsets()
-  // clean up thumbnails
-  persistenceService.cleanUpRequests()
-
-  // TODO
-  //TabService.checkScheduled()
-}
-
-
-async function checkMonitors(router: Router) {
-  const monitoredContentHash: string[] = []
-
-
-  if (monitoredContentHash.length > 0) {
-    //console.log("%croute", "color:orange", router, router.currentRoute.value.path)
-    if (router.currentRoute.value.path.startsWith("/sidepanel")) {
-      useWindowsStore().openThrottledInWindow(monitoredContentHash, {focused: false, state: "minimized"})
-    } else {
-      console.debug("not running openThrottledInWindow due to path not starting with /sidepanel", router.currentRoute.value.path)
-    }
-  }
-}
 
 const persistenceService = IndexedDbPersistenceService
 
@@ -62,23 +33,6 @@ class ChromeApi {
     }
 
     console.debug(" ...initializing ChromeApi")
-
-    chrome.alarms.create("housekeeping", {periodInMinutes: CLEANUP_PERIOD_IN_MINUTES})
-    chrome.alarms.create("monitoring", {periodInMinutes: MONITORING_PERIOD_IN_MINUTES})
-
-    chrome.alarms.onAlarm.addListener(
-      (alarm: chrome.alarms.Alarm) => {
-        if (alarm.name === "housekeeping") {
-          runHousekeeping()
-        } else if (alarm.name === "monitoring") {
-          if (usePermissionsStore().hasFeature(FeatureIdent.MONITORING)) {
-            checkMonitors(router)
-          }
-        } else {
-          console.log("unknown alarm", alarm)
-        }
-      }
-    )
 
     chrome.runtime.onUpdateAvailable.addListener(
       (details: any) => {
@@ -121,39 +75,12 @@ class ChromeApi {
           console.log("creating contextmenu for tabset_extension")
           chrome.contextMenus.create({
               id: 'tabset_extension',
-              title: 'Tabsets Extension',
+              title: 'Bookmrkx Extension',
               documentUrlPatterns: ['https://*/*', 'https://*/'],
               contexts: ['page']},
             () => {
-              // chrome.contextMenus.create({
-              //   id: 'open_tabsets_page',
-              //   parentId: 'tabset_extension',
-              //   title: 'Open Tabsets Extension',
-              // documentUrlPatterns: ['https://*/*', 'https://*/'],
-              //   contexts: ['all']
-              // })
-              if (usePermissionsStore().hasFeature(FeatureIdent.WEBSITE_CLIP)) {
-                console.debug(" > context menu: website_clip")
-                chrome.contextMenus.create({
-                  id: 'website_clip',
-                  parentId: 'tabset_extension',
-                  title: 'Create Website Clip',
-                  documentUrlPatterns: ['https://*/*', 'https://*/'],
-                  contexts: ['all']
-                })
-              }
-              // chrome.contextMenus.create({
-              //   id: 'website_quote',
-              //   parentId: 'tabset_extension',
-              //   title: 'Create Website Quote',
-              // documentUrlPatterns: ['https://*/*', 'https://*/'],
-              //   contexts: ['all']
-              // })
-              //}
-              console.debug(" > context menu: save_to_currentTS")
 
-
-              //console.log("context menu", useWindowsStore().currentChromeWindows)
+              console.log("context menu move_to_window", useWindowsStore().currentChromeWindows)
               const currentWindows = useWindowsStore().currentChromeWindows
               if (currentWindows.length > 1) {
                 chrome.contextMenus.create({
@@ -165,20 +92,6 @@ class ChromeApi {
                 })
                 // rest of logic in windowsStore
               }
-
-              if (usePermissionsStore().hasFeature(FeatureIdent.ANNOTATIONS)) {
-                console.debug(" > context menu: annotate_website")
-                chrome.contextMenus.create({
-                  id: 'annotate_website',
-                  parentId: 'tabset_extension',
-                  title: 'Annotate',
-                  documentUrlPatterns: ['https://*/*', 'https://*/'],
-                  contexts: ['all']
-                })
-              }
-
-
-
 
             })
         }

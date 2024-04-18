@@ -7,19 +7,13 @@
   },
   "permissions": [
     "storage",
-    "tabs",
     "activeTab",
-    "alarms",
-    "scripting",
     "sidePanel",
     "contextMenus",
     "bookmarks"
   ],
   "optional_permissions": [
-    "pageCapture",
-    "notifications",
-    "webRequest",
-    "tabGroups"
+    "notifications"
   ],
   "host_permissions": [
     "<all_urls>",
@@ -34,34 +28,12 @@
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'"
   },
-  "omnibox": { "keyword": "ts" },
   "commands": {
     "_execute_action": {
       "suggested_key": {
         "default": "Ctrl+B",
         "mac": "Command+B"
       }
-    },
-    "search": {
-      "suggested_key": {
-        "default": "Ctrl+K",
-        "mac": "Command+K"
-      },
-      "description": "Open Search Box"
-    },
-    "tabHistoryBack": {
-      "suggested_key": {
-        "default": "Alt+Left",
-        "mac": "Alt+Left"
-      },
-      "description": "Open last open tab"
-    },
-    "tabHistoryForward": {
-      "suggested_key": {
-        "default": "Alt+Right",
-        "mac": "Alt+Right"
-      },
-      "description": "Forward to next tab (if available)"
     }
   },
   "options_page": "www/index.html#/mainpanel/settings",

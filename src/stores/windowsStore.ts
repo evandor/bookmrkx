@@ -155,15 +155,16 @@ export const useWindowsStore = defineStore('windows', () => {
       const currentWindow: chrome.windows.Window = await chrome.windows.getCurrent()//.then(currentWindow => {
       for (const window of currentChromeWindows.value) {
         //console.log("da!!!",window)
+        const currentWindows = useWindowsStore().currentChromeWindows
         // TODO this is always the "default" window
-        if (currentWindow.id !== window.id) {
-          chrome.contextMenus.create({
-            id: 'move_to|' + window.id,
-            parentId: 'move_to_window',
-            title: '...to window ' + useWindowsStore().windowNameFor(window.id || 0) || window.id?.toString(),
-            contexts: ['all']
-          })
-        }
+        // if (currentWindow.id !== window.id && currentWindows.length > 1) {
+        //   chrome.contextMenus.create({
+        //     id: 'move_to|' + window.id,
+        //     parentId: 'move_to_window',
+        //     title: '...to window ' + useWindowsStore().windowNameFor(window.id || 0) || window.id?.toString(),
+        //     contexts: ['all']
+        //   })
+        // }
       }
     }
   }

@@ -4,9 +4,6 @@
     class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
     :style="offsetBottom()">
 
-    <div class="row fit q-mb-sm" v-if="showLogin">
-    </div>
-
     <div class="row fit q-mb-sm" v-if="showWindowTable">
       <!-- https://michaelnthiessen.com/force-re-render -->
       <SidePanelWindowMarkupTable :key="randomKey"/>
@@ -53,25 +50,16 @@
 
         <template v-if="!checkToasts() && !transitionGraceTime && !showSuggestionButton">
 
-          <SidePanelFooterLeftButtons
-            @was-clicked="doShowSuggestionButton = true"
-            :size="getButtonSize()"
-            :show-suggestion-icon="showSuggestionIcon"/>
+<!--          <SidePanelFooterLeftButtons-->
+<!--            @was-clicked="doShowSuggestionButton = true"-->
+<!--            :size="getButtonSize()"-->
+<!--            :show-suggestion-icon="showSuggestionIcon"/>-->
         </template>
 
       </div>
-      <div class="col text-right" v-if="useUiStore().appLoading">
-        &nbsp;
-      </div>
-      <div v-else class="col text-right">
-        <q-btn icon="o_help" v-if="usePermissionsStore().hasFeature(FeatureIdent.HELP)"
-               :class="rightButtonClass()"
-               flat
-               :size="getButtonSize()"
-               @click="openHelpView()">
-        </q-btn>
+      <div class="col text-right">
 
-        <q-btn icon="o_settings" v-if="showSettingsButton()"
+        <q-btn icon="o_settings"
                class="q-my-xs q-px-xs q-mr-none"
                :class="{ shake: animateSettingsButton }"
                flat
@@ -80,54 +68,24 @@
           <q-tooltip class="tooltip" anchor="top left" self="bottom left">{{ settingsTooltip() }}</q-tooltip>
         </q-btn>
 
-        <q-btn
-          icon="o_grid_view"
-          data-testid="buttonManageWindows"
-          :class="rightButtonClass()"
-          flat
-          :size="getButtonSize()"
-          @click="toggleShowWindowTable()">
-          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Manage Windows</q-tooltip>
-        </q-btn>
+<!--        <q-btn-->
+<!--          icon="o_grid_view"-->
+<!--          data-testid="buttonManageWindows"-->
+<!--          :class="rightButtonClass()"-->
+<!--          flat-->
+<!--          :size="getButtonSize()"-->
+<!--          @click="toggleShowWindowTable()">-->
+<!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Manage Windows</q-tooltip>-->
+<!--        </q-btn>-->
 
-        <q-btn
-          icon="show_chart"
-          :class="rightButtonClass()"
-          flat
-          :size="getButtonSize()"
-          @click="toggleShowStatsTable()">
-          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>
-        </q-btn>
-
-        <span v-if="usePermissionsStore().hasFeature(FeatureIdent.STANDALONE_APP)">
-          <q-icon
-            name="o_open_in_new"
-            :class="rightButtonClass()"
-            class="cursor-pointer"
-            flat
-            size="20px">
-            <q-tooltip :delay="2000" anchor="center left" self="center right"
-                       class="tooltip-small">Alternative Access</q-tooltip>
-          </q-icon>
-          <q-menu :offset="[0, 7]" fit>
-            <q-list dense style="min-width: 200px;min-height:50px">
-              <q-item clickable v-close-popup>
-                <q-item-section @click="openExtensionTab()">Tabsets as full-page app</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section @click="openPwaUrl()">Tabsets Online Access</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </span>
-        <q-btn v-else-if="usePermissionsStore().hasFeature(FeatureIdent.STANDALONE_APP)"
-          icon="o_open_in_new"
-          :class="rightButtonClass()"
-          flat
-          :size="getButtonSize()"
-          @click="openExtensionTab()">
-          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Tabsets as full-page app</q-tooltip>
-        </q-btn>
+<!--        <q-btn-->
+<!--          icon="show_chart"-->
+<!--          :class="rightButtonClass()"-->
+<!--          flat-->
+<!--          :size="getButtonSize()"-->
+<!--          @click="toggleShowStatsTable()">-->
+<!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>-->
+<!--        </q-btn>-->
 
       </div>
     </div>
@@ -333,10 +291,7 @@ const toggleShowStatsTable = () => {
 }
 
 const offsetBottom = () => ($q.platform.is.capacitor || $q.platform.is.cordova) ? 'margin-bottom:20px;' : ''
-const gotoStripe = () => openURL("https://billing.stripe.com/p/login/test_5kA9EHf2Da596HuaEE")
 const openPwaUrl = () => NavigationService.openOrCreateTab([process.env.TABSETS_PWA_URL || 'https://www.skysail.io'])
-const showLoginBtn = () => process.env.USE_FIREBASE == "true"
-const showSettingsButton = () => true
 </script>
 
 <style>

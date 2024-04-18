@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-12 text-right">
         Show only Folders
-        <q-checkbox v-model="showOnlyFolders"/>
+        <q-checkbox v-model="showOnlyFolders" @change="emits('toggleShowOnlyFolders')"/>
       </div>
       <div class="col-12 q-mb-md">
         <q-input
@@ -30,7 +30,7 @@
 
     <q-tree
       v-if="bookmarksPermissionGranted && !useUiStore().bookmarksLoading"
-      :nodes="showOnlyFolders ? bookmarksStore.nonLeafNodes : bookmarksStore.bookmarksNodes2"
+      :nodes="props.nodes"
       :filter="filter"
       :filterMethod="bookmarksFilter"
       node-key="id"
@@ -78,21 +78,14 @@
 <script setup lang="ts">
 
 import {useRouter} from "vue-router";
-import {useTabsStore} from "src/stores/tabsStore";
 import _ from "lodash"
-import {ref, watch, watchEffect} from "vue";
+import {PropType, ref, watch, watchEffect} from "vue";
 import {useQuasar} from "quasar";
 import {useBookmarksStore} from "src/stores/bookmarksStore";
 import {useNotificationsStore} from "src/stores/notificationsStore";
-import BookmarksService from "src/services/BookmarksService";
-import {usePermissionsStore} from "src/stores/permissionsStore";
 import {useNotificationHandler} from "src/services/ErrorHandler";
-import {useCommandExecutor} from "src/services/CommandExecutor";
-import {GrantPermissionCommand} from "src/domain/commands/GrantPermissionCommand";
 import {useSettingsStore} from "src/stores/settingsStore"
 import NavigationService from "src/services/NavigationService";
-import {FeatureIdent} from "src/models/AppFeature";
-import NewTabsetDialog from "components/dialogues/NewTabsetDialog.vue";
 import DeleteBookmarkFolderDialog from "components/dialogues/bookmarks/DeleteBookmarkFolderDialog.vue";
 import {TreeNode} from "src/models/Tree";
 import {useUtils} from "src/services/Utils";
@@ -120,8 +113,11 @@ const {handleSuccess, handleError} = useNotificationHandler()
 const {favIconFromUrl} = useUtils()
 
 const props = defineProps({
-  inSidePanel: {type: Boolean, default: false}
+  inSidePanel: {type: Boolean, default: false},
+  nodes: {type: Object as PropType<TreeNode[]>, required: true}
 })
+
+const emits = defineEmits(['toggleShowOnlyFolders'])
 
 watchEffect(() => {
   foldersCount.value = bookmarksStore.foldersCount
