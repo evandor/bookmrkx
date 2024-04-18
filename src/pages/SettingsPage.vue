@@ -1,7 +1,7 @@
 <template>
 
 
-  <q-toolbar >
+  <q-toolbar>
     <div class="row fit">
       <q-toolbar-title>
         <div class="row justify-start items-baseline">
@@ -56,14 +56,14 @@
         </div>
         <div class="col-7">
           <q-select
-            v-model="locale"
-            :options="localeOptions"
-            dense
-            borderless
-            emit-value
-            map-options
-            options-dense
-            style="min-width: 150px"
+              v-model="locale"
+              :options="localeOptions"
+              dense
+              borderless
+              emit-value
+              map-options
+              options-dense
+              style="min-width: 150px"
           />
         </div>
         <div class="col"></div>
@@ -77,13 +77,13 @@
         </div>
         <div class="col-9">
           <q-select
-            label="Tab Auto-Switcher Settings"
-            filled
-            v-model="autoSwitcherOption"
-            :options="autoSwitcherOptions"
-            map-options
-            emit-value
-            style="width: 250px"
+              label="Tab Auto-Switcher Settings"
+              filled
+              v-model="autoSwitcherOption"
+              :options="autoSwitcherOptions"
+              map-options
+              emit-value
+              style="width: 250px"
           />
         </div>
       </div>
@@ -112,11 +112,11 @@
         </div>
         <div class="col q-ma-xl">
           <q-range
-            v-model="settingsStore.thresholds"
-            :step=10
-            marker-labels
-            :min=0
-            :max=100
+              v-model="settingsStore.thresholds"
+              :step=10
+              marker-labels
+              :min=0
+              :max=100
           />
         </div>
       </div>
@@ -186,28 +186,6 @@
 
       <div class="text-h6">Groups</div>
 
-      <q-banner rounded>All Chrome Groups, active and non-active</q-banner>
-
-      <div class="row items-baseline q-ma-md">
-        <div class="col-3">
-          All Groups
-        </div>
-        <div class="col-9">
-          {{ useGroupsStore().tabGroups }}
-        </div>
-      </div>
-
-      <q-banner rounded>All active Chrome Groups</q-banner>
-
-      <div class="row items-baseline q-ma-md">
-        <div class="col-3">
-          Active Groups
-        </div>
-        <div class="col-9">
-          {{ useGroupsStore().currentTabGroups }}
-        </div>
-      </div>
-
 
     </div>
 
@@ -229,47 +207,6 @@
       <!--          &lt;!&ndash;          <q-btn label="Un-Archive" @click="unarchive(tabset)"/>&ndash;&gt;-->
       <!--        </div>-->
       <!--      </div>-->
-    </div>
-
-  </div>
-
-  <div v-if="tab === 'archived'">
-    <div class="q-pa-md q-gutter-sm">
-
-      <q-banner rounded style="border:1px solid orange">Tabsets can be archived to remove them from direct view. Here's
-        the list of archived tabsets so that
-        they can be restored if needed.
-      </q-banner>
-
-      <div class="row q-pa-md" v-for="tabset in archivedTabsets()">
-        <div class="col-3"><b>{{ tabset.name }}</b></div>
-        <div class="col-3"></div>
-        <div class="col-1"></div>
-        <div class="col-5">
-          <q-btn label="Un-Archive" @click="unarchive(tabset as Tabset)"/>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div v-if="tab === 'search'">
-
-    <div class="q-pa-md q-gutter-sm">
-
-      <q-banner rounded style="border:1px solid orange">This Browser Extension tracks your tabsets and provides a
-        search
-        bar to search for keywords.
-      </q-banner>
-
-      <div class="row q-pa-md">
-        <div class="col-3"><b>Search Index</b></div>
-        <div class="col-3">Current Size: {{ indexSize }} Entries</div>
-        <div class="col-1"></div>
-        <div class="col-5">
-          <span class="text-blue cursor-pointer" @click="downloadIndex">[Download]</span>&nbsp;
-          <span class="text-blue cursor-pointer" @click="clearIndex">[clear Index]</span>&nbsp;
-        </div>
-      </div>
     </div>
 
   </div>
@@ -300,49 +237,6 @@
 
   </div>
 
-  <div v-if="tab === 'importExport'">
-
-    <div class="q-pa-md q-gutter-sm">
-
-      <q-banner rounded style="border:1px solid orange">You can export your data in various formats and re-import them
-        from json. Please
-        note that it is not guaranteed that older exports can be imported with newer versions of the tabsets
-        extension.
-      </q-banner>
-
-      <div class="row q-pa-md">
-        <div class="col-3"><b>Export</b></div>
-        <div class="col-3">json or as bookmarks</div>
-        <div class="col-1"></div>
-        <div class="col-5">
-          <q-btn
-            @click="showExportDialog"
-            flat round dense icon="file_download" color="primary">
-            <q-tooltip>Export your tabsets</q-tooltip>
-          </q-btn>
-        </div>
-      </div>
-
-      <div class="row q-pa-md">
-        <div class="col-3"><b>Import</b></div>
-        <div class="col-3">
-          from json<br>
-          You might need to restart tabsets.
-        </div>
-        <div class="col-1"></div>
-        <div class="col-5">
-          <q-btn
-            @click="showImportDialog"
-            flat round dense icon="file_upload" color="primary">
-            <q-tooltip>Import your tabsets backup</q-tooltip>
-          </q-btn>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
   <div v-if="tab === 'featureToggles'">
     <FeatureToggleSettings/>
   </div>
@@ -352,7 +246,6 @@
 <script setup lang="ts">
 import {onMounted, ref, watch, watchEffect} from "vue";
 import {LocalStorage, useQuasar} from "quasar";
-import {useSearchStore} from "src/stores/searchStore";
 import {useNotificationHandler} from "src/services/ErrorHandler";
 import {useCommandExecutor} from "src/services/CommandExecutor";
 import NavigationService from "src/services/NavigationService";
@@ -378,7 +271,8 @@ import {Account} from "src/models/Account";
 import InfoLine from "pages/helper/InfoLine.vue";
 import FeatureToggleSettings from "pages/helper/FeatureToggleSettings.vue";
 import {useI18n} from "vue-i18n";
-const { t } = useI18n()
+
+const {t} = useI18n()
 
 const {sendMsg, inBexMode} = useUtils()
 
@@ -394,7 +288,7 @@ useUiStore().rightDrawerSetActiveTab(DrawerTabs.FEATURES)
 const view = ref('grid')
 const indexSize = ref(0)
 
-const { locale } = useI18n({locale: navigator.language, useScope: "global"})
+const {locale} = useI18n({locale: navigator.language, useScope: "global"})
 
 const localeOptions = ref([
   {value: 'en', label: 'English'},
@@ -461,14 +355,14 @@ watch(() => bookmarksPermissionGranted.value, (newValue, oldValue) => {
   }
   if (bookmarksPermissionGranted.value && !usePermissionsStore().hasPermission('bookmarks')) {
     useCommandExecutor()
-      .executeFromUi(new GrantPermissionCommand("bookmarks"))
-      .then((res: ExecutionResult<boolean>) => bookmarksPermissionGranted.value = res.result)
+        .executeFromUi(new GrantPermissionCommand("bookmarks"))
+        .then((res: ExecutionResult<boolean>) => bookmarksPermissionGranted.value = res.result)
   } else if (!bookmarksPermissionGranted.value) {
     useCommandExecutor()
-      .executeFromUi(new RevokePermissionCommand("bookmarks"))
-      .then(() => {
-        useBookmarksStore().loadBookmarks()
-      })
+        .executeFromUi(new RevokePermissionCommand("bookmarks"))
+        .then(() => {
+          useBookmarksStore().loadBookmarks()
+        })
   }
 })
 
@@ -479,11 +373,11 @@ watch(() => pageCapturePermissionGranted.value, (newValue, oldValue) => {
   }
   if (pageCapturePermissionGranted.value && !usePermissionsStore().hasPermission('pageCapture')) {
     useCommandExecutor()
-      .executeFromUi(new GrantPermissionCommand("pageCapture"))
-      .then((res: ExecutionResult<boolean>) => pageCapturePermissionGranted.value = res.result)
+        .executeFromUi(new GrantPermissionCommand("pageCapture"))
+        .then((res: ExecutionResult<boolean>) => pageCapturePermissionGranted.value = res.result)
   } else if (!pageCapturePermissionGranted.value) {
     useCommandExecutor()
-      .executeFromUi(new RevokePermissionCommand("pageCapture"))
+        .executeFromUi(new RevokePermissionCommand("pageCapture"))
   }
 })
 
@@ -505,8 +399,8 @@ watchEffect(() => {
 
 watchEffect(() => {
   (installationTitle.value && installationTitle.value.trim().length > 0) ?
-    LocalStorage.set(TITLE_IDENT, installationTitle.value.replace(STRIP_CHARS_IN_USER_INPUT, '')) :
-    LocalStorage.remove(TITLE_IDENT)
+      LocalStorage.set(TITLE_IDENT, installationTitle.value.replace(STRIP_CHARS_IN_USER_INPUT, '')) :
+      LocalStorage.remove(TITLE_IDENT)
 })
 
 watchEffect(() => {

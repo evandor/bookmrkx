@@ -10,7 +10,6 @@ import ChromeApi from "src/services/ChromeApi";
 import {useSettingsStore} from "stores/settingsStore";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {useWindowsStore} from "src/stores/windowsStore";
-import {useSearchStore} from "stores/searchStore";
 import {Router} from "vue-router";
 import {useMessagesStore} from "src/stores/messagesStore";
 import {useAppStore} from "stores/appStore";
@@ -22,7 +21,7 @@ class AppService {
   router: Router = null as unknown as Router
   initialized = false
 
-  async init(quasar: any, router: Router, forceRestart = false, user: User | undefined = undefined) {
+  async init(quasar: any, router: Router, forceRestart = false) {
 
     console.log(`%cinitializing AppService: first start=${!this.initialized}, forceRestart=${forceRestart}, quasar set=${quasar !== undefined}, router set=${router !== undefined}`, forceRestart ? "font-weight:bold" : "")
 
@@ -42,7 +41,6 @@ class AppService {
     const settingsStore = useSettingsStore()
     const bookmarksStore = useBookmarksStore()
     const messagesStore = useMessagesStore()
-    const searchStore = useSearchStore()
     const uiStore = useUiStore()
     this.router = router
 
@@ -59,8 +57,6 @@ class AppService {
     await BookmarksService.init()
 
     settingsStore.initialize(quasar.localStorage);
-
-    searchStore.init().catch((err) => console.error(err))
 
     // init db
     await IndexedDbPersistenceService.init("db")
@@ -103,13 +99,6 @@ class AppService {
     windowsStore.initListeners()
 
     useUiStore().appLoading = undefined
-
-    // if (useBookmarksStore().bookmarksNodes.length === 0 &&
-    //   !router.currentRoute.value.path.startsWith("/fullpage") &&
-    //   !router.currentRoute.value.path.startsWith("/mainpanel")) {
-    //   await router.push("/sidepanel/welcome")
-    // }
-
 
   }
 

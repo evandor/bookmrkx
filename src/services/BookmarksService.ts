@@ -1,8 +1,6 @@
 import {Bookmark} from "src/models/Bookmark";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {useNotificationsStore} from "src/stores/notificationsStore";
-import {useSearchStore} from "src/stores/searchStore";
-import {useUiStore} from "stores/uiStore";
 import {useUtils} from "src/services/Utils";
 
 const {inBexMode} = useUtils()
@@ -27,7 +25,6 @@ class BookmarksService {
     if (inBexMode()) {
       useBookmarksStore().loadBookmarks()
         .then(res => {
-          useSearchStore().populateFromBookmarks()
         })
     }
   }

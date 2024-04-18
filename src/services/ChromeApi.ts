@@ -1,12 +1,8 @@
-import {Tabset} from "src/models/Tabset";
 import {CLEANUP_PERIOD_IN_MINUTES, MONITORING_PERIOD_IN_MINUTES} from "boot/constants";
 import _ from "lodash"
 import NavigationService from "src/services/NavigationService";
 import IndexedDbPersistenceService from "src/services/IndexedDbPersistenceService";
-import {useSearchStore} from "src/stores/searchStore";
-import {SearchDoc} from "src/models/SearchDoc";
 import {usePermissionsStore} from "src/stores/permissionsStore";
-import {Tab} from "src/models/Tab";
 import {uid} from "quasar";
 import {FeatureIdent} from "src/models/AppFeature";
 import {RequestInfo} from "src/models/RequestInfo";
@@ -117,84 +113,10 @@ class ChromeApi {
             })
           } else if (e.menuItemId === 'save_to_currentTS') {
             const tabId = tab?.id || 0
-          } else if (e.menuItemId === 'annotate_website') {
-            console.log("creating annotation JS", tab)
-            if (tab && tab.id) {
-              this.executeAnnotationJS(tab.id)
-            }
-          } else if (e.menuItemId.toString().startsWith("save_as_tab|")) {
-            //console.log("got", e, e.menuItemId.split("|"))
-            const tabId = tab?.id || 0
-            const tabsetId = e.menuItemId.toString().split("|")[1]
-            console.log("got tabsetId", tabsetId, e.menuItemId)
-            this.executeAddToTS(tabId, tabsetId)
-          } else if (e.menuItemId.toString().startsWith("move_to|")) {
-            console.log("got", e, e.menuItemId.toString().split("|"))
-            const tabId = tab?.id || 0
-            const windowId = e.menuItemId.toString().split("|")[1]
-            console.log("got windowId", tabId, windowId)
-            this.executeMoveToWindow(tabId, Number(windowId))
           }
         })
     }
 
-  }
-
-
-  private createSubmenu(ts: Tabset, parentId: string, title: string) {
-    chrome.contextMenus.create({
-      id: 'save_as_tab|' + ts.id,
-      parentId,
-      title,
-      documentUrlPatterns: ['https://*/*', 'https://*/'],
-      contexts: ['page']
-    })
-  }
-
-  async closeAllTabs() {
-    console.log(" --- closing all tabs: start ---")
-    const currentTab = await this.getCurrentTab()
-    // @ts-ignore
-    const t: chrome.tabs.Tab[] = await chrome.tabs.query({currentWindow: true})//, (t: chrome.tabs.Tab[]) => {
-    const ids: number[] = t.filter((r: chrome.tabs.Tab) => r.id !== currentTab.id)
-      .filter(r => r.id !== undefined)
-      .map(r => r.id || 0);
-    console.log("ids to close", ids)
-    ids.forEach(id => {
-      try {
-        chrome.tabs.remove(id)
-      } catch (err) {
-        console.warn("got error removing tabs", err, ids)
-      }
-    })
-    console.log(" --- closing all tabs: end ---")
-  }
-
-  restore(tabset: Tabset, windowName: string | undefined = undefined, inNewWindow: boolean = true) {
-    console.log("restoring tabset ", tabset.id, windowName, inNewWindow)
-
-    const urlAndGroupArray: object[] = _.map(tabset.tabs, (t: Tab) => {
-      return {url: t.url, group: t.groupName} || {url: '', group: undefined}
-    })
-    console.log("restoring urls and groups:", urlAndGroupArray)
-    if (inNewWindow && !windowName) {
-      console.log("creating new window with urls", urlAndGroupArray)
-      chrome.windows.create({
-        focused: true,
-        left: 50,
-        top: 50,
-        url: _.map(urlAndGroupArray, a => a['url' as keyof object])
-      })
-    } else if (windowName) { // open in named window
-      NavigationService.openOrCreateTab(
-        _.map(urlAndGroupArray, a => a['url' as keyof object]),
-        undefined,
-        _.map(urlAndGroupArray, a => a['group' as keyof object]))
-    } else {
-      console.log("opening urls", urlAndGroupArray)
-      NavigationService.openOrCreateTab(_.map(urlAndGroupArray, a => a['url' as keyof object]),
-        undefined, _.map(urlAndGroupArray, a => a['group' as keyof object]))
-    }
   }
 
   async getCurrentTab(): Promise<chrome.tabs.Tab> {
@@ -219,18 +141,6 @@ class ChromeApi {
     if (tabIndex) {
       chrome.tabs.highlight({tabs: tabIndex})
     }
-  }
-
-  async childrenFor(bookmarkFolderId: string): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
-    console.log("bookmarkFolderId", bookmarkFolderId)
-    // @ts-ignore
-    return chrome.bookmarks.getChildren(bookmarkFolderId)
-  }
-
-  async getTab(tabId: number): Promise<chrome.tabs.Tab> {
-    console.log("call to chromeapi get tab", tabId)
-    // @ts-ignore
-    return chrome.tabs.get(tabId)
   }
 
   createChromeTabObject(title: string, url: string, favIconUrl: string = "https://tabsets.web.app/icons/favicon-128x128.png") {
@@ -295,81 +205,9 @@ class ChromeApi {
     }
   }
 
-  createChromeTabGroupObject(id: number, title: string, color: chrome.tabGroups.ColorEnum) {
-    return {
-      id: id,
-      title: title,
-      color: color,
-      collapsed: false,
-      windowId: 1
-    }
-  }
 
-  createChromeWindowObject(id: number, top: number, left: number, tabs: chrome.tabs.Tab[] = []) {
-    return {
-      id,
-      alwaysOnTop: false,
-      focused: true,
-      incognito: false,
-      height: 400,
-      width: 600,
-      top: top,
-      left: left,
-      state: 'normal' as chrome.windows.windowStateEnum,
-      type: 'normal' as chrome.windows.windowTypeEnum,
-      tabs
-    }
-  }
 
-  executeAnnotationJS(tabId: number) {
-    chrome.scripting.executeScript({
-      target: {tabId: tabId},
-      files: ['annotation.js']
-    });
-  }
 
-  async executeMoveToWindow(tabId: number, windowId: number) {
-    try {
-      const tab = await chrome.tabs.get(tabId)
-      const url = tab.url
-      if (!url || !tab.id) {
-        return
-      }
-      console.log("found tab", tab.id, url)
-      const window = await chrome.windows.get(windowId)
-      console.log("found window", window.id)
-      await chrome.tabs.create({windowId: window.id, url: url})
-      await chrome.tabs.remove(tab.id)
-    } catch (err) {
-      console.log("error", err)
-    }
-
-  }
-
-  executeAddToTS(tabId: number, tabsetId: string) {
-    // @ts-ignore
-    chrome.scripting.executeScript({
-      target: {tabId: tabId, allFrames: true},
-      args: [tabId, tabsetId],
-      func: (tabId: number, tabsetId: string) => {
-
-        if (window.getSelection()?.anchorNode && window.getSelection()?.anchorNode !== null) {
-          const msg = {
-            msg: "addTabToTabset",
-            tabId: tabId,
-            tabsetId: tabsetId
-          }
-          console.log("sending message", msg)
-          chrome.runtime.sendMessage(msg, function (response) {
-            console.log("created new tab in current tabset:", response)
-            if (chrome.runtime.lastError) {
-              console.warn("got runtime error", chrome.runtime.lastError)
-            }
-          });
-        }
-      }
-    });
-  }
 }
 
 export default new ChromeApi();
