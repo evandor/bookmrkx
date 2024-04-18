@@ -42,12 +42,12 @@
 
 <script lang="ts" setup>
 
-import BookmarksTree from "components/BookmarksTree.vue";
 import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
 import {onMounted, ref} from "vue";
 import Analytics from "src/utils/google-analytics";
 import SidePanelToolbarTabNavigationHelper from "pages/sidepanel/helper/SidePanelToolbarTabNavigationHelper.vue";
 import {useBookmarksStore} from "stores/bookmarksStore";
+import BookmarksTree from "src/bookmarks/components/BookmarksTree.vue";
 
 const showOnlyFolders = ref(true)
 

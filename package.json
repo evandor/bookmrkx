@@ -6,7 +6,8 @@
   "author": "evandor <evandor@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "quasar dev -m bex"
+    "dev": "quasar dev -m bex",
+    "update submodules": "cd src/bookmarks && git pull && cd ../../"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",
