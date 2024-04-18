@@ -99,21 +99,6 @@ class ChromeListeners {
   private onDetachedListener = (number: number, info: chrome.tabs.TabDetachInfo) => this.onDetached(number, info)
   private onHighlightedListener = (info: chrome.tabs.TabHighlightInfo) => this.onHighlighted(info)
   private onMessageListener = (request: any, sender: chrome.runtime.MessageSender, sendResponse: any) => this.onMessage(request, sender, sendResponse)
-  private onCommandListener = (command: string) => {
-    switch (command) {
-      case 'tabHistoryBack':
-        NavigationService.backOneTab()
-        break
-      case 'tabHistoryForward':
-        NavigationService.forwardOneTab()
-        break
-      case 'search':
-        break
-      default:
-        console.log(`unknown Command: ${command}`);
-        break
-    }
-  }
 
   async initListeners() {
 
@@ -121,7 +106,7 @@ class ChromeListeners {
 
       console.debug(" ...initializing chrome tab listeners")
 
-      chrome.runtime.setUninstallURL("https://tabsets.web.app/#/uninstall")
+      // chrome.runtime.setUninstallURL("https://tabsets.web.app/#/uninstall")
 
       chrome.tabs.onUpdated.addListener(this.onUpdatedListener)
       chrome.tabs.onRemoved.addListener(this.onRemovedListener)
@@ -131,8 +116,6 @@ class ChromeListeners {
       //chrome.tabs.onZoomChange.addListener((info) => this.onZoomChange(info))
 
       chrome.runtime.onMessage.addListener(this.onMessageListener)
-
-      chrome.commands.onCommand.addListener(this.onCommandListener);
 
       // TODO removed listeners as well?
       if (usePermissionsStore().hasFeature(FeatureIdent.NOTIFICATIONS)) {
@@ -162,7 +145,6 @@ class ChromeListeners {
     chrome.tabs.onDetached.removeListener(this.onDetachedListener)
     chrome.tabs.onHighlighted.removeListener(this.onHighlightedListener)
     chrome.runtime.onMessage.removeListener(this.onMessageListener)
-    chrome.commands.onCommand.removeListener(this.onCommandListener);
   }
 
   clearWorking() {
@@ -185,15 +167,6 @@ class ChromeListeners {
 
 
   async onUpdated(number: number, info: chrome.tabs.TabChangeInfo, chromeTab: chrome.tabs.Tab) {
-    if (info.url) {
-      if (this.checkOriginForEmailLink(info.url)) {
-        const split = info.url.split("?")
-        const authRequest = split[1]
-        console.log("authRequest received on", window.location.href)
-      }
-    }
-
-
     const selfUrl = chrome.runtime.getURL("")
     if (chromeTab.url?.startsWith(selfUrl)) {
       console.debug(`onUpdated:   tab ${number}: >>> .url starts with '${selfUrl}' <<<`)
@@ -208,12 +181,8 @@ class ChromeListeners {
   onRemoved(number: number, info: chrome.tabs.TabRemoveInfo) {
     this.eventTriggered()
     console.debug("onRemoved tab event: ", number, info)
-    //useWindowsStore().refreshCurrentWindows()
     useWindowsStore().refreshTabsetWindow(info.windowId)
-    //sendMsg('window-updated', {initiated: "ChromeListeners#onRemoved"})
   }
-
-
 
   onAttached(number: number, info: chrome.tabs.TabAttachInfo) {
     console.debug(`onAttached: tab ${number} attached: ${JSON.stringify(info)}`)

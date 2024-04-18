@@ -6,18 +6,8 @@
     "128": "icons/icon-128x128.png"
   },
   "permissions": [
-    "storage",
-    "activeTab",
     "sidePanel",
-    "contextMenus",
     "bookmarks"
-  ],
-  "optional_permissions": [
-    "notifications"
-  ],
-  "host_permissions": [
-    "<all_urls>",
-    "*://*/*"
   ],
   "side_panel": {
     "default_path": "www/sidepanel.html"
@@ -36,15 +26,6 @@
       }
     }
   },
-  "options_page": "www/index.html#/mainpanel/settings",
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "*"
-      ],
-      "matches": [
-        "*://*/*"
-      ]
-    }
-  ]
+  "options_page": "www/index.html#/mainpanel/settings"
+
 }
