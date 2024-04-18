@@ -35,13 +35,6 @@
       </q-toolbar>
 
 
-      <q-list class="q-mt-none greyBorderTop">
-        <NavTabsetsListWidgetNonBex :tabsets="tabsets()" :space-id="useSpacesStore().space?.id || undefined"/>
-      </q-list>
-
-      <q-separator v-if="tabsetsWithTypes([TabsetType.SPECIAL]).length > 0"/>
-
-      <NavTabsetsListWidgetNonBex :tabsets="tabsetsWithTypes([TabsetType.SPECIAL])"/>
 
     </div>
   </div>
@@ -51,19 +44,11 @@
 
 <script setup lang="ts">
 
-import {useRouter} from "vue-router";
-import _ from "lodash"
-import {ref} from "vue";
 import {useQuasar} from "quasar";
-import {Tabset, TabsetStatus, TabsetType} from "src/models/Tabset";
 import NewTabsetDialog from "components/dialogues/NewTabsetDialog.vue";
 import {useUiStore} from "src/stores/uiStore";
-import {useNotificationsStore} from "src/stores/notificationsStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
-import {useUtils} from "src/services/Utils";
-import NavTabsetsListWidgetNonBex from "components/widgets/NavTabsetsListWidgetNonBex.vue";
 import {FeatureIdent} from "src/models/AppFeature";
-import {useSettingsStore} from "src/stores/settingsStore"
 import SpacesSelectorWidget from "components/widgets/SpacesSelectorWidget.vue";
 
 const $q = useQuasar();

@@ -107,26 +107,19 @@
 <script lang="ts" setup>
 
 import {onMounted, onUnmounted, ref, watchEffect} from "vue";
-import {Tab} from "src/models/Tab";
-import _ from "lodash"
-import {Tabset, TabsetSharing, TabsetStatus} from "src/models/Tabset";
 import {useRouter} from "vue-router";
 import {useUtils} from "src/services/Utils";
 import {LocalStorage, scroll} from "quasar";
 import {useUiStore} from "src/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
-import {FeatureIdent} from "src/models/AppFeature";
 import Analytics from "src/utils/google-analytics";
-import {useDB} from "src/services/usePersistenceService";
 import {useBookmarksStore} from "stores/bookmarksStore";
 import {useSuggestionsStore} from "stores/suggestionsStore";
-import InfoMessageWidget from "components/widgets/InfoMessageWidget.vue";
 import {TITLE_IDENT} from "boot/constants";
 import AppService from "src/services/AppService";
 import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
 import {useI18n} from 'vue-i18n'
-import SidePanelTabsetsExpansionList from "components/tabsets/SidePanelTabsetsExpansionList.vue";
 
 const {t} = useI18n({locale: navigator.language, useScope: "global"})
 

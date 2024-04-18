@@ -1,5 +1,4 @@
 import {STRIP_CHARS_IN_USER_INPUT} from "boot/constants";
-import {TABSET_NAME_MAX_LENGTH} from "src/models/Tabset";
 
 export class Window {
   created: number
@@ -21,7 +20,7 @@ export class Window {
     this.title = this.title?.replace(STRIP_CHARS_IN_USER_INPUT, '')
   }
 
-  static nameIsShortEnough = (val: string) => val ? val.length <= TABSET_NAME_MAX_LENGTH : true
+  static nameIsShortEnough = (val: string) => val ? val.length <= 32 : true
 
 }
 

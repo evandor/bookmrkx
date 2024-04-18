@@ -2,10 +2,8 @@ import {IDBPDatabase, openDB, deleteDB} from "idb";
 import _, {intersection} from "lodash";
 import {EXPIRE_DATA_PERIOD_IN_MINUTES, INDEX_DB_VERSION} from "boot/constants";
 import PersistenceService from "src/services/PersistenceService";
-import {Tabset, TabsetStatus} from "src/models/Tabset";
 import {Space} from "src/models/Space";
 import {Tab} from "src/models/Tab";
-import {SearchDoc} from "src/models/SearchDoc";
 import {MetaLink} from "src/models/MetaLink";
 import {uid, useId} from "quasar";
 import {Notification, NotificationStatus} from "src/models/Notification";
@@ -212,18 +210,6 @@ class IndexedDbPersistenceService implements PersistenceService {
   getLinks(url: string): Promise<object> {
     const encodedUrl = btoa(url)
     return this.db.get('links', encodedUrl)
-  }
-
-  async cleanUpTabsets(): Promise<void> {
-    const objectStore = this.db.transaction("tabsets", "readwrite").objectStore("tabsets");
-    let cursor = await objectStore.openCursor()
-    while (cursor) {
-      if (cursor.value.status === TabsetStatus.DELETED) {
-        console.log("cleanup: deleteing stale tabset", cursor.key)
-        objectStore.delete(cursor.key)
-      }
-      cursor = await cursor.continue();
-    }
   }
 
   getContents(): Promise<any[]> {
@@ -577,22 +563,6 @@ class IndexedDbPersistenceService implements PersistenceService {
 
   async findEntityById(id: string) {
     return await this.db.get('entities', id)
-  }
-
-  saveApi(api: Api): void {
-    this.db.put('apis', api, api.id)
-  }
-
-  deleteApi(apiId: string): Promise<void> {
-    return this.db.delete('apis', apiId)
-  }
-
-  async getApis(): Promise<Api[]> {
-    return await this.db.getAll('apis')
-  }
-
-  async findApiById(id: string) {
-    return await this.db.get('apis', id)
   }
 
   cleanUpRequests(): Promise<void> {

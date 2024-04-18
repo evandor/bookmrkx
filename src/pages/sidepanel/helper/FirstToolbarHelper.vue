@@ -26,13 +26,6 @@
 
           <slot name="iconsRight">
 
-            <SidePanelToolbarButton
-              v-if="showToggleSessionIcon()"
-              :color="existingSession ? (tabsStore.getCurrentTabset?.type === TabsetType.SESSION ? 'red':'grey-5') :'black'"
-              :icon="existingSession ? 'o_stop_circle':'o_play_circle'"
-              @click="toggleSessionState"
-              :tooltip="existingSession ? 'Stop Session' : 'Start new Session'"/>
-
             <template v-if="showSearchIcon()">
               <SidePanelToolbarButton icon="search"
                                       id="toggleSearchBtn"
@@ -60,15 +53,7 @@
             <!--              data-testid="addTabsetBtn"-->
             <!--              @click="openNewTabsetDialog()"/>-->
 
-            <q-btn outline
-                   label="New Tabset"
-                   color="primary"
-                   size="sm"
-                   :class="{ shake: annimateNewTabsetButton }"
-                   data-testid="addTabsetBtn"
-                   @click="openNewTabsetDialog()"
-                   class="q-ma-none q-px-sm q-py-none"
-                   name="o_bookmark_add"/>
+
 
           </slot>
         </div>
@@ -84,14 +69,11 @@ import {FeatureIdent} from "src/models/AppFeature";
 import {useRouter} from "vue-router";
 import {ref, watchEffect} from "vue";
 import {SidePanelView, useUiStore} from "stores/uiStore";
-import NewTabsetDialog from "components/dialogues/NewTabsetDialog.vue";
-import {Tabset, TabsetType} from "src/models/Tabset";
 import SearchWithTransitionHelper from "pages/sidepanel/helper/SearchWithTransitionHelper.vue";
 import SidePanelToolbarTabNavigationHelper from "pages/sidepanel/helper/SidePanelToolbarTabNavigationHelper.vue";
 import FilterWithTransitionHelper from "pages/sidepanel/helper/FilterWithTransitionHelper.vue";
 import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
 import {useQuasar} from "quasar";
-import {SyncType} from "stores/appStore";
 import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n({useScope: 'global'})

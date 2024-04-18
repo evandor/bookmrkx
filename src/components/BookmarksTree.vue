@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-12 text-right">
         Show only Folders
-        <q-checkbox v-model="showOnlyFolders" @change="emits('toggleShowOnlyFolders')"/>
+        <q-checkbox v-model="showOnlyFolders" @click.stop="emits('toggleShowOnlyFolders')"/>
       </div>
       <div class="col-12 q-mb-md">
         <q-input
@@ -13,7 +13,7 @@
           ref="filterRef"
           filled
           v-model="filter"
-          label="Filter Bookmarks">
+          :label="showOnlyFolders ? 'Filter Bookmark Folders' : 'Filter Bookmarks and Folders'">
           <template v-slot:append>
             <q-icon v-if="filter !== ''" name="clear" class="cursor-pointer" @click="resetFilter"/>
           </template>
@@ -40,8 +40,14 @@
       v-model:expanded="useNotificationsStore().bookmarksExpanded">
       <template v-slot:header-node="prop">
         <q-icon name="o_folder" color="warning" class="q-mr-sm"/>
-        <span class="cursor-pointer fit no-wrap ellipsis">{{ prop.node.label }} <span style="font-size:smaller"
-                                                                                      class="text-grey">({{ prop.node.subFoldersCount }} / {{ prop.node.subNodesCount }})</span></span>
+        <span class="cursor-pointer fit no-wrap ellipsis">{{ prop.node.label }}
+          <span v-if="showOnlyFolders" style="font-size:smaller" class="text-grey">
+            ({{ prop.node.subFoldersCount }})
+          </span>
+          <span v-else="!showOnlyFolders" style="font-size:smaller" class="text-grey">
+            ({{ prop.node.subFoldersCount }} / {{ prop.node.subNodesCount }})
+          </span>
+        </span>
 
         <span class="text-right" v-if="mouseHover && prop.node.id === deleteButtonId" style="width:25px;">
             <q-icon name="delete_outline" color="negative" size="18px" @click.stop="deleteBookmarksFolderDialog">
@@ -78,8 +84,7 @@
 <script setup lang="ts">
 
 import {useRouter} from "vue-router";
-import _ from "lodash"
-import {PropType, ref, watch, watchEffect} from "vue";
+import {onMounted, PropType, ref, watch, watchEffect} from "vue";
 import {useQuasar} from "quasar";
 import {useBookmarksStore} from "src/stores/bookmarksStore";
 import {useNotificationsStore} from "src/stores/notificationsStore";
@@ -114,10 +119,15 @@ const {favIconFromUrl} = useUtils()
 
 const props = defineProps({
   inSidePanel: {type: Boolean, default: false},
+  showOnlyFolders: {type: Boolean, default: true},
   nodes: {type: Object as PropType<TreeNode[]>, required: true}
 })
 
 const emits = defineEmits(['toggleShowOnlyFolders'])
+
+onMounted(() => {
+  showOnlyFolders.value = props.showOnlyFolders
+})
 
 watchEffect(() => {
   foldersCount.value = bookmarksStore.foldersCount

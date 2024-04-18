@@ -104,7 +104,6 @@ import {useCommandExecutor} from "src/services/CommandExecutor";
 import NewTabsetDialog from "components/dialogues/NewTabsetDialog.vue";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {FeatureIdent} from "src/models/AppFeature";
-import {Tabset, TabsetStatus, TabsetType} from "src/models/Tabset";
 
 const props = defineProps({
   fromPanel: {type: Boolean, default: true},

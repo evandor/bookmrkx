@@ -1,9 +1,6 @@
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <ImportFromBookmarksDialogBody
-      :in-side-panel="props.inSidePanel"
-      :foldersCount="props.foldersCount"
-      :count="props.count"/>
+   
   </q-dialog>
 </template>
 

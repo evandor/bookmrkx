@@ -6,10 +6,13 @@
       <div class="q-ma-none">
         <div class="row q-ma-none q-pa-none">
           <div class="col-12 q-ma-none q-pa-none q-pt-md">
+
             <BookmarksTree
               :nodes="showOnlyFolders ? useBookmarksStore().nonLeafNodes : useBookmarksStore().bookmarksNodes2"
+              :show-only-folders="showOnlyFolders"
               @toggle-show-only-folders="toggleShowOnlyFolders()"
               :in-side-panel="true"/>
+
           </div>
         </div>
       </div>
