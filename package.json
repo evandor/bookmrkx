@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "quasar dev -m bex",
-    "update submodules": "cd src/bookmarks && git pull && cd ../../"
+    "update submodules": "git submodule update --remote"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",
