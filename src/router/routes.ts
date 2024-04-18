@@ -6,16 +6,6 @@ const routes: RouteRecordRaw[] = [
     redirect: '/sidepanel/bookmarks'
   },
   {
-    path: '/refresh/:redirect',
-    component: () => import('layouts/SidePanelLayout.vue'),
-    children: [{path: '', component: () => import('pages/RefreshPage.vue')}],
-  },
-  {
-    path: '/start',
-    component: () => import('layouts/PlainLayout.vue'),
-    children: [{path: '', component: () => import('pages/StartPage.vue')}],
-  },
-  {
     path: '/sidepanel',
     component: () => import('layouts/SidePanelLayout.vue'),
     children: [{path: '', component: () => import('pages/SidePanelPage.vue')}],
@@ -25,12 +15,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/SidePanelLayout.vue'),
     children: [{path: '', component: () => import('pages/sidepanel/WelcomePage.vue')}],
   },
-  {
-    path: '/sidepanel/search',
-    component: () => import('layouts/SidePanelLayout.vue'),
-    children: [{path: '', component: () => import('pages/SidePanelSearchPage.vue')}],
-  },
-
   {
     path: '/sidepanel/bookmarks',
     component: () => import('layouts/SidePanelLayout.vue'),
@@ -52,7 +36,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/PlainWithRightDrawerLayout.vue'),
     children: [{path: '', component: () => import('pages/FeaturesPage.vue')}],
   },
-
 
   {
     path: '/mainpanel/bookmarks/:id',
@@ -76,22 +59,6 @@ const routes: RouteRecordRaw[] = [
     path: '/features/:feature',
     component: () => import('layouts/FullPageLayout.vue'),
     children: [{path: '', component: () => import('pages/FeaturesPage.vue')}],
-  },
-  {
-    path: '/search',
-    component: () => import('layouts/FullPageLayout.vue'),
-    children: [{path: '', component: () => import('pages/SearchPage.vue')}],
-  },
-  {
-    path: '/searchresult',
-    component: () => import('layouts/FullPageLayout.vue'),
-    children: [{path: '', component: () => import('pages/SearchResultPage.vue')}],
-  },
-
-  {
-    path: '/help/:ident',
-    component: () => import('layouts/DefaultLayout.vue'),
-    children: [{path: '', component: () => import('pages/HelpPage.vue')}],
   },
   {
     path: '/:catchAll(.*)*',
