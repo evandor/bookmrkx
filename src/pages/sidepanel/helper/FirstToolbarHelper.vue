@@ -5,21 +5,11 @@
 
         <div class="col q-ma-none q-pa-none">
 
-          <!-- no spaces && searching -->
-          <SearchWithTransitionHelper v-if="searching"
-                                      :search-term="props.searchTerm"
-                                      :search-hits="props.searchHits"/>
 
-          <FilterWithTransitionHelper v-else-if="showFilter"/>
-          <!-- no spaces && not searching -->
-          <template v-else>
+          <div class="col-12 text-subtitle1">
+            <slot name="title">{{ props.title }}</slot>
+          </div>
 
-            <!--  not searching -->
-            <div class="col-12 text-subtitle1">
-              <slot name="title">{{ props.title }}</slot>
-            </div>
-
-          </template>
         </div>
 
         <div class="col text-subtitle1 text-right q-ma-none q-pa-none q-pr-sm" v-if="!useUiStore().appLoading">
@@ -37,12 +27,12 @@
             <SidePanelToolbarTabNavigationHelper/>
 
             <SidePanelToolbarButton
-              v-if="showSyncInfo()"
-              icon="o_sync_alt"
-              tooltip="This account is being synced"
-              :color="useUiStore().syncing ? 'green':'grey'"
-              size="9px"
-              class="q-ml-sm q-mr-sm"/>
+                v-if="showSyncInfo()"
+                icon="o_sync_alt"
+                tooltip="This account is being synced"
+                :color="useUiStore().syncing ? 'green':'grey'"
+                size="9px"
+                class="q-ml-sm q-mr-sm"/>
 
             <!--            <SidePanelToolbarButton-->
             <!--              icon="o_add_circle"-->
@@ -52,7 +42,6 @@
             <!--              :class="{ shake: annimateNewTabsetButton }"-->
             <!--              data-testid="addTabsetBtn"-->
             <!--              @click="openNewTabsetDialog()"/>-->
-
 
 
           </slot>
@@ -69,13 +58,10 @@ import {FeatureIdent} from "src/models/AppFeature";
 import {useRouter} from "vue-router";
 import {ref, watchEffect} from "vue";
 import {SidePanelView, useUiStore} from "stores/uiStore";
-import SidePanelToolbarTabNavigationHelper from "pages/sidepanel/helper/SidePanelToolbarTabNavigationHelper.vue";
-import FilterWithTransitionHelper from "pages/sidepanel/helper/FilterWithTransitionHelper.vue";
-import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
 import {useQuasar} from "quasar";
 import {useI18n} from 'vue-i18n'
-
-const {t} = useI18n({useScope: 'global'})
+import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
+import SidePanelToolbarTabNavigationHelper from "pages/sidepanel/helper/SidePanelToolbarTabNavigationHelper.vue";
 
 const props = defineProps({
   title: {type: String, default: "My Tabsets"},
@@ -117,7 +103,7 @@ watchEffect(() => {
 
 watchEffect(() => {
   showFilter.value = useUiStore().sidePanelActiveViewIs(SidePanelView.TABS_LIST) &&
-    useUiStore().toolbarFilter
+      useUiStore().toolbarFilter
 })
 
 if ($q.platform.is.chrome && $q.platform.is.bex) {
@@ -132,9 +118,9 @@ if ($q.platform.is.chrome && $q.platform.is.bex) {
 const showSearchIcon = () => true
 
 const showToggleSessionIcon = () =>
-  useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
-  usePermissionsStore().hasFeature(FeatureIdent.SESSIONS) &&
-  !searching.value
+    useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+    usePermissionsStore().hasFeature(FeatureIdent.SESSIONS) &&
+    !searching.value
 
 
 const showSyncInfo = () => false

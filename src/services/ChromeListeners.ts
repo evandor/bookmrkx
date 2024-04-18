@@ -1,14 +1,7 @@
-import {HTMLSelection, Tab} from "src/models/Tab";
-import {uid} from "quasar";
-import {usePermissionsStore} from "src/stores/permissionsStore";
-import {MetaLink} from "src/models/MetaLink";
 import {Suggestion, SuggestionState, SuggestionType} from "src/models/Suggestion";
 import {useSuggestionsStore} from "src/stores/suggestionsStore";
-import {FeatureIdent} from "src/models/AppFeature";
-import {Extractor, Extractors, ExtractorType} from "src/config/Extractors";
 import {useUtils} from "src/services/Utils";
 import NavigationService from "src/services/NavigationService";
-import {EMAIL_LINK_REDIRECT_DOMAIN} from "boot/constants";
 import {SidePanelView, useUiStore} from "stores/uiStore";
 
 const {sanitize, sendMsg, inBexMode} = useUtils()
@@ -22,22 +15,6 @@ function inIgnoredMessages(request: any) {
 
 }
 
-function runOnNotificationClick(notificationId: string, buttonIndex: number) {
-  console.log("notification button clicked", notificationId, buttonIndex)
-  const notification = useSuggestionsStore().getSuggestion(notificationId)
-  console.log("found notificastion", notification)
-  if (notification) {
-    switch (buttonIndex) {
-      case 0: // show
-        const url = chrome.runtime.getURL('www/index.html') + "#/mainpanel/suggestions/" + notificationId
-        NavigationService.openOrCreateTab([url])
-        useSuggestionsStore().updateSuggestionState(notificationId, SuggestionState.CHECKED)
-        break;
-      default: // ignore
-        useSuggestionsStore().updateSuggestionState(notificationId, SuggestionState.IGNORED)
-    }
-  }
-}
 
 class ChromeListeners {
 
@@ -69,17 +46,6 @@ class ChromeListeners {
 
       chrome.runtime.onMessage.addListener(this.onMessageListener)
 
-      // TODO removed listeners as well?
-      if (usePermissionsStore().hasFeature(FeatureIdent.NOTIFICATIONS)) {
-        chrome.notifications.onButtonClicked.addListener(
-          (notificationId, buttonIndex) => {
-            runOnNotificationClick(notificationId, buttonIndex);
-          })
-        chrome.notifications.onClicked.addListener(
-          (notificationId) => {
-            runOnNotificationClick(notificationId, 0);
-          })
-      }
     }
 
     // https://stackoverflow.com/questions/77089404/chrom-extension-close-event-not-available-on-sidepanel-closure

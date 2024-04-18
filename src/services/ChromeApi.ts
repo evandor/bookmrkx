@@ -3,21 +3,12 @@ import IndexedDbPersistenceService from "src/services/IndexedDbPersistenceServic
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {uid} from "quasar";
 import {FeatureIdent} from "src/models/AppFeature";
-import {RequestInfo} from "src/models/RequestInfo";
 import {Router} from "vue-router";
 
 const persistenceService = IndexedDbPersistenceService
 
 
 class ChromeApi {
-
-    onHeadersReceivedListener = function (details: any) {
-        if (details.url) {
-            persistenceService.saveRequest(details.url, new RequestInfo(details.statusCode as number, details.responseHeaders || []))
-                .then(() => console.debug("added request"))
-                .catch(err => console.warn("err", err))
-        }
-    }
 
     init(router: Router) {
 
@@ -32,65 +23,6 @@ class ChromeApi {
                 NavigationService.updateAvailable(details)
             }
         )
-
-        if (usePermissionsStore().hasAllOrigins() && usePermissionsStore().hasFeature(FeatureIdent.ANALYSE_TABS)) {
-            this.startWebRequestListener()
-        } else {
-            this.stopWebRequestListener()
-        }
-    }
-
-    startWebRequestListener() {
-        console.log("adding WebRequestListener")
-        chrome.webRequest.onHeadersReceived.addListener(
-            this.onHeadersReceivedListener,
-            {urls: ['*://*/*'], types: ['main_frame']},
-            ['responseHeaders']
-        )
-    }
-
-    stopWebRequestListener() {
-        if (chrome.webRequest) {
-            console.debug("removing WebRequestListener if running", chrome.webRequest)
-            chrome.webRequest.onHeadersReceived.removeListener(this.onHeadersReceivedListener)
-        }
-    }
-
-    buildContextMenu(caller: string) {
-        if (process.env.MODE !== 'bex') {
-            return
-        }
-
-        console.log(" building context menu", caller)
-        if (chrome && chrome.contextMenus) {
-            chrome.contextMenus.removeAll(
-                () => {
-
-                }
-            )
-            chrome.contextMenus.onClicked.addListener(
-                (e: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab | undefined) => {
-                    //console.log("listening to", e, tab)
-                    if (e.menuItemId === "open_tabsets_page") {
-                        chrome.tabs.query({title: `Tabsets Extension`}, (result: chrome.tabs.Tab[]) => {
-                            if (result && result[0]) {
-                                chrome.tabs.highlight({tabs: result[0].index});
-                            } else {
-                                // const selfId = localStorage.getItem("selfId")
-                                // if (selfId) {
-                                chrome.tabs.create({
-                                    active: true,
-                                    pinned: false,
-                                    //url: "chrome-extension://" + selfId + "/www/index.html#/start"
-                                    url: chrome.runtime.getURL("www/index.html#/start")
-                                })
-                                // }
-                            }
-                        })
-                    } else if (e.menuItemId === 'save_to_currentTS') {
-                    }
-                })
-        }
 
     }
 

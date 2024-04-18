@@ -4,15 +4,6 @@
     class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
     :style="offsetBottom()">
 
-    <div class="row fit q-mb-sm" v-if="showWindowTable">
-      <!-- https://michaelnthiessen.com/force-re-render -->
-      <SidePanelWindowMarkupTable :key="randomKey"/>
-    </div>
-
-    <div class="row fit q-mb-sm" v-if="showStatsTable">
-      <SidePanelStatsMarkupTable :key="randomKey"/>
-    </div>
-
     <div class="row fit">
       <div class="col-6">
 
