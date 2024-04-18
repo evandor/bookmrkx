@@ -127,9 +127,7 @@ import _ from "lodash";
 import { useQuasar} from "quasar";
 import {VueDraggableNext} from 'vue-draggable-next'
 import NewTabsetDialog from "components/dialogues/NewTabsetDialog.vue";
-import {Tabset} from "src/models/Tabset";
 import {useCommandExecutor} from "src/services/CommandExecutor";
-import {RestoreTabsetCommand} from "src/domain/tabsets/RestoreTabset";
 import {useUtils} from "src/services/Utils";
 import {useNotificationHandler} from "src/services/ErrorHandler";
 import RenameWindowDialog from "components/dialogues/RenameWindowDialog.vue";

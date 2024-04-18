@@ -107,7 +107,6 @@ import {SidePanelView, useUiStore} from "src/stores/uiStore";
 import {onMounted, ref, UnwrapRef, watchEffect} from "vue";
 import {useRouter} from "vue-router";
 import {useCommandExecutor} from "src/services/CommandExecutor";
-import {CreateTabsetCommand} from "src/domain/tabsets/CreateTabset";
 import {STRIP_CHARS_IN_USER_INPUT, TITLE_IDENT} from "boot/constants";
 import Analytics from "src/utils/google-analytics";
 import DialogButton from "components/buttons/DialogButton.vue";

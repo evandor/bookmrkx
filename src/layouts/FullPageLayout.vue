@@ -171,8 +171,6 @@ import {useRouter} from "vue-router";
 import {useNotificationsStore} from "src/stores/notificationsStore";
 import Navigation from "src/components/Navigation.vue"
 import _ from "lodash";
-import OpenTabsThresholdWidget from 'src/components/widgets/OpenTabsThresholdWidget.vue'
-import SpacesSelectorWidget from 'src/components/widgets/SpacesSelectorWidget.vue'
 import SearchWidget from 'src/components/widgets/SearchWidget.vue'
 import {DrawerTabs, UserLevel, useUiStore} from "src/stores/uiStore";
 import NotificationDialog from "components/dialogues/NotificationDialog.vue"

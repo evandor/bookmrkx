@@ -33,7 +33,7 @@
         <q-space/>
 
         <SearchWidget style="position: absolute; left:300px;top:5px;max-width:500px"
-                      v-if="tabsStore.tabsets.size > 1 || useSettingsStore().isEnabled('dev')"/>
+                      v-if="useSettingsStore().isEnabled('dev')"/>
 
         <Transition name="colorized-appear">
           <div v-if="permissionsStore.hasFeature(FeatureIdent.OPENTABS_THRESHOLD) && tabsStore.tabsets.size > 0">
@@ -92,11 +92,6 @@
           </q-menu>
         </span>
 
-        <ToolbarButton
-          :feature="FeatureIdent.SAVE_TAB"
-          :drawer="DrawerTabs.SAVED_TABS"
-          icon="o_save"
-          tooltip="The List of Urls displayed when you open a new tab in your Browser"/>
 
         <ToolbarButton
           :feature="FeatureIdent.GROUP_BY_DOMAIN"
@@ -131,8 +126,7 @@
           </q-btn>
           <q-menu :offset="[0, 7]">
             <q-list style="min-width: 200px">
-              <q-item v-if="!useAuthStore().isAuthenticated()" clickable @click="router.push('/login')">Login</q-item>
-              <q-item v-else clickable @click="router.push('/logout')">Logout</q-item>
+              <q-item clickable @click="router.push('/login')">Login</q-item>
 
               <q-item clickable @click="router.push('/settings')">Settings</q-item>
               <q-item clickable @click="tabsClicked(DrawerTabs.FEATURES)" v-close-popup>
@@ -185,8 +179,6 @@ import {useRouter} from "vue-router";
 import {useNotificationsStore} from "src/stores/notificationsStore";
 import Navigation from "src/components/Navigation.vue"
 import _ from "lodash";
-import OpenTabsThresholdWidget from 'src/components/widgets/OpenTabsThresholdWidget.vue'
-import SpacesSelectorWidget from 'src/components/widgets/SpacesSelectorWidget.vue'
 import SearchWidget from 'src/components/widgets/SearchWidget.vue'
 import {DrawerTabs, useUiStore} from "src/stores/uiStore";
 import NotificationDialog from "components/dialogues/NotificationDialog.vue"

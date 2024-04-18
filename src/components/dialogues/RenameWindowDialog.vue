@@ -31,11 +31,10 @@
 
 <script lang="ts" setup>
 
-import {computed, ref, watchEffect} from "vue";
+import {computed, ref} from "vue";
 import {useDialogPluginComponent} from "quasar";
 import {STRIP_CHARS_IN_USER_INPUT} from "boot/constants";
 import {useCommandExecutor} from "src/services/CommandExecutor";
-import {RenameWindowCommand} from "src/domain/tabsets/RenameWindow";
 import {ExecutionResult} from "src/domain/ExecutionResult";
 
 defineEmits([
@@ -51,18 +50,6 @@ const props = defineProps({
 const {dialogRef, onDialogOK, onDialogHide, onDialogCancel} = useDialogPluginComponent()
 
 const newWindowName = ref(props.currentName)
-const newWindowNameExists = ref(false)
-
-const updateWindow = () => useCommandExecutor()
-  .executeFromUi(new RenameWindowCommand(props.windowId, newWindowName.value, props.index))
-  .then((result: ExecutionResult<string>) => {
-    onDialogOK({ name: newWindowName.value })
-  })
-
-// const newTabsetDialogWarning = () => {
-//   return (!hideWarning.value && newWindowName.value !== props.tabsetName && tabsStore.nameExistsInContextTabset(newWindowName.value)) ?
-//     "Tabset already exists" : ""
-// }
 
 const newWindowNameIsValid = computed(() =>
   newWindowName.value?.length <= 32 && !STRIP_CHARS_IN_USER_INPUT.test(newWindowName.value))

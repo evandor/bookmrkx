@@ -90,26 +90,16 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch, watchEffect} from "vue";
-import {useRoute, useRouter} from "vue-router";
-import {useSettingsStore} from "src/stores/settingsStore";
+import {ref, watchEffect} from "vue";
+import {useRoute} from "vue-router";
 import {DrawerTabs, useUiStore} from "src/stores/uiStore";
 import Features from "components/Features.vue";
-import TabDetails from "components/views/TabDetails.vue";
 import TabsetHelp from "components/TabsetHelp.vue";
-import TabsetDetails from "components/views/TabsetDetails.vue";
-import TagsListViewer from "components/views/TagsListViewer.vue";
-import TagListViewer from "components/views/TagListViewer.vue";
-import ByDomainList from "components/ByDomainList.vue";
-import SavedPdfs from "components/SavedPdfs.vue";
 import BookmarksTree from "src/bookmarks/components/BookmarksTree.vue";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 
 const route = useRoute()
 
-const settingsStore = useSettingsStore()
-
-const openTabsCountRatio = ref(0)
 const tab = ref<DrawerTabs>(useUiStore().rightDrawer.activeTab)
 const filter = ref<string>('')
 
