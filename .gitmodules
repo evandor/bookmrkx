@@ -1,3 +1,0 @@
-[submodule "src/bookmarks"]
-	path = src/bookmarks
-	url = https://github.com/evandor/submodule-bookmarks.git
