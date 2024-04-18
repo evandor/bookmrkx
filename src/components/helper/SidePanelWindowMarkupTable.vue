@@ -126,11 +126,9 @@ import {Window} from "src/models/Window"
 import _ from "lodash";
 import { useQuasar} from "quasar";
 import {VueDraggableNext} from 'vue-draggable-next'
-import NewTabsetDialog from "components/dialogues/NewTabsetDialog.vue";
 import {useCommandExecutor} from "src/services/CommandExecutor";
 import {useUtils} from "src/services/Utils";
 import {useNotificationHandler} from "src/services/ErrorHandler";
-import RenameWindowDialog from "components/dialogues/RenameWindowDialog.vue";
 import {useSettingsStore} from "stores/settingsStore";
 
 const {handleError} = useNotificationHandler()

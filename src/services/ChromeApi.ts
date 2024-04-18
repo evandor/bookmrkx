@@ -115,16 +115,6 @@ class ChromeApi {
                 // }
               }
             })
-          } else if (e.menuItemId === "website_clip") {
-            console.log("creating Clip", tab)
-            if (tab && tab.id) {
-              this.executeClippingJS(tab.id)
-            }
-            // } else if (e.menuItemId === "website_quote") {
-            //   console.log("creating Quote", tab)
-            //   if (tab && tab.id) {
-            //     this.executeQuoteJS(tab.id)
-            //   }
           } else if (e.menuItemId === 'save_to_currentTS') {
             const tabId = tab?.id || 0
           } else if (e.menuItemId === 'annotate_website') {
@@ -329,25 +319,6 @@ class ChromeApi {
       type: 'normal' as chrome.windows.windowTypeEnum,
       tabs
     }
-  }
-
-  executeClippingJS(tabId: number) {
-    // @ts-ignore
-    chrome.scripting.insertCSS({
-      target: {tabId: tabId},
-      files: ['assets/content.css']
-    }, () => {
-      const lastError = chrome.runtime.lastError;
-      if (lastError) {
-        alert(JSON.stringify(lastError))
-        return
-      }
-      // @ts-ignore
-      chrome.scripting.executeScript({
-        target: {tabId: tabId},
-        files: ['clipping.js']
-      });
-    });
   }
 
   executeAnnotationJS(tabId: number) {

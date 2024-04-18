@@ -297,11 +297,9 @@ module.exports = configure(function (ctx) {
         'tabsets-content-script',
         'content-script-tab-helper',
         'content-script-thumbnails',
-        'clipping',
         'annotation',
         'highlight-annotations'
       ],
-      css: ['clipping.css']
 
       // extendBexScriptsConf (esbuildConf) {}
       // extendBexManifestJson (json) {}

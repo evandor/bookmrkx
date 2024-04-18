@@ -45,7 +45,6 @@
 <script setup lang="ts">
 
 import {useQuasar} from "quasar";
-import NewTabsetDialog from "components/dialogues/NewTabsetDialog.vue";
 import {useUiStore} from "src/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {FeatureIdent} from "src/models/AppFeature";
@@ -56,13 +55,6 @@ $q.loadingBar.setDefaults({
   color: 'green',
   size: '10px',
   position: 'bottom'
-})
-
-
-const addTabset = () => $q.dialog({
-  component: NewTabsetDialog, componentProps: {
-    setEmptyByDefault: useUiStore().newTabsetEmptyByDefault
-  }
 })
 
 </script>
