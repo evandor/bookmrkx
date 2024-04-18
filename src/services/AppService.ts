@@ -8,7 +8,7 @@ import {useDB} from "src/services/usePersistenceService";
 import {useSuggestionsStore} from "stores/suggestionsStore";
 import ChromeApi from "src/services/ChromeApi";
 import {useSettingsStore} from "stores/settingsStore";
-import {useBookmarksStore} from "stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {useWindowsStore} from "src/stores/windowsStore";
 import {useSearchStore} from "stores/searchStore";
 import {Router} from "vue-router";
@@ -16,7 +16,6 @@ import {useMessagesStore} from "src/stores/messagesStore";
 import {useAppStore} from "stores/appStore";
 import PersistenceService from "src/services/PersistenceService";
 import {useUiStore} from "stores/uiStore";
-import {User} from "firebase/auth";
 
 class AppService {
 

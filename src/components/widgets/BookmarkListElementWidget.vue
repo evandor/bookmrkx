@@ -51,11 +51,6 @@
         </q-tooltip>
         </span>
         </div>
-        <q-badge color="warning" v-if="existsInTabset(props.bookmark.chromeBookmark.url)" floating>
-          <q-icon name="tab" size="16px" color="white">
-            <q-tooltip>This bookmark is saved in a tabset</q-tooltip>
-          </q-icon>
-        </q-badge>
       </q-item-label>
 
       <q-item-label caption>{{ props.bookmark.chromeBookmark?.url }}</q-item-label>

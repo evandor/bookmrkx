@@ -59,11 +59,16 @@
   <div class="row greyBorderTop"></div>
 
 <!--  <UnassignedAndOpenTabs v-if="tab === DrawerTabs.UNASSIGNED_TABS"/>-->
-  <BookmarksTree v-if="tab === DrawerTabs.BOOKMARKS"/>
+  <BookmarksTree v-if="tab === DrawerTabs.BOOKMARKS"
+    :nodes="showOnlyFolders ? useBookmarksStore().nonLeafNodes : useBookmarksStore().bookmarksNodes2"
+    :show-only-folders="showOnlyFolders"
+    @toggle-show-only-folders="toggleShowOnlyFolders()"
+    :in-side-panel="true"/>
+
+
   <!--      <OpenTabs v-else-if="tab ===  DrawerTabs.OPEN_TABS" :filter="filter"/>-->
   <!--      <UnassignedTabs v-else-if="tab ===  DrawerTabs.UNASSIGNED_TABS" :filter="filter"/>-->
-  <ByDomainList v-else-if="tab ===  DrawerTabs.GROUP_BY_HOST_TABS"/>
-<!--  <SavedTabs v-else-if="tab ===  DrawerTabs.SAVED_TABS"/>-->
+  <!--  <SavedTabs v-else-if="tab ===  DrawerTabs.SAVED_TABS"/>-->
   <SavedPdfs v-else-if="tab ===  DrawerTabs.SAVED_TABS_AS_PDF"/>
 <!--  <TabsetAsSidebar v-else-if="tab ===  DrawerTabs.SIDEBAR"/>-->
 <!--  <NewTabUrls v-else-if="tab ===  DrawerTabs.NEW_TAB_URLS"/>-->
@@ -98,6 +103,7 @@ import TagListViewer from "components/views/TagListViewer.vue";
 import ByDomainList from "components/ByDomainList.vue";
 import SavedPdfs from "components/SavedPdfs.vue";
 import BookmarksTree from "src/bookmarks/components/BookmarksTree.vue";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 
 const route = useRoute()
 
@@ -106,6 +112,12 @@ const settingsStore = useSettingsStore()
 const openTabsCountRatio = ref(0)
 const tab = ref<DrawerTabs>(useUiStore().rightDrawer.activeTab)
 const filter = ref<string>('')
+
+const showOnlyFolders = ref(true)
+
+const toggleShowOnlyFolders = () => {
+  showOnlyFolders.value = !showOnlyFolders.value
+}
 
 watchEffect(() => tab.value = useUiStore().rightDrawer.activeTab)
 

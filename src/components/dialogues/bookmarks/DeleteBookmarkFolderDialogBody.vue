@@ -27,7 +27,7 @@ import {ref} from "vue";
 import {QForm} from "quasar";
 
 import {useDialogPluginComponent} from 'quasar'
-import {useBookmarksStore} from "stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import BookmarksService from "src/services/BookmarksService";
 
 defineEmits([

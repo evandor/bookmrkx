@@ -6,7 +6,7 @@ import {Tabset} from "src/models/Tabset";
 import {ref} from "vue";
 import {Tab} from "src/models/Tab";
 import {useWindowsStore} from "src/stores/windowsStore";
-import {useBookmarksStore} from "src/stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {uid} from "quasar";
 
 function dummyPromise(timeout: number, tabToCloseId: number | undefined = undefined): Promise<string> {

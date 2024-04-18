@@ -112,7 +112,7 @@ import {useRoute, useRouter} from "vue-router";
 import {uid, useQuasar} from "quasar";
 import _ from "lodash"
 import {useTabsStore} from "src/stores/tabsStore";
-import {useBookmarksStore} from "src/stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {Bookmark} from "src/models/Bookmark";
 import {onMounted, ref, watchEffect} from "vue";
 import AddBookmarkFolderDialog from "components/dialogues/AddBookmarkFolderDialog.vue";

@@ -114,7 +114,7 @@ import {useUiStore} from "src/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
 import Analytics from "src/utils/google-analytics";
-import {useBookmarksStore} from "stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {useSuggestionsStore} from "stores/suggestionsStore";
 import {TITLE_IDENT} from "boot/constants";
 import AppService from "src/services/AppService";

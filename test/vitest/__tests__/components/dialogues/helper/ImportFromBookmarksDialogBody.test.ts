@@ -11,7 +11,7 @@ import {CreateTabsetCommand} from "src/domain/tabsets/CreateTabset";
 import PersistenceService from "src/services/PersistenceService";
 import {useTabsetService} from "src/services/TabsetService2";
 import ImportFromBookmarksDialogBody from "components/dialogues/helper/ImportFromBookmarksDialogBody.vue";
-import {useBookmarksStore} from "stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import ChromeApi from "src/services/ChromeApi";
 import {Bookmark} from "src/models/Bookmark";
 import {STRIP_CHARS_IN_USER_INPUT} from "boot/constants";

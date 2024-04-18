@@ -1,4 +1,4 @@
-import {useBookmarksStore} from "src/stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 
 class ChromeBookmarkListeners {
 

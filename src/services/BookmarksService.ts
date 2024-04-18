@@ -1,5 +1,5 @@
 import {Bookmark} from "src/models/Bookmark";
-import {useBookmarksStore} from "src/stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {useNotificationsStore} from "src/stores/notificationsStore";
 import {useSearchStore} from "src/stores/searchStore";
 import {useUiStore} from "stores/uiStore";

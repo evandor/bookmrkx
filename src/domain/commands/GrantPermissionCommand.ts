@@ -2,7 +2,7 @@ import Command from "src/domain/Command";
 import {ExecutionResult} from "src/domain/ExecutionResult";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {RevokePermissionCommand} from "src/domain/commands/RevokePermissionCommand";
-import {useBookmarksStore} from "src/stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import ChromeBookmarkListeners from "src/services/ChromeBookmarkListeners";
 import {useSuggestionsStore} from "src/stores/suggestionsStore";
 import {StaticSuggestionIdent} from "src/models/Suggestion";

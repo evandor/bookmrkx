@@ -125,7 +125,7 @@ import NavigationService from "src/services/NavigationService";
 import {Tabset, TabsetType} from "src/models/Tabset";
 import {usePermissionsStore} from "stores/permissionsStore";
 import {FeatureIdent} from "src/models/AppFeature";
-import {useBookmarksStore} from "stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import EditUrlDialog from "components/dialogues/EditUrlDialog.vue";
 import {useTabsStore} from "stores/tabsStore";
 import {PlaceholdersType} from "src/models/Placeholders";

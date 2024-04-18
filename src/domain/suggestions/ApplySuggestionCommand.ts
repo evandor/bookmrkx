@@ -1,7 +1,7 @@
 import Command from "src/domain/Command";
 import {ExecutionResult} from "src/domain/ExecutionResult";
 import {Suggestion, SuggestionState, SuggestionType} from "src/models/Suggestion";
-import {useBookmarksStore} from "stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {useSuggestionsStore} from "stores/suggestionsStore";
 import {useUtils} from "src/services/Utils";
 import NavigationService from "src/services/NavigationService";
