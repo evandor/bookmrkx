@@ -8,12 +8,9 @@ import {setCssVar, useQuasar} from "quasar";
 import AppService from "src/services/AppService";
 import {EventEmitter} from "events";
 import {useRouter} from "vue-router";
-import {useLogger} from "src/services/Logger";
 
 const $q = useQuasar()
 const router = useRouter()
-
-const {info} = useLogger()
 
 // https://stackoverflow.com/questions/9768444/possible-eventemitter-memory-leak-detected
 const emitter = new EventEmitter()
@@ -47,7 +44,5 @@ if (useDarkMode === "true") {
 }
 
 AppService.init($q, router, false)
-
-info(`bookmrks started: mode=${process.env.MODE}, version=${import.meta.env.PACKAGE_VERSION}`)
 
 </script>
