@@ -1,9 +1,7 @@
 import {IDBPDatabase, openDB, deleteDB} from "idb";
-import _, {intersection} from "lodash";
-import {EXPIRE_DATA_PERIOD_IN_MINUTES, INDEX_DB_VERSION} from "boot/constants";
+import _ from "lodash";
+import {INDEX_DB_VERSION} from "boot/constants";
 import PersistenceService from "src/services/PersistenceService";
-import {uid, useId} from "quasar";
-import {Notification, NotificationStatus} from "src/models/Notification";
 import {Suggestion, SuggestionState, SuggestionType} from "src/models/Suggestion";
 import {useUiStore} from "src/stores/uiStore";
 
@@ -110,31 +108,6 @@ class IndexedDbPersistenceService implements PersistenceService {
         }
       }
     });
-  }
-
-
-
-  getNotifications(onlyNew: boolean = true): Promise<Notification[]> {
-    if (this.db) {
-      return this.db.getAll('notifications')
-    }
-    console.log("db not ready yet, returning empty notification array")
-    return Promise.resolve([])
-  }
-
-  addNotification(notification: Notification): Promise<void> {
-    return this.db.add('notifications', notification, notification.id)
-      .then(() => Promise.resolve())
-  }
-
-  notificationRead(notificationId: string): Promise<void> {
-    const objectStore = this.db.transaction('notifications', 'readwrite').objectStore('notifications');
-    return objectStore.get(notificationId)
-      .then(res => {
-        res.status = NotificationStatus.READ
-        res.updated = new Date().getTime()
-        objectStore.put(res, notificationId)
-      })
   }
 
   async getSuggestions(): Promise<Suggestion[]> {

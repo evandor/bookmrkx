@@ -26,32 +26,6 @@ class ChromeApi {
 
     }
 
-    highlight(tabIndex: number | undefined) {
-        if (tabIndex) {
-            chrome.tabs.highlight({tabs: tabIndex})
-        }
-    }
-
-    createChromeTabObject(title: string, url: string, favIconUrl: string = "https://tabsets.web.app/icons/favicon-128x128.png") {
-        return {
-            active: false,
-            discarded: true,
-            // @ts-ignore
-            groupId: -1,
-            autoDiscardable: true,
-            favIconUrl: favIconUrl,
-            index: 0,
-            highlighted: false,
-            title: title,
-            pinned: false,
-            url: url,
-            name: '',
-            windowId: 0,
-            incognito: false,
-            selected: false
-        }
-    }
-
     createChromeBookmarkObject(title: string, url: string, favIconUrl: string) {
         return {
             id: uid(),

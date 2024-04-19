@@ -3,14 +3,12 @@ import ChromeListeners from "src/services/ChromeListeners";
 import ChromeBookmarkListeners from "src/services/ChromeBookmarkListeners";
 import BookmarksService from "src/bookmarks/services/BookmarksService";
 import IndexedDbPersistenceService from "src/services/IndexedDbPersistenceService";
-import {useNotificationsStore} from "stores/notificationsStore";
 import {useDB} from "src/services/usePersistenceService";
 import {useSuggestionsStore} from "stores/suggestionsStore";
 import ChromeApi from "src/services/ChromeApi";
 import {useSettingsStore} from "stores/settingsStore";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {Router} from "vue-router";
-import {useMessagesStore} from "src/stores/messagesStore";
 import {useAppStore} from "stores/appStore";
 import PersistenceService from "src/services/PersistenceService";
 import {useUiStore} from "stores/uiStore";
@@ -38,7 +36,6 @@ class AppService {
     const appStore = useAppStore()
     const settingsStore = useSettingsStore()
     const bookmarksStore = useBookmarksStore()
-    const messagesStore = useMessagesStore()
     const uiStore = useUiStore()
     this.router = router
 
@@ -61,19 +58,15 @@ class AppService {
 
     // init services
 
-    await useNotificationsStore().initialize(useDB(undefined).db)
     useSuggestionsStore().init(useDB(undefined).db)
-    await messagesStore.initialize(useDB(undefined).db)
 
     await this.initCoreSerivces(quasar, useDB(undefined).db, this.router)
-
-    useNotificationsStore().bookmarksExpanded = quasar.localStorage.getItem("bookmarks.expanded") || []
 
   }
 
 
   restart(ar: string) {
-    console.log("%crestarting tabsets", "font-weight:bold", window.location.href, ar)
+    console.log("%crestarting bookmrkx", "font-weight:bold", window.location.href, ar)
     const baseLocation = window.location.href.split("?")[0]
     console.log("%cbaseLocation", "font-weight:bold", baseLocation)
     console.log("%cwindow.location.href", "font-weight:bold", window.location.href)
