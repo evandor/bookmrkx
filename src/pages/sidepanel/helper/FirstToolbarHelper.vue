@@ -26,24 +26,6 @@
 
             <SidePanelToolbarTabNavigationHelper/>
 
-            <SidePanelToolbarButton
-                v-if="showSyncInfo()"
-                icon="o_sync_alt"
-                tooltip="This account is being synced"
-                :color="useUiStore().syncing ? 'green':'grey'"
-                size="9px"
-                class="q-ml-sm q-mr-sm"/>
-
-            <!--            <SidePanelToolbarButton-->
-            <!--              icon="o_add_circle"-->
-            <!--              :tooltip="newTabsetTooltip()"-->
-            <!--              color="warning"-->
-            <!--              class="q-ml-sm"-->
-            <!--              :class="{ shake: annimateNewTabsetButton }"-->
-            <!--              data-testid="addTabsetBtn"-->
-            <!--              @click="openNewTabsetDialog()"/>-->
-
-
           </slot>
         </div>
       </div>
@@ -53,13 +35,10 @@
 
 <script lang="ts" setup>
 
-import {usePermissionsStore} from "stores/permissionsStore";
-import {FeatureIdent} from "src/models/AppFeature";
 import {useRouter} from "vue-router";
 import {ref, watchEffect} from "vue";
-import {SidePanelView, useUiStore} from "stores/uiStore";
+import {useUiStore} from "stores/uiStore";
 import {useQuasar} from "quasar";
-import {useI18n} from 'vue-i18n'
 import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
 import SidePanelToolbarTabNavigationHelper from "pages/sidepanel/helper/SidePanelToolbarTabNavigationHelper.vue";
 
@@ -92,18 +71,9 @@ const toggleSearch = () => {
 windowLocation.value = window.location.href
 
 watchEffect(() => {
-  annimateNewTabsetButton.value = useUiStore().animateNewTabsetButton
-})
-
-watchEffect(() => {
   if (props.showSearchBox && !searching.value) {
     searching.value = true
   }
-})
-
-watchEffect(() => {
-  showFilter.value = useUiStore().sidePanelActiveViewIs(SidePanelView.TABS_LIST) &&
-      useUiStore().toolbarFilter
 })
 
 if ($q.platform.is.chrome && $q.platform.is.bex) {
@@ -116,12 +86,6 @@ if ($q.platform.is.chrome && $q.platform.is.bex) {
 }
 
 const showSearchIcon = () => true
-
-const showToggleSessionIcon = () =>
-    useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
-    usePermissionsStore().hasFeature(FeatureIdent.SESSIONS) &&
-    !searching.value
-
 
 const showSyncInfo = () => false
 

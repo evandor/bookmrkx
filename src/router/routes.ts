@@ -21,12 +21,6 @@ const routes: RouteRecordRaw[] = [
     children: [{path: '', component: () => import('pages/sidepanel/SidePanelBookmarksPage.vue')}],
   },
   {
-    path: '/sidepanel/messages',
-    component: () => import('layouts/SidePanelLayout.vue'),
-    children: [{path: '', component: () => import('pages/sidepanel/SidePanelMessagesPage.vue')}],
-  },
-
-  {
     path: '/mainpanel/settings',
     component: () => import('layouts/PlainWithRightDrawerLayout.vue'),
     children: [{path: '', component: () => import('pages/SettingsPage.vue')}],
@@ -36,25 +30,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/PlainWithRightDrawerLayout.vue'),
     children: [{path: '', component: () => import('pages/FeaturesPage.vue')}],
   },
-
   {
     path: '/mainpanel/bookmarks/:id',
     component: () => import('layouts/PlainLayout.vue'),
     children: [{path: '', component: () => import('pages/mainpanel/MainPanelBookmarksPage.vue')}],
   },
-
-  {
-    path: '/settings',
-    component: () => import('layouts/DefaultLayout.vue'),
-    children: [{path: '', component: () => import('pages/SettingsPage.vue')}],
-  },
-
-  {
-    path: '/bookmarks/:id',
-    component: () => import('layouts/FullPageLayout.vue'),
-    children: [{path: '', component: () => import('pages/BookmarksPage.vue')}],
-  },
-
   {
     path: '/features/:feature',
     component: () => import('layouts/FullPageLayout.vue'),

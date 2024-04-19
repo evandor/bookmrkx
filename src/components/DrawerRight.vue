@@ -119,7 +119,7 @@ const drawerLabel = () => {
     case DrawerTabs.HISTORY:
       return "History"
     case DrawerTabs.FEATURES:
-      return "Add. Features"
+      return "Additional Features"
     case DrawerTabs.TAB_DETAILS:
       return "Tab Details"
     case DrawerTabs.TABSET_DETAILS:
