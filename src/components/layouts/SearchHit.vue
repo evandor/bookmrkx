@@ -71,7 +71,7 @@
 import NavigationService from "src/services/NavigationService";
 import {Hit} from "src/models/Hit";
 import {useRouter} from "vue-router";
-import BookmarksService from "src/services/BookmarksService";
+import BookmarksService from "src/bookmarks/services/BookmarksService";
 import {useSettingsStore} from "src/stores/settingsStore"
 import {useUtils} from "src/services/Utils";
 import {ListDetailLevel, useUiStore} from "stores/uiStore";

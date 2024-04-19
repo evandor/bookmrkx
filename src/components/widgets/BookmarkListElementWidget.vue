@@ -76,7 +76,7 @@ import {Bookmark} from "src/models/Bookmark";
 import {useRouter} from "vue-router";
 import {date} from "quasar";
 import NavigationService from "src/services/NavigationService";
-import BookmarksService from "src/services/BookmarksService";
+import BookmarksService from "src/bookmarks/services/BookmarksService";
 
 const {formatDate} = useUtils()
 

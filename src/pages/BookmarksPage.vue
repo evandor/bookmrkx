@@ -120,7 +120,7 @@ import BookmarkList from "components/layouts/BookmarkList.vue";
 import ImportFromBookmarks from "components/dialogues/helper/ImportFromBookmarks.vue";
 import Analytics from "src/utils/google-analytics";
 import ImportFromBookmarksDialog from "components/dialogues/ImportFromBookmarksDialog.vue";
-import BookmarksService from "src/services/BookmarksService";
+import BookmarksService from "src/bookmarks/services/BookmarksService";
 
 const props = defineProps({
   inSidePanel: {type: Boolean, default: false}

@@ -28,7 +28,7 @@ import {QForm} from "quasar";
 
 import {useDialogPluginComponent} from 'quasar'
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
-import BookmarksService from "src/services/BookmarksService";
+import BookmarksService from "src/bookmarks/services/BookmarksService";
 
 defineEmits([
   ...useDialogPluginComponent.emits
