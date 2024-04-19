@@ -13,7 +13,7 @@ import {useTabsetService} from "src/services/TabsetService2";
 import ImportFromBookmarksDialogBody from "components/dialogues/helper/ImportFromBookmarksDialogBody.vue";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import ChromeApi from "src/services/ChromeApi";
-import {Bookmark} from "src/models/Bookmark";
+import {Bookmark} from "src/bookmarks/models/Bookmark";
 import {STRIP_CHARS_IN_USER_INPUT} from "boot/constants";
 
 installQuasarPlugin({plugins: {Dialog, Notify}})
