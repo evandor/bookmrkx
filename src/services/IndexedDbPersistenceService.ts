@@ -99,41 +99,14 @@ class IndexedDbPersistenceService implements PersistenceService {
     return await openDB(dbName, INDEX_DB_VERSION, {
       // upgrading see https://stackoverflow.com/questions/50193906/create-index-on-already-existing-objectstore
       upgrade(db) {
-        if (!db.objectStoreNames.contains('thumbnails')) {
-          console.log("creating db thumbnails")
-          let store = db.createObjectStore('thumbnails');
+        if (!db.objectStoreNames.contains('bookmarks')) {
+          console.log("creating db bookmarks")
+          let store = db.createObjectStore('bookmarks');
           store.createIndex("expires", "expires", {unique: false});
-        }
-        if (!db.objectStoreNames.contains('content')) {
-          console.log("creating db content")
-          let store = db.createObjectStore('content');
-          store.createIndex("expires", "expires", {unique: false});
-        }
-        if (!db.objectStoreNames.contains('requests')) {
-          console.log("creating db requests")
-          let store = db.createObjectStore('requests');
-          store.createIndex("expires", "expires", {unique: false});
-        }
-        if (!db.objectStoreNames.contains('metalinks')) {
-          console.log("creating db metalinks")
-          const store = db.createObjectStore('metalinks');
-          store.createIndex("expires", "expires", {unique: false});
-        }
-        if (!db.objectStoreNames.contains('notifications')) {
-          console.log("creating db notifications")
-          db.createObjectStore('notifications');
         }
         if (!db.objectStoreNames.contains('suggestions')) {
           console.log("creating db suggestions")
           db.createObjectStore('suggestions');
-        }
-        if (!db.objectStoreNames.contains('windows')) {
-          console.log("creating db windows")
-          db.createObjectStore('windows');
-        }
-        if (!db.objectStoreNames.contains('messages')) {
-          console.log("creating db messages")
-          db.createObjectStore('messages');
         }
       }
     });

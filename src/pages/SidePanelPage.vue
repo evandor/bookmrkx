@@ -94,7 +94,7 @@
 
 
         <div class="text-subtitle1">
-          {{ toolbarTitle(tabsets as Tabset[]) }}
+         xxx
         </div>
 
       </FirstToolbarHelper>

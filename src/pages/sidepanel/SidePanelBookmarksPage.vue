@@ -24,13 +24,6 @@
 
         <template v-slot:iconsRight>
 
-          <SidePanelToolbarTabNavigationHelper />
-
-<!--          <SidePanelToolbarButton-->
-<!--              icon="close"-->
-<!--              tooltip="Close this view"-->
-<!--              @click="useUiStore().sidePanelSetActiveView(SidePanelView.MAIN)"-->
-<!--              color="black" />-->
         </template>
 
       </FirstToolbarHelper>
@@ -45,7 +38,6 @@
 import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
 import {onMounted, ref} from "vue";
 import Analytics from "src/utils/google-analytics";
-import SidePanelToolbarTabNavigationHelper from "pages/sidepanel/helper/SidePanelToolbarTabNavigationHelper.vue";
 import BookmarksTree from "src/bookmarks/components/BookmarksTree.vue";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 

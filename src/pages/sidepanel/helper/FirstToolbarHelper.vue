@@ -24,8 +24,6 @@
               <span class="q-ma-none q-pa-none q-mx-sm text-grey-5">|</span>
             </template>
 
-            <SidePanelToolbarTabNavigationHelper/>
-
           </slot>
         </div>
       </div>
@@ -40,7 +38,6 @@ import {ref, watchEffect} from "vue";
 import {useUiStore} from "stores/uiStore";
 import {useQuasar} from "quasar";
 import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
-import SidePanelToolbarTabNavigationHelper from "pages/sidepanel/helper/SidePanelToolbarTabNavigationHelper.vue";
 
 const props = defineProps({
   title: {type: String, default: "My Tabsets"},
@@ -54,10 +51,7 @@ const $q = useQuasar()
 const router = useRouter()
 
 const searching = ref(false)
-const existingSession = ref(false)
-const showFilter = ref(false)
 const windowLocation = ref('')
-const annimateNewTabsetButton = ref(false)
 
 const toggleSearch = () => {
   searching.value = !searching.value
