@@ -14,7 +14,7 @@
   "sidebar_action": {
     "default_icon": "icons/icon-48x48.png",
     "default_title" : "Bookmrkx",
-    "default_panel": "www/index.html#/sidepanel"
+    "default_panel": "www/index.html#/"
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'"
