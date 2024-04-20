@@ -2,7 +2,3 @@
 	path = src/bookmarks
 	url = https://github.com/evandor/submodule-bookmarks.git
 	branch = chrome-extension
-[submodule "src/windows"]
-	path = src/windows
-	url = https://github.com/evandor/submodule-windows.git
-	branch = main
