@@ -1,0 +1,32 @@
+name: 'coverage'
+on:
+#  pull_request:
+#    branches:
+#      - master
+#      - main
+  push:
+    branches: [ main, chrome-extension,vitest,TAB-** ]
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    permissions:
+      # Required to checkout the code
+      contents: read
+      # Required to put a comment into the pull-request
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: 'Install Deps'
+        run: yarn install
+      - name: 'Test'
+        run: npx vitest --coverage
+      - name: 'Report Coverage'
+        if: always() # Also generate the report if tests are failing
+        uses:  davelosert/vitest-coverage-report-action@v2

@@ -1,0 +1,50 @@
+name: Merge from chrome-extension to firefox, edge and opera
+on:
+  push:
+    branches:
+      - 'chrome-extension'
+jobs:
+  sync-branch-firefox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: 'true'
+
+      - name: Merge chrome-extension -> firefox-extension
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: chrome-extension
+          target_branch: firefox-extension
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  sync-branch-edge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: 'true'
+
+      - name: Merge chrome-extension -> edge-extension
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: chrome-extension
+          target_branch: edge-extension
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  sync-branch-opera:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: 'true'
+
+      - name: Merge chrome-extension -> opera-extension
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: chrome-extension
+          target_branch: opera-extension
+          github_token: ${{ secrets.GITHUB_TOKEN }}
