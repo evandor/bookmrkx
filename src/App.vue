@@ -6,15 +6,14 @@
 
 import {setCssVar, useQuasar} from "quasar";
 import AppService from "src/services/AppService";
-import {EventEmitter} from "events";
 import {useRouter} from "vue-router";
 
 const $q = useQuasar()
 const router = useRouter()
 
 // https://stackoverflow.com/questions/9768444/possible-eventemitter-memory-leak-detected
-const emitter = new EventEmitter()
-emitter.setMaxListeners(12)
+// const emitter = new EventEmitter()
+// emitter.setMaxListeners(12)
 
 let useDarkMode: string = $q.localStorage.getItem('darkMode') || "auto" as string
 

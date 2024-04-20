@@ -57,28 +57,10 @@ class AppService {
     await IndexedDbPersistenceService.init("db")
 
     // init services
-
     useSuggestionsStore().init(useDB(undefined).db)
 
     await this.initCoreSerivces(quasar, useDB(undefined).db, this.router)
 
-  }
-
-
-  restart(ar: string) {
-    console.log("%crestarting bookmrkx", "font-weight:bold", window.location.href, ar)
-    const baseLocation = window.location.href.split("?")[0]
-    console.log("%cbaseLocation", "font-weight:bold", baseLocation)
-    console.log("%cwindow.location.href", "font-weight:bold", window.location.href)
-    if (window.location.href.indexOf("?") < 0) {
-      const tsIframe = window.parent.frames[0]
-      if (tsIframe) {
-        console.debug("%cnew window.location.href", "font-weight:bold", baseLocation + "?" + ar)
-        tsIframe.location.href = baseLocation + "?" + ar
-        //tsIframe.location.href = "https://www.skysail.io"
-        tsIframe.location.reload()
-      }
-    }
   }
 
   private async initCoreSerivces(quasar: any, store: PersistenceService, router: Router) {
