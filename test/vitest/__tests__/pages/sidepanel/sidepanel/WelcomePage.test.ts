@@ -2,7 +2,6 @@ import {installQuasarPlugin} from '@quasar/quasar-app-extension-testing-unit-vit
 import {mount, config} from '@vue/test-utils';
 import {beforeEach, describe, expect, vi, it} from 'vitest';
 import {createPinia, setActivePinia} from "pinia";
-import ChromeApi from "src/services/ChromeApi";
 import IndexedDbPersistenceService from "src/services/IndexedDbPersistenceService";
 import {useRoute, useRouter} from "vue-router";
 import WelcomePage from "pages/sidepanel/WelcomePage.vue";
@@ -13,8 +12,6 @@ vi.mock('vue-router')
 vi.mock("vue-i18n");
 
 describe('WelcomePage', () => {
-
-  const skysailChromeTab = ChromeApi.createChromeTabObject("title", "https://www.skysail.io", "favicon")
 
   // @ts-ignore
   useRouter.mockReturnValue({
