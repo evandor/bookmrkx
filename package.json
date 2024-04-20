@@ -13,7 +13,9 @@
     "test:unit:ci": "vitest run",
     "test:unit:coverage": "vitest --coverage",
     "test:unit:watch": "vitest --watch",
-    "test:unit:watchAll": "vitest --watchAll"
+    "test:unit:watchAll": "vitest --watchAll",
+    "web-ext run": "cd dist/bex && web-ext run --verbose",
+    "web-ext build": "quasar build -m bex &&  zip dist/bookmrkx.src.zip -r src/ src-bex/ package.json && cd dist/bex && web-ext build"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",

@@ -6,14 +6,15 @@
     "128": "icons/icon-128x128.png"
   },
   "permissions": [
-    "sidePanel",
     "bookmarks"
   ],
-  "side_panel": {
-    "default_path": "www/sidepanel.html"
-  },
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
+  },
+  "sidebar_action": {
+    "default_icon": "icons/icon-48x48.png",
+    "default_title" : "Bookmrkx",
+    "default_panel": "www/index.html#/sidepanel"
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'"
@@ -25,7 +26,6 @@
         "mac": "Command+B"
       }
     }
-  },
-  "options_page": "www/index.html#/mainpanel/settings"
-
+  }
 }
+

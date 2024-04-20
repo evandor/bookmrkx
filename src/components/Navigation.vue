@@ -10,7 +10,7 @@
                 <SpacesSelectorWidget />
               </div>
               <div class="row justify-start items-baseline" v-else>
-                My Tabsets
+                My Tabsets!
               </div>
             </q-toolbar-title>
           </div>

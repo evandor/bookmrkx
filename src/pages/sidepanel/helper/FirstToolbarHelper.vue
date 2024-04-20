@@ -40,7 +40,7 @@ import {useQuasar} from "quasar";
 import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
 
 const props = defineProps({
-  title: {type: String, default: "My Tabsets"},
+  title: {type: String, default: "My Tabsets!"},
   forceTitle: {type: Boolean, default: false},
   showSearchBox: {type: Boolean, default: false},
   searchTerm: {type: String, default: ''},
