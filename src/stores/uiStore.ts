@@ -19,7 +19,7 @@ export enum UserLevel {
 
 export class SidePanelView {
 
-  static readonly MAIN = new SidePanelView('main', '/sidepanel');
+  static readonly MAIN = new SidePanelView('main', '/sidepanel/bookmarks');
 
   static readonly TAG = new SidePanelView('tag', '/sidepanel/tags');
 
