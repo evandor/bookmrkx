@@ -22,9 +22,7 @@
     <q-page-sticky expand position="top" class="darkInDarkMode brightInBrightMode">
       <FirstToolbarHelper title="Bookmrkx Sidepanel">
 
-        <template v-slot:iconsRight>
-
-        </template>
+        <template v-slot:iconsRight>&nbsp;</template>
 
       </FirstToolbarHelper>
     </q-page-sticky>
