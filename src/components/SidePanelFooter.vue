@@ -92,8 +92,6 @@
 import {SidePanelView, useUiStore} from "src/stores/uiStore";
 import {onMounted, ref, watchEffect} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {usePermissionsStore} from "src/stores/permissionsStore";
-import {FeatureIdent} from "src/models/AppFeature";
 import NavigationService from "src/services/NavigationService";
 import {openURL, uid, useQuasar} from "quasar";
 import {useSuggestionsStore} from "stores/suggestionsStore";
@@ -103,7 +101,8 @@ import SuggestionDialog from "components/dialogues/SuggestionDialog.vue";
 import {ToastType} from "src/models/Toast";
 import {} from "src/services/ErrorHandler";
 import WindowsMarkupTable from "src/windows/components/WindowsMarkupTable.vue";
-import {WindowAction, WindowHolder} from "src/windows/models/WindowHolder";
+import {WindowAction, WindowHolder} from "src/windows/models/WindowHolder"
+import {Window} from "src/windows/models/Window"
 import {useWindowsStore} from "src/windows/stores/windowsStore";
 
 const $q = useQuasar()
@@ -111,11 +110,9 @@ const $q = useQuasar()
 const router = useRouter()
 
 const showSuggestionButton = ref(false)
-const showSuggestionIcon = ref(false)
 const doShowSuggestionButton = ref(false)
 const transitionGraceTime = ref(false)
 const showWindowTable = ref(false)
-const showStatsTable = ref(false)
 const showLogin = ref(false)
 const randomKey = ref<string>(uid())
 const progressValue = ref<number>(0.0)
@@ -123,7 +120,7 @@ const progressLabel = ref<string>('')
 const animateSettingsButton = ref<boolean>(false)
 const windowRows = ref<WindowHolder[]>([])
 const tabsetsMangedWindows = ref<object[]>([])
-
+const windowsToOpenOptions = ref<object[]>([])
 
 onMounted(() => {
   windowRows.value = calcWindowRows()
@@ -142,41 +139,41 @@ watchEffect(() => {
   animateSettingsButton.value = useUiStore().animateSettingsButton
 })
 
-watchEffect(() => {
-  // adding potentially new windows from 'open in window' logic
-  windowsToOpenOptions.value = []
-  tabsetsMangedWindows.value = []
-  for (const ts of [...useTabsStore().tabsets.values()] as Tabset[]) {
-    if (ts.window && ts.window !== "current" && ts.window.trim() !== '') {
-      tabsetsMangedWindows.value.push({label: ts.window, value: ts.id})
-      const found = _.find(windowRows.value, (r: object) => ts.window === r['name' as keyof object])
-      if (!found) {
-        windowsToOpenOptions.value.push({label: ts.window, value: ts.id})
-      }
-    }
-  }
-  windowsToOpenOptions.value = _.sortBy(windowsToOpenOptions.value, ["label"])
-})
+// watchEffect(() => {
+//   // adding potentially new windows from 'open in window' logic
+//   windowsToOpenOptions.value = []
+//   tabsetsMangedWindows.value = []
+//   for (const ts of [...useTabsStore().tabsets.values()] as Tabset[]) {
+//     if (ts.window && ts.window !== "current" && ts.window.trim() !== '') {
+//       tabsetsMangedWindows.value.push({label: ts.window, value: ts.id})
+//       const found = _.find(windowRows.value, (r: object) => ts.window === r['name' as keyof object])
+//       if (!found) {
+//         windowsToOpenOptions.value.push({label: ts.window, value: ts.id})
+//       }
+//     }
+//   }
+//   windowsToOpenOptions.value = _.sortBy(windowsToOpenOptions.value, ["label"])
+// })
 
-watchEffect(() => {
-  const suggestions = useSuggestionsStore().getSuggestions(
-      [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
-  //console.log("watcheffect for", suggestions)
-  showSuggestionButton.value =
-      doShowSuggestionButton.value ||
-      (useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
-          _.findIndex(suggestions, s => {
-            return s.state === SuggestionState.NEW ||
-                (s.state === SuggestionState.NOTIFICATION && !usePermissionsStore().hasFeature(FeatureIdent.NOTIFICATIONS))
-          }) >= 0)
-
-  showSuggestionIcon.value =
-      !doShowSuggestionButton.value &&
-      useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
-      _.findIndex(suggestions, s => {
-        return s.state === SuggestionState.DECISION_DELAYED
-      }) >= 0
-})
+// watchEffect(() => {
+//   const suggestions = useSuggestionsStore().getSuggestions(
+//       [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
+//   //console.log("watcheffect for", suggestions)
+//   showSuggestionButton.value =
+//       doShowSuggestionButton.value ||
+//       (useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+//           _.findIndex(suggestions, s => {
+//             return s.state === SuggestionState.NEW ||
+//                 (s.state === SuggestionState.NOTIFICATION && !usePermissionsStore().hasFeature(FeatureIdent.NOTIFICATIONS))
+//           }) >= 0)
+//
+//   showSuggestionIcon.value =
+//       !doShowSuggestionButton.value &&
+//       useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+//       _.findIndex(suggestions, s => {
+//         return s.state === SuggestionState.DECISION_DELAYED
+//       }) >= 0
+// })
 
 // watchEffect(() => {
 //   const uiProgrss = useUiStore().progress
