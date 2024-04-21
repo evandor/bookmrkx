@@ -6,7 +6,7 @@
 
     <div class="row fit q-mb-sm" v-if="showWindowTable">
       <!-- https://michaelnthiessen.com/force-re-render -->
-      <WindowsMarkupTable :rows="windowRows" :key="randomKey"/>
+      <WindowsMarkupTable :rows="useWindowsStore().getWindowsForMarkupTable()" :key="randomKey"/>
     </div>
 
     <div class="row fit">
