@@ -130,12 +130,7 @@ const windowsToOpenOptions = ref<object[]>([])
 onMounted(() => {
   if (usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
     windowRows.value = calcWindowRows()
-    console.log("windowRows", windowRows.value.length)
   }
-})
-
-watchEffect(() => {
-  console.log("====>", windowRows.value.length)
 })
 
 watchEffect(() => {
