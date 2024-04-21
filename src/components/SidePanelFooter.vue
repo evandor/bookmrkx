@@ -1,18 +1,23 @@
 <template>
 
   <q-footer
-    class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
-    :style="offsetBottom()">
+      class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
+      :style="offsetBottom()">
+
+    <div class="row fit q-mb-sm" v-if="showWindowTable">
+      <!-- https://michaelnthiessen.com/force-re-render -->
+      <WindowsMarkupTable :rows="windowRows" :key="randomKey"/>
+    </div>
 
     <div class="row fit">
       <div class="col-6">
 
         <Transition name="fade" appear>
           <q-banner
-            v-if="checkToasts()"
-            inline-actions dense rounded
-            style="font-size: smaller;text-align: center"
-            :class="toastBannerClass()">
+              v-if="checkToasts()"
+              inline-actions dense rounded
+              style="font-size: smaller;text-align: center"
+              :class="toastBannerClass()">
             {{ useUiStore().toasts[0]?.msg }}
             <template v-slot:action v-if="useUiStore().toasts[0]?.action">
               <q-btn flat label="Undo"
@@ -41,10 +46,10 @@
 
         <template v-if="!checkToasts() && !transitionGraceTime && !showSuggestionButton">
 
-<!--          <SidePanelFooterLeftButtons-->
-<!--            @was-clicked="doShowSuggestionButton = true"-->
-<!--            :size="getButtonSize()"-->
-<!--            :show-suggestion-icon="showSuggestionIcon"/>-->
+          <!--          <SidePanelFooterLeftButtons-->
+          <!--            @was-clicked="doShowSuggestionButton = true"-->
+          <!--            :size="getButtonSize()"-->
+          <!--            :show-suggestion-icon="showSuggestionIcon"/>-->
         </template>
 
       </div>
@@ -59,24 +64,24 @@
           <q-tooltip class="tooltip" anchor="top left" self="bottom left">{{ settingsTooltip() }}</q-tooltip>
         </q-btn>
 
-<!--        <q-btn-->
-<!--          icon="o_grid_view"-->
-<!--          data-testid="buttonManageWindows"-->
-<!--          :class="rightButtonClass()"-->
-<!--          flat-->
-<!--          :size="getButtonSize()"-->
-<!--          @click="toggleShowWindowTable()">-->
-<!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Manage Windows</q-tooltip>-->
-<!--        </q-btn>-->
+        <!--        <q-btn-->
+        <!--          icon="o_grid_view"-->
+        <!--          data-testid="buttonManageWindows"-->
+        <!--          :class="rightButtonClass()"-->
+        <!--          flat-->
+        <!--          :size="getButtonSize()"-->
+        <!--          @click="toggleShowWindowTable()">-->
+        <!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Manage Windows</q-tooltip>-->
+        <!--        </q-btn>-->
 
-<!--        <q-btn-->
-<!--          icon="show_chart"-->
-<!--          :class="rightButtonClass()"-->
-<!--          flat-->
-<!--          :size="getButtonSize()"-->
-<!--          @click="toggleShowStatsTable()">-->
-<!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>-->
-<!--        </q-btn>-->
+        <!--        <q-btn-->
+        <!--          icon="show_chart"-->
+        <!--          :class="rightButtonClass()"-->
+        <!--          flat-->
+        <!--          :size="getButtonSize()"-->
+        <!--          @click="toggleShowStatsTable()">-->
+        <!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>-->
+        <!--        </q-btn>-->
 
       </div>
     </div>
@@ -85,8 +90,7 @@
 </template>
 <script setup lang="ts">
 import {SidePanelView, useUiStore} from "src/stores/uiStore";
-import {Tab} from "src/models/Tab";
-import {ref, watchEffect} from "vue";
+import {onMounted, ref, watchEffect} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {FeatureIdent} from "src/models/AppFeature";
@@ -98,6 +102,9 @@ import {SuggestionState} from "src/models/Suggestion";
 import SuggestionDialog from "components/dialogues/SuggestionDialog.vue";
 import {ToastType} from "src/models/Toast";
 import {} from "src/services/ErrorHandler";
+import WindowsMarkupTable from "src/windows/components/WindowsMarkupTable.vue";
+import {WindowAction, WindowHolder} from "src/windows/models/WindowHolder";
+import {useWindowsStore} from "src/windows/stores/windowsStore";
 
 const $q = useQuasar()
 
@@ -114,10 +121,21 @@ const randomKey = ref<string>(uid())
 const progressValue = ref<number>(0.0)
 const progressLabel = ref<string>('')
 const animateSettingsButton = ref<boolean>(false)
+const windowRows = ref<WindowHolder[]>([])
+const tabsetsMangedWindows = ref<object[]>([])
 
+
+onMounted(() => {
+  windowRows.value = calcWindowRows()
+  console.log("windowRows", windowRows.value)
+})
 
 watchEffect(() => {
-  showLogin.value = useUiStore().showLoginTable
+  console.log("====>", windowRows.value)
+})
+
+watchEffect(() => {
+  showLogin.value = false//useUiStore().showLoginTable
 })
 
 watchEffect(() => {
@@ -125,39 +143,55 @@ watchEffect(() => {
 })
 
 watchEffect(() => {
-  const suggestions = useSuggestionsStore().getSuggestions(
-    [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
-  //console.log("watcheffect for", suggestions)
-  showSuggestionButton.value =
-    doShowSuggestionButton.value ||
-    (useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
-      _.findIndex(suggestions, s => {
-        return s.state === SuggestionState.NEW ||
-          (s.state === SuggestionState.NOTIFICATION && !usePermissionsStore().hasFeature(FeatureIdent.NOTIFICATIONS))
-      }) >= 0)
-
-  showSuggestionIcon.value =
-    !doShowSuggestionButton.value &&
-    useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
-    _.findIndex(suggestions, s => {
-      return s.state === SuggestionState.DECISION_DELAYED
-    }) >= 0
+  // adding potentially new windows from 'open in window' logic
+  windowsToOpenOptions.value = []
+  tabsetsMangedWindows.value = []
+  for (const ts of [...useTabsStore().tabsets.values()] as Tabset[]) {
+    if (ts.window && ts.window !== "current" && ts.window.trim() !== '') {
+      tabsetsMangedWindows.value.push({label: ts.window, value: ts.id})
+      const found = _.find(windowRows.value, (r: object) => ts.window === r['name' as keyof object])
+      if (!found) {
+        windowsToOpenOptions.value.push({label: ts.window, value: ts.id})
+      }
+    }
+  }
+  windowsToOpenOptions.value = _.sortBy(windowsToOpenOptions.value, ["label"])
 })
 
 watchEffect(() => {
-  const uiProgrss = useUiStore().progress
-  if (uiProgrss) {
-    progressValue.value = uiProgrss['val' as keyof object] || 0.0
-    progressLabel.value = uiProgrss['label' as keyof object] || 'no msg'
-    //console.log("we are here", progressValue.value)
-  }
+  const suggestions = useSuggestionsStore().getSuggestions(
+      [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
+  //console.log("watcheffect for", suggestions)
+  showSuggestionButton.value =
+      doShowSuggestionButton.value ||
+      (useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+          _.findIndex(suggestions, s => {
+            return s.state === SuggestionState.NEW ||
+                (s.state === SuggestionState.NOTIFICATION && !usePermissionsStore().hasFeature(FeatureIdent.NOTIFICATIONS))
+          }) >= 0)
+
+  showSuggestionIcon.value =
+      !doShowSuggestionButton.value &&
+      useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+      _.findIndex(suggestions, s => {
+        return s.state === SuggestionState.DECISION_DELAYED
+      }) >= 0
 })
+
+// watchEffect(() => {
+//   const uiProgrss = useUiStore().progress
+//   if (uiProgrss) {
+//     progressValue.value = uiProgrss['val' as keyof object] || 0.0
+//     progressLabel.value = uiProgrss['label' as keyof object] || 'no msg'
+//     //console.log("we are here", progressValue.value)
+//   }
+// })
 
 const openOptionsPage = () => {
   ($q.platform.is.cordova || $q.platform.is.capacitor) ?
-    //Browser.open({ url: 'http://capacitorjs.com/' }).catch((err) => console.log("error", err)) :
-    router.push("/settings") :
-    NavigationService.openOrCreateTab([chrome.runtime.getURL('www/index.html#/mainpanel/settings')], undefined, [], true, true)
+      //Browser.open({ url: 'http://capacitorjs.com/' }).catch((err) => console.log("error", err)) :
+      router.push("/settings") :
+      NavigationService.openOrCreateTab([chrome.runtime.getURL('www/index.html#/mainpanel/settings')], undefined, [], true, true)
 }
 
 const settingsTooltip = () => {
@@ -165,29 +199,29 @@ const settingsTooltip = () => {
 }
 
 const dependingOnStates = () =>
-  _.find(useSuggestionsStore().getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED]), s => s.state === SuggestionState.NEW) ? 'warning' : 'primary'
+    _.find(useSuggestionsStore().getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED]), s => s.state === SuggestionState.NEW) ? 'warning' : 'primary'
 
 const suggestionDialog = () => {
   doShowSuggestionButton.value = false
   $q.dialog({
     component: SuggestionDialog, componentProps: {
       suggestion: useSuggestionsStore()
-        .getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION]).at(0),
+          .getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION]).at(0),
       fromPanel: true
     }
   })
 }
 const suggestionsLabel = () => {
   const suggestions = useSuggestionsStore().getSuggestions(
-    [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
+      [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
   return suggestions.length === 1 ?
-    suggestions.length + " New Suggestion" :
-    suggestions.length + " New Suggestions"
+      suggestions.length + " New Suggestion" :
+      suggestions.length + " New Suggestions"
 
 }
 
 const openHelpView = () => {
-    router.push("/sidepanel/tabsets/HELP")
+  router.push("/sidepanel/tabsets/HELP")
 }
 
 const checkToasts = () => {
@@ -227,6 +261,32 @@ const toastBannerClass = () => {
       return "bg-negative" + defaults
   }
 }
+
+const calcWindowRows = (): WindowHolder[] => {
+  const result = _.map(useWindowsStore().currentChromeWindows as chrome.windows.Window[], (cw: chrome.windows.Window) => {
+    const windowFromStore: Window | undefined = useWindowsStore().windowForId(cw.id || -2)
+    const windowName = useWindowsStore().windowNameFor(cw.id || 0) || cw.id!.toString()
+    const additionalActions: WindowAction[] = []
+    if (!windowIsManaged(windowName)) {
+      additionalActions.push(new WindowAction("o_bookmark_add", "text-orange", "Save as Tabset"))
+    } else {
+      additionalActions.push(new WindowAction("o_bookmark_add", "text-grey", "already a tabset", true))
+    }
+
+    return WindowHolder.of(
+        cw,
+        windowFromStore?.index || 0,
+        windowName,
+        windowFromStore?.hostList || [],
+        additionalActions)
+  })
+
+  return _.sortBy(result, "index")
+}
+const windowIsManaged = (windowName: string) => {
+  return _.find(tabsetsMangedWindows.value, tmw => tmw['label' as keyof object] === windowName) !== undefined
+}
+
 
 const offsetBottom = () => ($q.platform.is.capacitor || $q.platform.is.cordova) ? 'margin-bottom:20px;' : ''
 </script>
