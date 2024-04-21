@@ -161,11 +161,9 @@ onMounted(() => {
 })
 
 
-text.set(FeatureIdent.OPENTABS_THRESHOLD.toLowerCase(), {
-  name: 'Open Tabs Warning',
-  description: 'The Idea behind the tabset extension is to keep your tabs count small - and still deal with all the URLs you need to handle. Tabsets' +
-    ' can help you by tracking your open tabs count and alert you when it gets too big. Furthermore, it offers you ways to reduce your tab count on the fly. This ' +
-    'feature is customizable in the settings.',
+text.set(FeatureIdent.WINDOWS_MANAGEMENT.toLowerCase(), {
+  name: 'Windows Management',
+  description: 'A convenient way to manage multiple windows of your browser',
   img: 'open_tabs_warning.png',
   permissions: []
 })
@@ -232,6 +230,18 @@ const grant = (ident: string) => {
    }
  */
 }
+
+const revoke = (ident: string) => {
+  if (appFeature.value && appFeature.value.deactivateCommand) {
+    console.log("revoking1", ident, appFeature.value.deactivateCommand)
+    useCommandExecutor().execute(appFeature.value.deactivateCommand)
+        .then(() => permissionsStore.deactivateFeature(ident))
+  } else {
+    console.log("revoking2", ident)
+    permissionsStore.deactivateFeature(ident)
+  }
+}
+
 
 const permissionText = (f: any) => {
   if (!f) {

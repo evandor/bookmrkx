@@ -12,6 +12,8 @@ import {Router} from "vue-router";
 import {useAppStore} from "stores/appStore";
 import PersistenceService from "src/services/PersistenceService";
 import {useUiStore} from "stores/uiStore";
+import {useWindowsStore} from "src/windows/stores/windowsStore";
+import {FeatureIdent} from "src/models/AppFeature";
 
 class AppService {
 
@@ -65,6 +67,12 @@ class AppService {
 
   private async initCoreSerivces(quasar: any, store: PersistenceService, router: Router) {
     ChromeApi.init(router)
+
+    if (usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
+      await useWindowsStore().initialize()
+      useWindowsStore().initListeners()
+    }
+
     useUiStore().appLoading = undefined
   }
 

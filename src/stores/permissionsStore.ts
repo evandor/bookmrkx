@@ -3,8 +3,6 @@ import {computed, ref} from "vue";
 import {FeatureIdent} from "src/models/AppFeature";
 import {useSuggestionsStore} from "src/stores/suggestionsStore";
 import {StaticSuggestionIdent, Suggestion} from "src/models/Suggestion";
-import {TabsetType} from "src/models/Tabset";
-import {useCommandExecutor} from "src/services/CommandExecutor";
 import {AppFeatures} from "src/models/AppFeatures";
 import {useUtils} from "src/services/Utils";
 import PersistenceService from "src/services/PersistenceService";
@@ -111,9 +109,9 @@ export const usePermissionsStore = defineStore('permissions', () => {
         activeFeatures.value.push(feature)
         storage.saveActiveFeatures(activeFeatures.value)
 
-        if (FeatureIdent.SPACES.toLowerCase() === feature) {
-          useSuggestionsStore().inactivateSuggestion(Suggestion.getStaticSuggestion(StaticSuggestionIdent.TRY_SPACES_FEATURE))
-        }
+        // if (FeatureIdent.SPACES.toLowerCase() === feature) {
+        //   useSuggestionsStore().inactivateSuggestion(Suggestion.getStaticSuggestion(StaticSuggestionIdent.TRY_SPACES_FEATURE))
+        // }
         sendMsg('feature-activated', {feature: feature})
       }
     }

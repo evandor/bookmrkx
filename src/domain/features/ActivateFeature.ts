@@ -12,6 +12,7 @@ export class ActivateFeatureCommand implements Command<any> {
 
 
   async execute(): Promise<ExecutionResult<any>> {
+    console.log("this.feature", this.feature.ident.toLowerCase())
     usePermissionsStore().activateFeature(this.feature.ident.toLowerCase())
     return Promise.resolve(
       new ExecutionResult(

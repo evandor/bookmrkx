@@ -38,6 +38,7 @@ import {onMounted, ref} from "vue";
 import Analytics from "src/utils/google-analytics";
 import BookmarksTree from "src/bookmarks/components/BookmarksTree.vue";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
+import {usePermissionsStore} from "stores/permissionsStore";
 
 const showOnlyFolders = ref(true)
 
@@ -45,8 +46,20 @@ onMounted(() => {
   Analytics.firePageViewEvent('SidePanelBookmarksPage', document.location.href);
 })
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log(" <<< received message", message)
+  // if (inIgnoredMessages(message)) {
+  //   return true
+  // }
+  if (message.name === 'feature-activated') {
+    usePermissionsStore().addActivateFeature(message.data.feature)
+  }
+  else if (message.name === 'feature-deactivated') {
+    usePermissionsStore().removeActivateFeature(message.data.feature)
+  }
+})
+
 const toggleShowOnlyFolders = () => {
-  console.log("****")
   showOnlyFolders.value = !showOnlyFolders.value
 }
 
