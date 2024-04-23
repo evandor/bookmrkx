@@ -6,3 +6,7 @@
 	path = src/windows
 	url = https://github.com/evandor/submodule-windows.git
 	branch = main
+[submodule "src/suggestions"]
+	path = src/suggestions
+	url = https://github.com/evandor/submodule-suggestions.git
+	branch = main
