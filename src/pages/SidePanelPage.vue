@@ -115,7 +115,6 @@ import {usePermissionsStore} from "src/stores/permissionsStore";
 import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
 import Analytics from "src/utils/google-analytics";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
-import {useSuggestionsStore} from "stores/suggestionsStore";
 import {TITLE_IDENT} from "boot/constants";
 import AppService from "src/services/AppService";
 import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
@@ -130,8 +129,6 @@ const permissionsStore = usePermissionsStore()
 const uiStore = useUiStore()
 
 const showSearchBox = ref(false)
-const user = ref<any>()
-const tabsets = ref<Tabset[]>([])
 
 function updateOnlineStatus(e: any) {
   const {type} = e
@@ -157,17 +154,6 @@ watchEffect(() => {
     console.log("filtering:::", useUiStore().tabsFilter)
   }
 })
-
-const getTabsetOrder =
-  [
-    function (o: Tabset) {
-      return o.status === TabsetStatus.FAVORITE ? 0 : 1
-    },
-    function (o: Tabset) {
-      return o.name?.toLowerCase()
-    }
-  ]
-
 
 function inIgnoredMessages(message: any) {
   return message.msg === "html2text" ||
@@ -229,28 +215,6 @@ if (inBexMode()) {
     } else if (message.name === "tabset-added") {
     } else if (message.name === "mark-tabset-deleted") {
     } else if (message.name === "tabset-renamed") {
-    } else if (message.name === "progress-indicator") {
-      if (message.percent) {
-        uiStore.progress = message.percent
-        // uiStore.progressLabel = message.label
-      }
-      if (message.status === "done") {
-        uiStore.progress = undefined
-        // uiStore.progressLabel = undefined
-      }
-      sendResponse("ui store progress set to " + uiStore.progress)
-    } else if (message.name === "detail-level-changed") {
-      console.log("setting list detail level to ", message.data.level)
-      useUiStore().setListDetailLevel(message.data.level)
-    } else if (message.name === "detail-level-perTabset-changed") {
-      console.log("setting list detail perTabset level to ", message.data.level)
-      useUiStore().showDetailsPerTabset = message.data.level
-    } else if (message.name === "fullUrls-changed") {
-      console.log("setting fullUrls to ", message.data.value)
-      useUiStore().setShowFullUrls(message.data.value)
-    } else if (message.name === "reload-suggestions") {
-      console.log("reload-suggestions message received")
-      useSuggestionsStore().loadSuggestionsFromDb()
     } else if (message.name === "reload-tabset") {
       console.log("reload-tabset message received")
     } else if (message.name === 'reload-application') {
@@ -274,12 +238,6 @@ function checkKeystroke(e: KeyboardEvent) {
     // searchBox.value.focus()
     // search.value = ''
   }
-}
-
-const toolbarTitle = (tabsets: Tabset[]) => {
-
-  const title = LocalStorage.getItem(TITLE_IDENT) || ('My Tabsets' + stageIdentifier())
-  return tabsets.length > 6 ? title + ' (' + tabsets.length.toString() + ')' : title
 }
 
 const stageIdentifier = () => process.env.TABSETS_STAGE !== 'PRD' ? ' (' + process.env.TABSETS_STAGE + ')' : ''

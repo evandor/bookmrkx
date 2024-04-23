@@ -1,5 +1,4 @@
 <template>
-
   <q-btn v-if="props.showSuggestionIcon"
          @click.stop="emits('wasClicked')"
          icon="o_lightbulb"
@@ -10,11 +9,6 @@
     <q-tooltip class="tooltip">{{ suggestionsLabel() }}</q-tooltip>
   </q-btn>
 
-  <SidePanelFooterLeftButton
-    :side-panel-view="SidePanelView.TABS_LIST"
-    :size="props.size"
-    icon="o_playlist_add"
-    tooltip="All your browser's open tabs"/>
 
   <SidePanelFooterLeftButton v-if="unreadMessagesCount > 0"
                              :side-panel-view="SidePanelView.MESSAGES"
@@ -24,28 +18,14 @@
     <q-badge color="red" floating v-if="unreadMessagesCount > 0">{{ unreadMessagesCount }}</q-badge>
   </SidePanelFooterLeftButton>
 
-  <SidePanelFooterLeftButton :side-panel-view="SidePanelView.BOOKMARKS"
-                             icon="o_bookmark"
-                             :class="{ shake: animateBookmarksButton }"
-                             :size="props.size"
-                             tooltip="Show the Bookmarks Browser"/>
-
-  <SidePanelFooterLeftButton :side-panel-view="SidePanelView.RSS_LIST"
-                             icon="o_rss_feed"
-                             :size="props.size"
-                             tooltip="List all your RSS feeds"/>
-
 </template>
 <script setup lang="ts">
 import {SidePanel, SidePanelView, useUiStore} from "stores/uiStore";
-import {FeatureIdent} from "src/models/AppFeature";
 import SidePanelFooterLeftButton from "components/helper/SidePanelFooterLeftButton.vue";
-import OpenTabsThresholdWidget from "components/widgets/OpenTabsThresholdWidget.vue";
 import {usePermissionsStore} from "stores/permissionsStore";
-import {useSuggestionsStore} from "stores/suggestionsStore";
 import {ref, watchEffect} from "vue";
-import {SuggestionState} from "src/models/Suggestion";
-import {useMessagesStore} from "stores/messagesStore";
+import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
+import {SuggestionState} from "src/suggestions/models/Suggestion";
 
 const props = defineProps({
   showSuggestionIcon: {type: Boolean, required: true},
@@ -54,18 +34,12 @@ const props = defineProps({
 
 const emits = defineEmits(['wasClicked'])
 
-const permissionsStore = usePermissionsStore()
-
 const buttonSize = ref('15px')
 const unreadMessagesCount = ref(0)
 const animateBookmarksButton = ref(false)
 
 watchEffect(() => {
   buttonSize.value = useUiStore().getButtonSize('sidePanelFooter')
-})
-
-watchEffect(() => {
-  useMessagesStore().getMessages().then((msgs) => unreadMessagesCount.value = msgs.length)
 })
 
 watchEffect(() => {

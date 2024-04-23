@@ -1,8 +1,6 @@
 import NavigationService from "src/services/NavigationService";
 import IndexedDbPersistenceService from "src/services/IndexedDbPersistenceService";
-import {usePermissionsStore} from "src/stores/permissionsStore";
 import {uid} from "quasar";
-import {FeatureIdent} from "src/models/AppFeature";
 import {Router} from "vue-router";
 
 const persistenceService = IndexedDbPersistenceService

@@ -4,7 +4,6 @@ import ChromeBookmarkListeners from "src/services/ChromeBookmarkListeners";
 import BookmarksService from "src/bookmarks/services/BookmarksService";
 import IndexedDbPersistenceService from "src/services/IndexedDbPersistenceService";
 import {useDB} from "src/services/usePersistenceService";
-import {useSuggestionsStore} from "stores/suggestionsStore";
 import ChromeApi from "src/services/ChromeApi";
 import {useSettingsStore} from "stores/settingsStore";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
@@ -14,6 +13,9 @@ import PersistenceService from "src/services/PersistenceService";
 import {useUiStore} from "stores/uiStore";
 import {useWindowsStore} from "src/windows/stores/windowsStore";
 import {FeatureIdent} from "src/models/AppFeature";
+import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
+import {Suggestion, SuggestionType} from "src/suggestions/models/Suggestion";
+import WindowsListenerConfig from "src/windows/listeners/WindowsListenerConfig";
 
 class AppService {
 
@@ -59,7 +61,7 @@ class AppService {
     await IndexedDbPersistenceService.init("db")
 
     // init services
-    useSuggestionsStore().init(useDB(undefined).db)
+    await useSuggestionsStore().init()
 
     await this.initCoreSerivces(quasar, useDB(undefined).db, this.router)
 
@@ -68,6 +70,16 @@ class AppService {
   private async initCoreSerivces(quasar: any, store: PersistenceService, router: Router) {
     ChromeApi.init(router)
 
+    // Setup Windows Module
+    const newFeatureSuggestion = new Suggestion("TRY_WINDOWS_MANAGEMENT_FEATURE",
+      "Want to try a new feature?",
+      "You opened a new window, maybe you want to try the 'Windows Management Feature' of Bookmrkx?",
+      "/features/windows_management",
+      SuggestionType.FEATURE)
+      .setImage('o_info')
+    WindowsListenerConfig.addOnWindowsCreatedListener(async () => {
+      await useSuggestionsStore().addSuggestion(newFeatureSuggestion)
+    })
     if (usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
       await useWindowsStore().initialize()
       useWindowsStore().initListeners()

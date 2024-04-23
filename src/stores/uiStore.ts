@@ -234,7 +234,7 @@ export const useUiStore = defineStore('ui', () => {
     if (ident === 'sidePanelFooter') {
       const viewsCount = sidePanel.value.enabledViewsCount()
       const limit = Math.min(viewsCount, 7)
-      return (16 - limit) + "px"
+      return (14 - limit) + "px"
     }
     console.log("warning, using unknown ident", ident)
     return "19px"

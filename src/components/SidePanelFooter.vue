@@ -1,8 +1,8 @@
 <template>
 
   <q-footer
-      class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
-      :style="offsetBottom()">
+    class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
+    :style="offsetBottom()">
 
     <div class="row fit q-mb-sm" v-if="showWindowTable">
       <!-- https://michaelnthiessen.com/force-re-render -->
@@ -10,14 +10,14 @@
     </div>
 
     <div class="row fit">
-      <div class="col-6">
+      <div class="col-8">
 
         <Transition name="fade" appear>
           <q-banner
-              v-if="checkToasts()"
-              inline-actions dense rounded
-              style="font-size: smaller;text-align: center"
-              :class="toastBannerClass()">
+            v-if="checkToasts()"
+            inline-actions dense rounded
+            style="font-size: smaller;text-align: center"
+            :class="toastBannerClass()">
             {{ useUiStore().toasts[0]?.msg }}
             <template v-slot:action v-if="useUiStore().toasts[0]?.action">
               <q-btn flat label="Undo"
@@ -46,22 +46,23 @@
 
         <template v-if="!checkToasts() && !transitionGraceTime && !showSuggestionButton">
 
-          <!--          <SidePanelFooterLeftButtons-->
-          <!--            @was-clicked="doShowSuggestionButton = true"-->
-          <!--            :size="getButtonSize()"-->
-          <!--            :show-suggestion-icon="showSuggestionIcon"/>-->
+          <SidePanelFooterLeftButtons
+            @was-clicked="doShowSuggestionButton = true"
+            :size="getButtonSize()"
+            :show-suggestion-icon="showSuggestionIcon" />
+
         </template>
 
       </div>
       <div class="col text-right">
 
         <q-btn v-if="(usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT))"
-            icon="o_grid_view"
-            data-testid="buttonManageWindows"
-            :class="rightButtonClass()"
-            flat
-            :size="getButtonSize()"
-            @click="toggleShowWindowTable()">
+               icon="o_grid_view"
+               data-testid="buttonManageWindows"
+               :class="rightButtonClass()"
+               flat
+               :size="getButtonSize()"
+               @click="toggleShowWindowTable()">
           <q-tooltip class="tooltip" anchor="top left" self="bottom left">Manage Windows</q-tooltip>
         </q-btn>
 
@@ -94,10 +95,7 @@ import {onMounted, ref, watch, watchEffect} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import NavigationService from "src/services/NavigationService";
 import {openURL, uid, useQuasar} from "quasar";
-import {useSuggestionsStore} from "stores/suggestionsStore";
 import _ from "lodash";
-import {SuggestionState} from "src/models/Suggestion";
-import SuggestionDialog from "components/dialogues/SuggestionDialog.vue";
 import {ToastType} from "src/models/Toast";
 import {useNotificationHandler} from "src/services/ErrorHandler";
 import WindowsMarkupTable from "src/windows/components/WindowsMarkupTable.vue";
@@ -106,6 +104,10 @@ import {Window} from "src/windows/models/Window"
 import {useWindowsStore} from "src/windows/stores/windowsStore";
 import {FeatureIdent} from "src/models/AppFeature";
 import {usePermissionsStore} from "stores/permissionsStore";
+import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
+import {SuggestionState} from "src/suggestions/models/Suggestion";
+import SuggestionDialog from "src/suggestions/dialogues/SuggestionDialog.vue";
+import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftButtons.vue";
 
 const {handleSuccess, handleError} = useNotificationHandler()
 
@@ -115,6 +117,7 @@ const $q = useQuasar()
 const router = useRouter()
 
 const showSuggestionButton = ref(false)
+const showSuggestionIcon = ref(false)
 const doShowSuggestionButton = ref(false)
 const transitionGraceTime = ref(false)
 const showWindowTable = ref(false)
@@ -141,9 +144,29 @@ watchEffect(() => {
   animateSettingsButton.value = useUiStore().animateSettingsButton
 })
 
+watchEffect(() => {
+  const suggestions = useSuggestionsStore().getSuggestions(
+    [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
+  //console.log("watcheffect for", suggestions)
+  showSuggestionButton.value =
+    doShowSuggestionButton.value ||
+    (useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+      _.findIndex(suggestions, s => {
+        return s.state === SuggestionState.NEW ||
+          (s.state === SuggestionState.NOTIFICATION && !usePermissionsStore().hasFeature(FeatureIdent.NOTIFICATIONS))
+      }) >= 0)
+
+  showSuggestionIcon.value =
+    !doShowSuggestionButton.value &&
+    useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+    _.findIndex(suggestions, s => {
+      return s.state === SuggestionState.DECISION_DELAYED
+    }) >= 0
+})
+
 const updateWindows = () => {
   useWindowsStore().setup('got window-updated message', true)
-      .then(() => windowRows.value = calcWindowRows())
+    .then(() => windowRows.value = calcWindowRows())
 }
 
 watch(() => useWindowsStore().currentChromeWindows, (newWindows, oldWindows) => {
@@ -159,8 +182,8 @@ chrome.windows.onRemoved.addListener((wId: number) => updateWindows())
 chrome.tabs.onRemoved.addListener((tabId: number, removeInfo: chrome.tabs.TabRemoveInfo) => {
   //console.log("***here we are", tabId, removeInfo)
   useWindowsStore().setup('got window-updated message')
-      .then(() => windowRows.value = calcWindowRows())
-      .catch((err) => handleError(err))
+    .then(() => windowRows.value = calcWindowRows())
+    .catch((err) => handleError(err))
 })
 
 
@@ -173,9 +196,9 @@ chrome.tabs.onRemoved.addListener((tabId: number, removeInfo: chrome.tabs.TabRem
 
 const openOptionsPage = () => {
   ($q.platform.is.cordova || $q.platform.is.capacitor) ?
-      //Browser.open({ url: 'http://capacitorjs.com/' }).catch((err) => console.log("error", err)) :
-      router.push("/settings") :
-      NavigationService.openOrCreateTab([chrome.runtime.getURL('www/index.html#/mainpanel/settings')], undefined, [], true, true)
+    //Browser.open({ url: 'http://capacitorjs.com/' }).catch((err) => console.log("error", err)) :
+    router.push("/settings") :
+    NavigationService.openOrCreateTab([chrome.runtime.getURL('www/index.html#/mainpanel/settings')], undefined, [], true, true)
 }
 
 const settingsTooltip = () => {
@@ -185,24 +208,24 @@ const settingsTooltip = () => {
 const rightButtonClass = () => "q-my-xs q-px-xs q-mr-none"
 
 const dependingOnStates = () =>
-    _.find(useSuggestionsStore().getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED]), s => s.state === SuggestionState.NEW) ? 'warning' : 'primary'
+  _.find(useSuggestionsStore().getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED]), s => s.state === SuggestionState.NEW) ? 'warning' : 'primary'
 
 const suggestionDialog = () => {
   doShowSuggestionButton.value = false
   $q.dialog({
     component: SuggestionDialog, componentProps: {
       suggestion: useSuggestionsStore()
-          .getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION]).at(0),
+        .getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION]).at(0),
       fromPanel: true
     }
   })
 }
 const suggestionsLabel = () => {
   const suggestions = useSuggestionsStore().getSuggestions(
-      [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
+    [SuggestionState.NEW, SuggestionState.DECISION_DELAYED, SuggestionState.NOTIFICATION])
   return suggestions.length === 1 ?
-      suggestions.length + " New Suggestion" :
-      suggestions.length + " New Suggestions"
+    suggestions.length + " New Suggestion" :
+    suggestions.length + " New Suggestions"
 
 }
 
@@ -265,11 +288,11 @@ const calcWindowRows = (): WindowHolder[] => {
     const additionalActions: WindowAction[] = []
 
     return WindowHolder.of(
-        cw,
-        windowFromStore?.index || 0,
-        windowName,
-        windowFromStore?.hostList || [],
-        additionalActions)
+      cw,
+      windowFromStore?.index || 0,
+      windowName,
+      windowFromStore?.hostList || [],
+      additionalActions)
   })
 
   return _.sortBy(result, "index")

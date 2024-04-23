@@ -129,8 +129,6 @@ import {usePermissionsStore} from "src/stores/permissionsStore";
 import {useSettingsStore} from "src/stores/settingsStore"
 import OpenRightDrawerWidget from "components/widgets/OpenRightDrawerWidget.vue";
 import Analytics from "src/utils/google-analytics";
-import {useSuggestionsStore} from "stores/suggestionsStore";
-import {StaticSuggestionIdent, Suggestion} from "src/models/Suggestion";
 import {useRoute} from "vue-router";
 import {
   STRIP_CHARS_IN_USER_INPUT,
@@ -139,6 +137,8 @@ import {
 import InfoLine from "pages/helper/InfoLine.vue";
 import FeatureToggleSettings from "pages/helper/FeatureToggleSettings.vue";
 import {useI18n} from "vue-i18n";
+import {StaticSuggestionIdent, Suggestion} from "src/suggestions/models/Suggestion";
+import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
 
 const {t} = useI18n()
 
