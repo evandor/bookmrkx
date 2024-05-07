@@ -13,7 +13,8 @@
     "test:unit:ci": "vitest run",
     "test:unit:coverage": "vitest --coverage",
     "test:unit:watch": "vitest --watch",
-    "test:unit:watchAll": "vitest --watchAll"
+    "test:unit:watchAll": "vitest --watchAll",
+    "info": "yarn list > docs/yarn.list.txt && quasar info > docs/quasar.info.txt"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",
