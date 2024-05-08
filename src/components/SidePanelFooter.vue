@@ -4,6 +4,10 @@
     class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
     :style="offsetBottom()">
 
+    <div class="row fit q-mb-sm">
+      {{ useTabsStore().currentChromeTab }}
+    </div>
+
     <div class="row fit q-mb-sm" v-if="showWindowTable">
       <!-- https://michaelnthiessen.com/force-re-render -->
       <WindowsMarkupTable :rows="useWindowsStore().getWindowsForMarkupTable()" :key="randomKey"/>
@@ -49,7 +53,7 @@
           <SidePanelFooterLeftButtons
             @was-clicked="doShowSuggestionButton = true"
             :size="getButtonSize()"
-            :show-suggestion-icon="showSuggestionIcon" />
+            :show-suggestion-icon="showSuggestionIcon"/>
 
         </template>
 
@@ -108,6 +112,7 @@ import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
 import {SuggestionState} from "src/suggestions/models/Suggestion";
 import SuggestionDialog from "src/suggestions/dialogues/SuggestionDialog.vue";
 import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftButtons.vue";
+import {useTabsStore} from "../bookmarks/stores/tabsStore";
 
 const {handleSuccess, handleError} = useNotificationHandler()
 

@@ -16,6 +16,7 @@ import {FeatureIdent} from "src/models/AppFeature";
 import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
 import {Suggestion, SuggestionType} from "src/suggestions/models/Suggestion";
 import WindowsListenerConfig from "src/windows/listeners/WindowsListenerConfig";
+import {useTabsStore} from "src/bookmarks/stores/tabsStore";
 
 class AppService {
 
@@ -84,6 +85,8 @@ class AppService {
       await useWindowsStore().initialize()
       useWindowsStore().initListeners()
     }
+
+    await useTabsStore().initialize()
 
     useUiStore().appLoading = undefined
   }
