@@ -5,6 +5,7 @@ on:
   push:
     branches: # Specify your branches here
       - main # The 'main' branch
+      - 'chrome-extension'
       - 'releases/*' # The release branches
 
 jobs:
