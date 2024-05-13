@@ -23,4 +23,5 @@ jobs:
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2024.1
         env:
+          pr-mode: false
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
