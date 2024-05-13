@@ -12,7 +12,7 @@ jobs:
 #          submodules: 'true'
 
       - name: Merge chrome-extension -> firefox-extension
-        uses: devmasx/merge-branch@v1.4.0
+        uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
           from_branch: chrome-extension
