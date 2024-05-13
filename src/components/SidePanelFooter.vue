@@ -4,8 +4,17 @@
     class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
     :style="offsetBottom()">
 
+    <div class="row fit q-mb-sm">
+      {{ useTabsStore().currentChromeTab }}
+    </div>
+
+    <div class="row fit q-mb-sm" v-if="showWindowTable">
+      <!-- https://michaelnthiessen.com/force-re-render -->
+      <WindowsMarkupTable :rows="useWindowsStore().getWindowsForMarkupTable()" :key="randomKey"/>
+    </div>
+
     <div class="row fit">
-      <div class="col-6">
+      <div class="col-8">
 
         <Transition name="fade" appear>
           <q-banner
@@ -41,14 +50,25 @@
 
         <template v-if="!checkToasts() && !transitionGraceTime && !showSuggestionButton">
 
-<!--          <SidePanelFooterLeftButtons-->
-<!--            @was-clicked="doShowSuggestionButton = true"-->
-<!--            :size="getButtonSize()"-->
-<!--            :show-suggestion-icon="showSuggestionIcon"/>-->
+          <SidePanelFooterLeftButtons
+            @was-clicked="doShowSuggestionButton = true"
+            :size="getButtonSize()"
+            :show-suggestion-icon="showSuggestionIcon"/>
+
         </template>
 
       </div>
       <div class="col text-right">
+
+        <q-btn v-if="(usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT))"
+               icon="o_grid_view"
+               data-testid="buttonManageWindows"
+               :class="rightButtonClass()"
+               flat
+               :size="getButtonSize()"
+               @click="toggleShowWindowTable()">
+          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Manage Windows</q-tooltip>
+        </q-btn>
 
         <q-btn icon="o_settings"
                class="q-my-xs q-px-xs q-mr-none"
@@ -59,24 +79,14 @@
           <q-tooltip class="tooltip" anchor="top left" self="bottom left">{{ settingsTooltip() }}</q-tooltip>
         </q-btn>
 
-<!--        <q-btn-->
-<!--          icon="o_grid_view"-->
-<!--          data-testid="buttonManageWindows"-->
-<!--          :class="rightButtonClass()"-->
-<!--          flat-->
-<!--          :size="getButtonSize()"-->
-<!--          @click="toggleShowWindowTable()">-->
-<!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Manage Windows</q-tooltip>-->
-<!--        </q-btn>-->
-
-<!--        <q-btn-->
-<!--          icon="show_chart"-->
-<!--          :class="rightButtonClass()"-->
-<!--          flat-->
-<!--          :size="getButtonSize()"-->
-<!--          @click="toggleShowStatsTable()">-->
-<!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>-->
-<!--        </q-btn>-->
+        <!--        <q-btn-->
+        <!--          icon="show_chart"-->
+        <!--          :class="rightButtonClass()"-->
+        <!--          flat-->
+        <!--          :size="getButtonSize()"-->
+        <!--          @click="toggleShowStatsTable()">-->
+        <!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>-->
+        <!--        </q-btn>-->
 
       </div>
     </div>
@@ -85,19 +95,27 @@
 </template>
 <script setup lang="ts">
 import {SidePanelView, useUiStore} from "src/stores/uiStore";
-import {Tab} from "src/models/Tab";
-import {ref, watchEffect} from "vue";
+import {onMounted, ref, watch, watchEffect} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {usePermissionsStore} from "src/stores/permissionsStore";
-import {FeatureIdent} from "src/models/AppFeature";
 import NavigationService from "src/services/NavigationService";
 import {openURL, uid, useQuasar} from "quasar";
-import {useSuggestionsStore} from "stores/suggestionsStore";
 import _ from "lodash";
-import {SuggestionState} from "src/models/Suggestion";
-import SuggestionDialog from "components/dialogues/SuggestionDialog.vue";
 import {ToastType} from "src/models/Toast";
-import {} from "src/services/ErrorHandler";
+import {useNotificationHandler} from "src/services/ErrorHandler";
+import WindowsMarkupTable from "src/windows/components/WindowsMarkupTable.vue";
+import {WindowAction, WindowHolder} from "src/windows/models/WindowHolder"
+import {Window} from "src/windows/models/Window"
+import {useWindowsStore} from "src/windows/stores/windowsStore";
+import {FeatureIdent} from "src/models/AppFeature";
+import {usePermissionsStore} from "stores/permissionsStore";
+import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
+import {SuggestionState} from "src/suggestions/models/Suggestion";
+import SuggestionDialog from "src/suggestions/dialogues/SuggestionDialog.vue";
+import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftButtons.vue";
+import {useTabsStore} from "../bookmarks/stores/tabsStore";
+
+const {handleSuccess, handleError} = useNotificationHandler()
+
 
 const $q = useQuasar()
 
@@ -108,16 +126,23 @@ const showSuggestionIcon = ref(false)
 const doShowSuggestionButton = ref(false)
 const transitionGraceTime = ref(false)
 const showWindowTable = ref(false)
-const showStatsTable = ref(false)
 const showLogin = ref(false)
 const randomKey = ref<string>(uid())
 const progressValue = ref<number>(0.0)
 const progressLabel = ref<string>('')
 const animateSettingsButton = ref<boolean>(false)
+const windowRows = ref<WindowHolder[]>([])
+const tabsetsMangedWindows = ref<object[]>([])
+const windowsToOpenOptions = ref<object[]>([])
 
+onMounted(() => {
+  if (usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
+    windowRows.value = calcWindowRows()
+  }
+})
 
 watchEffect(() => {
-  showLogin.value = useUiStore().showLoginTable
+  showLogin.value = false//useUiStore().showLoginTable
 })
 
 watchEffect(() => {
@@ -144,14 +169,35 @@ watchEffect(() => {
     }) >= 0
 })
 
-watchEffect(() => {
-  const uiProgrss = useUiStore().progress
-  if (uiProgrss) {
-    progressValue.value = uiProgrss['val' as keyof object] || 0.0
-    progressLabel.value = uiProgrss['label' as keyof object] || 'no msg'
-    //console.log("we are here", progressValue.value)
-  }
+const updateWindows = () => {
+  useWindowsStore().setup('got window-updated message', true)
+    .then(() => windowRows.value = calcWindowRows())
+}
+
+watch(() => useWindowsStore().currentChromeWindows, (newWindows, oldWindows) => {
+  //console.log("windows changed", newWindows, oldWindows)
+  windowRows.value = calcWindowRows()
 })
+
+//console.log("====>: chrome.runtime.onMessage.hasListeners(windowsUpdatedListener)", chrome.runtime.onMessage.hasListener(windowsUpdatedListener))
+//chrome.runtime.onMessage.addListener(windowsUpdatedListener)
+chrome.windows.onCreated.addListener((w: chrome.windows.Window) => updateWindows())
+chrome.windows.onRemoved.addListener((wId: number) => updateWindows())
+
+chrome.tabs.onRemoved.addListener((tabId: number, removeInfo: chrome.tabs.TabRemoveInfo) => {
+  //console.log("***here we are", tabId, removeInfo)
+  useWindowsStore().setup('got window-updated message')
+    .then(() => windowRows.value = calcWindowRows())
+    .catch((err) => handleError(err))
+})
+
+
+// chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
+//   //console.log("***here we are3", tab)
+//   useWindowsStore().setup('got window-updated message')
+//       .then(() => windowRows.value = calcWindowRows())
+//       .catch((err) => handleError(err))
+// })
 
 const openOptionsPage = () => {
   ($q.platform.is.cordova || $q.platform.is.capacitor) ?
@@ -163,6 +209,8 @@ const openOptionsPage = () => {
 const settingsTooltip = () => {
   return "Open Settings of Bookmrkx " + import.meta.env.PACKAGE_VERSION
 }
+
+const rightButtonClass = () => "q-my-xs q-px-xs q-mr-none"
 
 const dependingOnStates = () =>
   _.find(useSuggestionsStore().getSuggestions([SuggestionState.NEW, SuggestionState.DECISION_DELAYED]), s => s.state === SuggestionState.NEW) ? 'warning' : 'primary'
@@ -184,10 +232,6 @@ const suggestionsLabel = () => {
     suggestions.length + " New Suggestion" :
     suggestions.length + " New Suggestions"
 
-}
-
-const openHelpView = () => {
-    router.push("/sidepanel/tabsets/HELP")
 }
 
 const checkToasts = () => {
@@ -226,6 +270,37 @@ const toastBannerClass = () => {
     default:
       return "bg-negative" + defaults
   }
+}
+
+const toggleShowWindowTable = () => {
+  showWindowTable.value = !showWindowTable.value
+  if (showWindowTable.value) {
+    randomKey.value = uid()
+    //showStatsTable.value = false
+  }
+  const windowId = useWindowsStore().currentChromeWindow?.id || 0
+  const currentWindow: Window | undefined = useWindowsStore().windowForId(windowId)
+  if (currentWindow) {
+    currentWindow.open = showWindowTable.value
+    useWindowsStore().upsertTabsetWindow(currentWindow)
+  }
+}
+
+const calcWindowRows = (): WindowHolder[] => {
+  const result = _.map(useWindowsStore().currentChromeWindows as chrome.windows.Window[], (cw: chrome.windows.Window) => {
+    const windowFromStore: Window | undefined = useWindowsStore().windowForId(cw.id || -2)
+    const windowName = useWindowsStore().windowNameFor(cw.id || 0) || cw.id!.toString()
+    const additionalActions: WindowAction[] = []
+
+    return WindowHolder.of(
+      cw,
+      windowFromStore?.index || 0,
+      windowName,
+      windowFromStore?.hostList || [],
+      additionalActions)
+  })
+
+  return _.sortBy(result, "index")
 }
 
 const offsetBottom = () => ($q.platform.is.capacitor || $q.platform.is.cordova) ? 'margin-bottom:20px;' : ''

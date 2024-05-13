@@ -2,7 +2,6 @@ import {IDBPDatabase, openDB, deleteDB} from "idb";
 import _ from "lodash";
 import {INDEX_DB_VERSION} from "boot/constants";
 import PersistenceService from "src/services/PersistenceService";
-import {Suggestion, SuggestionState, SuggestionType} from "src/models/Suggestion";
 import {useUiStore} from "src/stores/uiStore";
 
 class IndexedDbPersistenceService implements PersistenceService {
@@ -23,75 +22,6 @@ class IndexedDbPersistenceService implements PersistenceService {
     console.warn(" ...deleting indexeddb database: not implemented", dbName)
   }
 
-
-  deleteTabset(tabsetId: string): Promise<void> {
-    return this.db.delete('tabsets', tabsetId)
-  }
-
-  async updateContent(url: string): Promise<object> {
-    const encodedUrl = btoa(url)
-
-    const objectStore = this.db.transaction("content", "readwrite").objectStore("content");
-    let cursor = await objectStore.openCursor()
-    let data = null
-    while (cursor) {
-      if (cursor.value.id === encodedUrl) {
-        data = cursor.value
-        data['expires'] = 0
-        objectStore.put(data, cursor.key)
-      }
-      cursor = await cursor.continue();
-    }
-    return Promise.resolve(data)
-  }
-
-  async updateThumbnail(url: string): Promise<void> {
-    const encodedUrl = btoa(url)
-    const tnObjectStore = this.db.transaction("thumbnails", "readwrite").objectStore("thumbnails");
-    let tnCursor = await tnObjectStore.openCursor()
-    while (tnCursor) {
-      //console.log("cursor", tnCursor.value, encodedUrl)
-      if (tnCursor.value.expires !== 0 && tnCursor.key === encodedUrl) {
-        const data = tnCursor.value
-        tnObjectStore.put({
-            expires: 0,
-            thumbnail: data.thumbnail
-          },
-          tnCursor.key)
-      }
-      tnCursor = await tnCursor.continue();
-    }
-  }
-
-  getRequest(url: string): Promise<string> {
-    const encodedUrl = btoa(url)
-    return this.db.get('requests', encodedUrl)
-  }
-
-  getMetaLinks(url: string): Promise<object> {
-    const encodedUrl = btoa(url)
-    return this.db.get('metalinks', encodedUrl)
-  }
-
-  getLinks(url: string): Promise<object> {
-    const encodedUrl = btoa(url)
-    return this.db.get('links', encodedUrl)
-  }
-
-  addGroup(group: chrome.tabGroups.TabGroup): Promise<any> {
-    console.debug("adding group", group)
-    return this.db.add('groups', group, group.title)
-      .catch((err) => {
-        if (!err.toString().indexOf('Key already exists')) {
-          console.log("error adding group", group, err)
-        }
-      })
-  }
-
-
-  /*** Windows Management ***/
-
-
   private async initDatabase(dbName: string): Promise<IDBPDatabase> {
     console.debug(" about to initialize indexedDB")
     return await openDB(dbName, INDEX_DB_VERSION, {
@@ -102,56 +32,8 @@ class IndexedDbPersistenceService implements PersistenceService {
           let store = db.createObjectStore('bookmarks');
           store.createIndex("expires", "expires", {unique: false});
         }
-        if (!db.objectStoreNames.contains('suggestions')) {
-          console.log("creating db suggestions")
-          db.createObjectStore('suggestions');
-        }
       }
     });
-  }
-
-  async getSuggestions(): Promise<Suggestion[]> {
-    return this.db ? this.db.getAll('suggestions') : Promise.resolve([])
-  }
-
-  async addSuggestion(suggestion: Suggestion): Promise<void> {
-    const suggestions = await this.getSuggestions()
-    // console.log("%csuggestions from db", "color:red", suggestions)
-    const foundAsNewDelayedOrIgnored = _.find(suggestions,
-      (s: Suggestion) =>
-        s.state === SuggestionState.NEW ||
-        s.state === SuggestionState.IGNORED ||
-        s.state === SuggestionState.DECISION_DELAYED)
-    if (foundAsNewDelayedOrIgnored) { // && suggestion.state === SuggestionState.NEW) {
-      if (foundAsNewDelayedOrIgnored.state === SuggestionState.IGNORED && suggestion.type === SuggestionType.RESTART) {
-        console.log("setting existing restart suggestion to state NEW again")
-        foundAsNewDelayedOrIgnored.state = SuggestionState.NEW
-        this.db.put('suggestions', foundAsNewDelayedOrIgnored, foundAsNewDelayedOrIgnored.id)
-        return Promise.resolve()
-      }
-      return Promise.reject(`there's already a suggestion in state ${foundAsNewDelayedOrIgnored.state}, not adding (now)`)
-    }
-    const found = _.find(suggestions, (s: Suggestion) => s.url === suggestion.url)
-    if (!found) {
-      await this.db.add('suggestions', suggestion, suggestion.id)
-      return Promise.resolve()
-    }
-    return Promise.reject("suggestion already exists")
-  }
-
-  removeSuggestion(ident: string): Promise<any> {
-    return this.db.delete('suggestions', ident)
-  }
-
-  async setSuggestionState(suggestionId: string, state: SuggestionState): Promise<Suggestion> {
-    console.log("setting suggestion to state", suggestionId, state)
-    const s: Suggestion = await this.db.get('suggestions', suggestionId)
-    if (s) {
-      s.state = state
-      await this.db.put('suggestions', s, suggestionId)
-      return Promise.resolve(s)
-    }
-    return Promise.reject("could not update suggestion")
   }
 
   compactDb(): Promise<any> {
@@ -169,7 +51,6 @@ class IndexedDbPersistenceService implements PersistenceService {
   saveActiveFeatures(val: string[]): any {
     console.warn("not implemented")
   }
-
 
   cleanUpRequests(): Promise<void> {
     return Promise.resolve(undefined);

@@ -15,7 +15,8 @@
     "test:unit:watch": "vitest --watch",
     "test:unit:watchAll": "vitest --watchAll",
     "web-ext run": "cd dist/bex && web-ext run --verbose",
-    "web-ext build": "quasar build -m bex &&  zip dist/bookmrkx.src.zip -r src/ src-bex/ package.json && cd dist/bex && web-ext build"
+    "web-ext build": "quasar build -m bex &&  zip dist/bookmrkx.src.zip -r src/ src-bex/ package.json && cd dist/bex && web-ext build",
+    "info": "yarn list > docs/yarn.list.txt && quasar info > docs/quasar.info.txt"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",
@@ -33,6 +34,7 @@
     "quasar": "2.15.2",
     "regenerator-runtime": "^0.14.1",
     "sanitize-html": "^2.10.0",
+    "throttled-queue": "^2.1.4",
     "translate": "^3.0.0",
     "ts-md5": "^1.3.1",
     "uuid": "^9.0.0",

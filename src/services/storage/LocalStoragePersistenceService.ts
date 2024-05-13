@@ -1,7 +1,6 @@
 import PersistenceService from "src/services/PersistenceService";
-import {StaticSuggestionIdent, Suggestion, SuggestionState} from "src/models/Suggestion";
 import {QVueGlobals, useQuasar} from "quasar";
-import {Notification} from "src/models/Notification";
+import {Suggestion, SuggestionState} from "src/suggestions/models/Suggestion";
 
 export class LocalStoragePersistenceService implements PersistenceService {
 

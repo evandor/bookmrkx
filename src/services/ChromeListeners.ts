@@ -6,7 +6,8 @@ const {inBexMode} = useUtils()
 function inIgnoredMessages(request: any) {
   // TODO name vs. msg!
   return request.name === 'progress-indicator' ||
-    request.name === 'current-tabset-id-change' ||
+    request.name === 'feature-activated' ||
+    request.name === 'feature-deactivated' ||
     request.action === 'highlight-annotation'
 
 }

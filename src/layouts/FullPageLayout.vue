@@ -94,9 +94,9 @@ import _ from "lodash";
 import {useUiStore} from "src/stores/uiStore";
 import {useUtils} from "src/services/Utils";
 import DrawerRight from "components/DrawerRight.vue";
-import {Suggestion, SuggestionState} from "src/models/Suggestion";
-import SuggestionDialog from "components/dialogues/SuggestionDialog.vue";
-import {useSuggestionsStore} from "src/stores/suggestionsStore";
+import {Suggestion, SuggestionState} from "src/suggestions/models/Suggestion";
+import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
+import SuggestionDialog from "src/suggestions/dialogues/SuggestionDialog.vue";
 
 const $q = useQuasar()
 const router = useRouter()
