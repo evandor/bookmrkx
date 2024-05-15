@@ -10,3 +10,7 @@
 	path = src/suggestions
 	url = https://github.com/evandor/submodule-suggestions.git
 	branch = main
+[submodule "src/features"]
+	path = src/features
+	url = https://github.com/evandor/submodule-features.git
+	branch = main
