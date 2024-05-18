@@ -1,12 +1,10 @@
 import {defineStore} from 'pinia';
 import {computed, ref} from "vue";
-import {FeatureIdent} from "src/models/AppFeature";
-import {useSuggestionsStore} from "src/stores/suggestionsStore";
-import {StaticSuggestionIdent, Suggestion} from "src/models/Suggestion";
 import {AppFeatures} from "src/models/AppFeatures";
 import {useUtils} from "src/services/Utils";
 import PersistenceService from "src/services/PersistenceService";
 import {LocalStorage} from "quasar";
+import {FeatureIdent} from "src/models/FeatureIdent";
 
 export const usePermissionsStore = defineStore('permissions', () => {
 
@@ -88,10 +86,10 @@ export const usePermissionsStore = defineStore('permissions', () => {
 
   const hasFeature = computed(() => {
     return (feature: FeatureIdent): boolean => {
-      if (feature === FeatureIdent.SIDE_PANEL) {
-        // @ts-ignore
-        return chrome.sidePanel !== undefined
-      }
+      // if (feature === FeatureIdent.SIDE_PANEL) {
+      //   // @ts-ignore
+      //   return chrome.sidePanel !== undefined
+      // }
       const appFeature = new AppFeatures().getFeature(feature)
       if (appFeature) {
         return activeFeatures.value.indexOf(feature.toLowerCase()) >= 0

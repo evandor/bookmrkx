@@ -12,7 +12,7 @@ import {useAppStore} from "stores/appStore";
 import PersistenceService from "src/services/PersistenceService";
 import {useUiStore} from "stores/uiStore";
 import {useWindowsStore} from "src/windows/stores/windowsStore";
-import {FeatureIdent} from "src/models/AppFeature";
+import {FeatureIdent} from "src/models/FeatureIdent";
 import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
 import {Suggestion, SuggestionType} from "src/suggestions/models/Suggestion";
 import WindowsListenerConfig from "src/windows/listeners/WindowsListenerConfig";

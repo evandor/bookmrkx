@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import {DrawerTabs, useUiStore} from "src/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
-import {FeatureIdent} from "src/models/AppFeature";
+import {FeatureIdent} from "src/models/FeatureIdent";
 
 const permissionsStore = usePermissionsStore()
 

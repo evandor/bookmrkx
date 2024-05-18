@@ -1,22 +1,7 @@
 import Command from "src/domain/Command";
 import {ActivateFeatureCommand} from "src/domain/features/ActivateFeature";
 import {DeactivateFeatureCommand} from "src/domain/features/DeactivateFeature";
-
-export enum FeatureIdent {
-//  OPEN_TABS = "OPEN_TABS",
-//  WINDOWS = "WINDOWS",
-//  STANDALONE_APP = "STANDALONE_APP",
-  WINDOWS_MANAGEMENT = "WINDOWS_MANAGEMENT",
-  TABSETS_SHARING = "TABSETS_SHARING",
-}
-
-export enum FeatureType {
-  RECOMMENDED = "RECOMMENDED",
-  OPTIONAL = "OPTIONAL",
-  EXPERIMENTAL = "EXPERIMENTAL",
-  PLANNED = "PLANNED",
-  DISABLED = "DISABLED"
-}
+import {FeatureIdent, FeatureType} from "src/models/FeatureIdent";
 
 export class AppFeature {
 

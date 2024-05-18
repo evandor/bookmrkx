@@ -106,7 +106,7 @@ import WindowsMarkupTable from "src/windows/components/WindowsMarkupTable.vue";
 import {WindowAction, WindowHolder} from "src/windows/models/WindowHolder"
 import {Window} from "src/windows/models/Window"
 import {useWindowsStore} from "src/windows/stores/windowsStore";
-import {FeatureIdent} from "src/models/AppFeature";
+import {FeatureIdent} from "src/models/FeatureIdent";
 import {usePermissionsStore} from "stores/permissionsStore";
 import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
 import {SuggestionState} from "src/suggestions/models/Suggestion";
