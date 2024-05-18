@@ -148,7 +148,7 @@
 <script lang="ts" setup>
 
 import {usePermissionsStore} from "stores/permissionsStore";
-import {FeatureIdent} from "src/models/AppFeature";
+import {FeatureIdent} from "src/models/FeatureIdent";
 import {Tabset, TabsetSharing, TabsetStatus} from "src/models/Tabset";
 import {useSettingsStore} from "stores/settingsStore";
 import {useSearchStore} from "stores/searchStore";

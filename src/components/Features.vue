@@ -91,9 +91,10 @@ import {useRoute, useRouter} from "vue-router";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import _ from "lodash"
 import {AppFeatures} from "src/models/AppFeatures";
-import {AppFeature, FeatureIdent, FeatureType} from "src/models/AppFeature";
 import {useSettingsStore} from "src/stores/settingsStore";
 import {useQuasar} from "quasar";
+import {AppFeature} from "src/models/AppFeature";
+import {FeatureIdent, FeatureType} from "src/models/FeatureIdent";
 
 const router = useRouter()
 const route = useRoute()

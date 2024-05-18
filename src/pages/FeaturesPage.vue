@@ -130,10 +130,7 @@ import {useRoute, useRouter} from "vue-router";
 import {Notify, useQuasar} from "quasar";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {useCommandExecutor} from "src/services/CommandExecutor";
-import {AppFeature, FeatureIdent, FeatureType} from "src/models/AppFeature";
 import {AppFeatures} from "src/models/AppFeatures";
-import {ExecutionResult} from "src/domain/ExecutionResult";
-import {useSettingsStore} from "src/stores/settingsStore"
 import InfoMessageWidget from "components/widgets/InfoMessageWidget.vue";
 import {DrawerTabs, useUiStore} from "src/stores/uiStore";
 import OpenRightDrawerWidget from "components/widgets/OpenRightDrawerWidget.vue";
@@ -141,6 +138,8 @@ import Analytics from "src/utils/google-analytics";
 import Command from "src/domain/Command";
 import NavigationService from "src/services/NavigationService";
 import {useUtils} from "src/services/Utils";
+import {AppFeature} from "src/models/AppFeature";
+import {FeatureIdent, FeatureType} from "src/models/FeatureIdent";
 
 const route = useRoute();
 const router = useRouter();
