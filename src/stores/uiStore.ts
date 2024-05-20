@@ -7,6 +7,7 @@ import {useUtils} from "src/services/Utils";
 import {FeatureIdent} from "src/models/FeatureIdent";
 import {usePermissionsStore} from "stores/permissionsStore";
 import {Toast, ToastType} from "src/models/Toast";
+import {useFeaturesStore} from "src/features/stores/featuresStore";
 
 export enum DrawerTabs {
   FEATURES = "features",
@@ -24,7 +25,7 @@ export class SidePanelView {
   static readonly TAG = new SidePanelView('tag', '/sidepanel/tags');
 
   static readonly SHARED_TABSETS_LIST = new SidePanelView('sharedTsList', '/sidepanel/sharedTsList',
-    () => usePermissionsStore().hasFeature(FeatureIdent.TABSETS_SHARING));
+    () => useFeaturesStore().hasFeature(FeatureIdent.TABSETS_SHARING));
 
   static readonly NEWEST_TABS_LIST = new SidePanelView('newestList', '/sidepanel/newestList');
 

@@ -6,7 +6,7 @@
         <div class="row fit">
           <div class="col-xs-12 col-md-6">
             <q-toolbar-title>
-              <div class="row justify-start items-baseline" v-if="usePermissionsStore().hasFeature(FeatureIdent.SPACES)">
+              <div class="row justify-start items-baseline" v-if="useFeaturesStore().hasFeature(FeatureIdent.SPACES)">
                 <SpacesSelectorWidget />
               </div>
               <div class="row justify-start items-baseline" v-else>
@@ -24,7 +24,7 @@
                 class="tooltip"
                 :delay="200"
                 anchor="center left" self="center right">
-                {{ usePermissionsStore().hasFeature(FeatureIdent.SPACES) ?
+                {{ useFeaturesStore().hasFeature(FeatureIdent.SPACES) ?
                   'Click here to add a new tabset to the current Space':
                   'Click here to add a new tabset'}}
               </q-tooltip>
@@ -48,6 +48,7 @@ import {useQuasar} from "quasar";
 import {useUiStore} from "src/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {FeatureIdent} from "src/models/FeatureIdent";
+import {useFeaturesStore} from "src/features/stores/featuresStore";
 
 const $q = useQuasar();
 

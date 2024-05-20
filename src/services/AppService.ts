@@ -17,6 +17,7 @@ import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
 import {Suggestion, SuggestionType} from "src/suggestions/models/Suggestion";
 import WindowsListenerConfig from "src/windows/listeners/WindowsListenerConfig";
 import {useTabsStore} from "src/bookmarks/stores/tabsStore";
+import {useFeaturesStore} from "src/features/stores/featuresStore";
 
 class AppService {
 
@@ -50,6 +51,9 @@ class AppService {
 
     // init of stores and some listeners
     await usePermissionsStore().initialize(useDB(quasar).localDb)
+
+    await useFeaturesStore().initialize(useDB(quasar).featuresLocalStorage)
+
     await ChromeListeners.initListeners()
 
     ChromeBookmarkListeners.initListeners()
@@ -81,7 +85,7 @@ class AppService {
     WindowsListenerConfig.addOnWindowsCreatedListener(async () => {
       await useSuggestionsStore().addSuggestion(newFeatureSuggestion)
     })
-    if (usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
+    if (useFeaturesStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
       await useWindowsStore().initialize()
       useWindowsStore().initListeners()
     }

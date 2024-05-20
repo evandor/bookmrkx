@@ -60,7 +60,7 @@
       </div>
       <div class="col text-right">
 
-        <q-btn v-if="(usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT))"
+        <q-btn v-if="(useFeaturesStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT))"
                icon="o_grid_view"
                data-testid="buttonManageWindows"
                :class="rightButtonClass()"
@@ -113,6 +113,7 @@ import {SuggestionState} from "src/suggestions/models/Suggestion";
 import SuggestionDialog from "src/suggestions/dialogues/SuggestionDialog.vue";
 import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftButtons.vue";
 import {useTabsStore} from "../bookmarks/stores/tabsStore";
+import {useFeaturesStore} from "src/features/stores/featuresStore";
 
 const {handleSuccess, handleError} = useNotificationHandler()
 
@@ -136,7 +137,7 @@ const tabsetsMangedWindows = ref<object[]>([])
 const windowsToOpenOptions = ref<object[]>([])
 
 onMounted(() => {
-  if (usePermissionsStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
+  if (useFeaturesStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
     windowRows.value = calcWindowRows()
   }
 })
@@ -158,7 +159,7 @@ watchEffect(() => {
     (useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
       _.findIndex(suggestions, s => {
         return s.state === SuggestionState.NEW ||
-          (s.state === SuggestionState.NOTIFICATION && !usePermissionsStore().hasFeature(FeatureIdent.NOTIFICATIONS))
+          (s.state === SuggestionState.NOTIFICATION && !useFeaturesStore().hasFeature(FeatureIdent.NOTIFICATIONS))
       }) >= 0)
 
   showSuggestionIcon.value =
