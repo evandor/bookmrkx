@@ -266,7 +266,7 @@ const getDependentFeatures = (rootFeature: string, onlyActive: boolean = false):
   return dependentFeatures
 }
 
-const isActive = (f: AppFeature) => usePermissionsStore().hasFeature(f.ident)
+const isActive = (f: AppFeature) => useFeaturesStore().hasFeature(f.ident)
 
 
 </script>

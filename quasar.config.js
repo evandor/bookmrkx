@@ -112,28 +112,7 @@ module.exports = configure(function (ctx) {
         ['@intlify/unplugin-vue-i18n/vite', {
           include: [path.resolve(__dirname, './src/i18n/**')],
         }],
-        ['vite-plugin-package-version' ,{}],
-        {
-          name: 'vueform',
-          async config() {
-            return {
-              optimizeDeps: {
-                include: [
-                  'wnumb',
-                  'nouislider',
-                  'trix',
-                  'lodash',
-                  'axios',
-                ],
-              },
-              server: {
-                watch: {
-                  ignored: [`!**/node_modules/@vueform/**`],
-                },
-              },
-            };
-          },
-        },
+        ['vite-plugin-package-version' ,{}]
       ]
     },
 

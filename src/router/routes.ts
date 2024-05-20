@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/mainpanel/features/:feature',
     component: () => import('layouts/PlainWithRightDrawerLayout.vue'),
-    children: [{path: '', component: () => import('pages/FeaturesPage.vue')}],
+    children: [{path: '', component: () => import('src/features/pages/FeaturesPage.vue')}],
   },
   {
     path: '/mainpanel/bookmarks/:id',
@@ -38,7 +38,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/features/:feature',
     component: () => import('layouts/FullPageLayout.vue'),
-    children: [{path: '', component: () => import('pages/FeaturesPage.vue')}],
+    children: [{path: '', component: () => import('src/features/pages/FeaturesPage.vue')}],
   },
   {
     path: '/:catchAll(.*)*',
