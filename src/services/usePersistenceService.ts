@@ -3,14 +3,14 @@ import {QVueGlobals, useQuasar} from "quasar";
 import {LocalStoragePersistenceService} from "src/services/storage/LocalStoragePersistenceService";
 import PersistenceService from "src/services/PersistenceService";
 import FeaturesPersistence from "src/features/persistence/FeaturesPersistence";
-import IndexedDbFeaturesPersistence from "src/features/persistence/IndexedDbFeaturesPersistence";
 import {LocalStorageFeaturesPersistence} from "src/features/persistence/LocalStorageFeaturesPersistence";
+import FirestoreFeaturesPersistence from "src/features/persistence/FirestoreFeaturesPersistence";
 
 export function useDB(quasar: QVueGlobals | undefined = undefined) {
 
   const db: PersistenceService = IndexedDbPersistenceService
 
-  const featuresIndexedDb: FeaturesPersistence = IndexedDbFeaturesPersistence
+  const featuresFirestoreDb: FeaturesPersistence = FirestoreFeaturesPersistence
 
   let localDb = undefined as unknown as PersistenceService
   let featuresLocalStorage: FeaturesPersistence = undefined as unknown as FeaturesPersistence
@@ -21,7 +21,7 @@ export function useDB(quasar: QVueGlobals | undefined = undefined) {
 
   return {
     db, localDb,
-    featuresIndexedDb, featuresLocalStorage
+    featuresFirestoreDb, featuresLocalStorage
   }
 
 }
