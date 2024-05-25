@@ -119,6 +119,7 @@ import {TITLE_IDENT} from "boot/constants";
 import AppService from "src/services/AppService";
 import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
 import {useI18n} from 'vue-i18n'
+import {useFeaturesStore} from "src/features/stores/featuresStore";
 
 const {t} = useI18n({locale: navigator.language, useScope: "global"})
 
@@ -178,17 +179,9 @@ if (inBexMode()) {
       }
       const tsId = message.data.tabsetId
     } else if (message.name === 'feature-activated') {
-      usePermissionsStore().addActivateFeature(message.data.feature)
-      if (message.data.feature === 'help') {
-      } else if (message.data.feature === 'bookmarks') {
-        usePermissionsStore().load()
-          .then(() => {
-            useBookmarksStore().init()
-            useBookmarksStore().loadBookmarks()
-          })
-      }
+      useFeaturesStore().activateFeature(message.data.feature)
     } else if (message.name === "feature-deactivated") {
-      usePermissionsStore().removeActivateFeature(message.data.feature)
+      useFeaturesStore().deactivateFeature(message.data.feature)
     } else if (message.name === "tabsets-imported") {
       // TODO reload
     } else if (message.name === "tab-being-dragged") {

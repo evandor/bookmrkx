@@ -75,6 +75,20 @@ class AppService {
   private async initCoreSerivces(quasar: any, store: PersistenceService, router: Router) {
     ChromeApi.init(router)
 
+    /**
+     * features store: passing storage for better testing.
+     * make sure features are not used before this line in code.
+     */
+    await useFeaturesStore().initialize(useDB(quasar).featuresLocalStorage)
+
+    /**
+     * windows store
+     */
+    // if (useFeaturesStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
+      await useWindowsStore().initialize()
+      useWindowsStore().initListeners()
+    // }
+
     // Setup Windows Module
     const newFeatureSuggestion = new Suggestion("TRY_WINDOWS_MANAGEMENT_FEATURE",
       "Want to try a new feature?",
@@ -85,10 +99,6 @@ class AppService {
     WindowsListenerConfig.addOnWindowsCreatedListener(async () => {
       await useSuggestionsStore().addSuggestion(newFeatureSuggestion)
     })
-    if (useFeaturesStore().hasFeature(FeatureIdent.WINDOWS_MANAGEMENT)) {
-      await useWindowsStore().initialize()
-      useWindowsStore().initListeners()
-    }
 
     await useTabsStore().initialize()
 
