@@ -101,7 +101,7 @@ import NavigationService from "src/services/NavigationService";
 import {openURL, uid, useQuasar} from "quasar";
 import _ from "lodash";
 import {ToastType} from "src/models/Toast";
-import {useNotificationHandler} from "src/services/ErrorHandler";
+import {useNotificationHandler} from "src/core/services/ErrorHandler";
 import WindowsMarkupTable from "src/windows/components/WindowsMarkupTable.vue";
 import {WindowAction, WindowHolder} from "src/windows/models/WindowHolder"
 import {Window} from "src/windows/models/Window"

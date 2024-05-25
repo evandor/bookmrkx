@@ -3,7 +3,7 @@ import {computed, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import _ from "lodash"
 import {LocalStorage, useQuasar} from "quasar";
-import {useUtils} from "src/services/Utils";
+import {useUtils} from "src/core/services/Utils";
 import {FeatureIdent} from "src/models/FeatureIdent";
 import {usePermissionsStore} from "stores/permissionsStore";
 import {Toast, ToastType} from "src/models/Toast";

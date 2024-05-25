@@ -128,7 +128,7 @@ import {DrawerTabs, ListDetailLevel, useUiStore} from "src/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {useSettingsStore} from "src/stores/settingsStore"
 import OpenRightDrawerWidget from "components/widgets/OpenRightDrawerWidget.vue";
-import Analytics from "src/utils/google-analytics";
+import Analytics from "src/core/utils/google-analytics";
 import {useRoute} from "vue-router";
 import {
   STRIP_CHARS_IN_USER_INPUT,

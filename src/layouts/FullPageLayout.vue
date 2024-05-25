@@ -92,7 +92,7 @@ import {useRouter} from "vue-router";
 import Navigation from "src/components/Navigation.vue"
 import _ from "lodash";
 import {useUiStore} from "src/stores/uiStore";
-import {useUtils} from "src/services/Utils";
+import {useUtils} from "src/core/services/Utils";
 import DrawerRight from "components/DrawerRight.vue";
 import {Suggestion, SuggestionState} from "src/suggestions/models/Suggestion";
 import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
