@@ -129,15 +129,15 @@ import {onMounted, ref, watchEffect} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 import {Notify, useQuasar} from "quasar";
 import {usePermissionsStore} from "src/stores/permissionsStore";
-import {useCommandExecutor} from "src/services/CommandExecutor";
+import {useCommandExecutor} from "src/core/services/CommandExecutor";
 import {AppFeatures} from "src/models/AppFeatures";
 import InfoMessageWidget from "components/widgets/InfoMessageWidget.vue";
 import {DrawerTabs, useUiStore} from "src/stores/uiStore";
 import OpenRightDrawerWidget from "components/widgets/OpenRightDrawerWidget.vue";
-import Analytics from "src/utils/google-analytics";
-import Command from "src/domain/Command";
+import Analytics from "src/core/utils/google-analytics";
+import Command from "src/core/domain/Command";
 import NavigationService from "src/services/NavigationService";
-import {useUtils} from "src/services/Utils";
+import {useUtils} from "src/core/services/Utils";
 import {AppFeature} from "src/models/AppFeature";
 import {FeatureIdent, FeatureType} from "src/models/FeatureIdent";
 

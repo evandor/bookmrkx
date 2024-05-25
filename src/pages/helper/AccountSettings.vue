@@ -56,7 +56,7 @@ import InfoLine from "pages/helper/InfoLine.vue";
 import IndexedDbPersistenceService from "src/services/IndexedDbPersistenceService";
 import {useSuggestionsStore} from "stores/suggestionsStore";
 import {StaticSuggestionIdent, Suggestion} from "src/models/Suggestion";
-import {useUtils} from "src/services/Utils";
+import {useUtils} from "src/core/services/Utils";
 
 const {sendMsg} = useUtils()
 

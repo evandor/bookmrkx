@@ -1,5 +1,5 @@
-import Command from "src/domain/Command";
-import {useNotificationHandler} from "src/services/ErrorHandler";
+import Command from "src/core/domain/Command";
+import {useNotificationHandler} from "src/core/services/ErrorHandler";
 import Query from "src/domain/Query";
 import {QueryResult} from "src/domain/QueryResult";
 

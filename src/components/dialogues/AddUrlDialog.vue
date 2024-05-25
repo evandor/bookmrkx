@@ -41,7 +41,7 @@ import {useDialogPluginComponent} from 'quasar'
 import normalizeUrl from 'normalize-url';
 import {Tab} from "src/models/Tab";
 import ChromeApi from "src/services/ChromeApi";
-import {useUtils} from "src/services/Utils";
+import {useUtils} from "src/core/services/Utils";
 import {useUiStore} from "src/stores/uiStore";
 import {useTabsetService} from "src/services/TabsetService2";
 

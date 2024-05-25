@@ -108,12 +108,12 @@
 
 import {onMounted, onUnmounted, ref, watchEffect} from "vue";
 import {useRouter} from "vue-router";
-import {useUtils} from "src/services/Utils";
+import {useUtils} from "src/core/services/Utils";
 import {LocalStorage, scroll} from "quasar";
 import {useUiStore} from "src/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
-import Analytics from "src/utils/google-analytics";
+import Analytics from "src/core/utils/google-analytics";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {TITLE_IDENT} from "boot/constants";
 import AppService from "src/services/AppService";

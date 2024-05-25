@@ -1,4 +1,4 @@
-import {useUtils} from "src/services/Utils";
+import {useUtils} from "src/core/services/Utils";
 import {SidePanelView, useUiStore} from "stores/uiStore";
 
 const {inBexMode} = useUtils()

@@ -1,6 +1,6 @@
-import Command from "src/domain/Command";
-import {ExecutionResult} from "src/domain/ExecutionResult";
-import {useNotificationHandler} from "src/services/ErrorHandler";
+import Command from "src/core/domain/Command";
+import {ExecutionResult} from "src/core/domain/ExecutionResult";
+import {useNotificationHandler} from "src/core/services/ErrorHandler";
 
 const {handleSuccess} = useNotificationHandler()
 

@@ -155,8 +155,8 @@ import {useSearchStore} from "stores/searchStore";
 import NavigationService from "src/services/NavigationService";
 import EditTabsetDialog from "components/dialogues/EditTabsetDialog.vue";
 import {LocalStorage, openURL, useQuasar} from "quasar";
-import {useUtils} from "src/services/Utils";
-import {useCommandExecutor} from "src/services/CommandExecutor";
+import {useUtils} from "src/core/services/Utils";
+import {useCommandExecutor} from "src/core/services/CommandExecutor";
 import {RestoreTabsetCommand} from "src/domain/tabsets/RestoreTabset";
 import ContextMenuItem from "pages/sidepanel/helper/ContextMenuItem.vue";
 import {PropType} from "vue";
@@ -166,7 +166,7 @@ import ShareTabsetPubliclyDialog from "components/dialogues/ShareTabsetPubliclyD
 import NewWindowDialog from "components/dialogues/NewWindowDialog.vue";
 import {useRouter} from "vue-router";
 import {SidePanelView, useUiStore} from "stores/uiStore";
-import {NotificationType} from "src/services/ErrorHandler";
+import {NotificationType} from "src/core/services/ErrorHandler";
 import NewSubfolderDialog from "components/dialogues/NewSubfolderDialog.vue";
 import {useFeaturesStore} from "src/features/stores/featuresStore";
 
