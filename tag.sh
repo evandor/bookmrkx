@@ -7,7 +7,7 @@ if [ $# -eq 0 ]
 fi
 
 
-#git submodule foreach git tag -m "new release" v$VERSION
+git submodule foreach git tag -m "new release" v$VERSION-bookmarks
 git tag -a v$VERSION -m "new release"
 git submodule foreach git push origin --tags
 git push origin --tags
