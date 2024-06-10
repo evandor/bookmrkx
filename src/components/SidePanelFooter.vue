@@ -4,13 +4,13 @@
     class="q-pa-xs q-mt-sm darkInDarkMode brightInBrightMode" style="border-top: 1px solid lightgrey"
     :style="offsetBottom()">
 
-    <div class="row fit q-mb-sm">
-      {{ useTabsStore().currentChromeTab }}
-    </div>
-
     <div class="row fit q-mb-sm" v-if="showWindowTable">
       <!-- https://michaelnthiessen.com/force-re-render -->
       <WindowsMarkupTable :rows="useWindowsStore().getWindowsForMarkupTable()" :key="randomKey"/>
+    </div>
+
+    <div class="row fit q-mb-sm" v-if="showStatsTable">
+      <SidePanelStatsMarkupTable :key="randomKey"/>
     </div>
 
     <div class="row fit">
@@ -79,14 +79,14 @@
           <q-tooltip class="tooltip" anchor="top left" self="bottom left">{{ settingsTooltip() }}</q-tooltip>
         </q-btn>
 
-        <!--        <q-btn-->
-        <!--          icon="show_chart"-->
-        <!--          :class="rightButtonClass()"-->
-        <!--          flat-->
-        <!--          :size="getButtonSize()"-->
-        <!--          @click="toggleShowStatsTable()">-->
-        <!--          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>-->
-        <!--        </q-btn>-->
+        <q-btn
+          icon="show_chart"
+          :class="rightButtonClass()"
+          flat
+          :size="getButtonSize()"
+          @click="toggleShowStatsTable()">
+          <q-tooltip class="tooltip" anchor="top left" self="bottom left">Show Stats</q-tooltip>
+        </q-btn>
 
       </div>
     </div>
@@ -114,6 +114,7 @@ import SuggestionDialog from "src/suggestions/dialogues/SuggestionDialog.vue";
 import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftButtons.vue";
 import {useTabsStore} from "../bookmarks/stores/tabsStore";
 import {useFeaturesStore} from "src/features/stores/featuresStore";
+import SidePanelStatsMarkupTable from "components/helper/SidePanelStatsMarkupTable.vue";
 
 const {handleSuccess, handleError} = useNotificationHandler()
 
@@ -127,6 +128,7 @@ const showSuggestionIcon = ref(false)
 const doShowSuggestionButton = ref(false)
 const transitionGraceTime = ref(false)
 const showWindowTable = ref(false)
+const showStatsTable = ref(false)
 const showLogin = ref(false)
 const randomKey = ref<string>(uid())
 const progressValue = ref<number>(0.0)
@@ -277,13 +279,20 @@ const toggleShowWindowTable = () => {
   showWindowTable.value = !showWindowTable.value
   if (showWindowTable.value) {
     randomKey.value = uid()
-    //showStatsTable.value = false
+    showStatsTable.value = false
   }
   const windowId = useWindowsStore().currentChromeWindow?.id || 0
   const currentWindow: Window | undefined = useWindowsStore().windowForId(windowId)
   if (currentWindow) {
     currentWindow.open = showWindowTable.value
     useWindowsStore().upsertTabsetWindow(currentWindow)
+  }
+}
+
+const toggleShowStatsTable = () => {
+  showStatsTable.value = !showStatsTable.value
+  if (showWindowTable.value) {
+    showWindowTable.value = false
   }
 }
 
