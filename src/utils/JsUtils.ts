@@ -1,4 +1,4 @@
-import {useUiStore} from "stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 
 class JsUtils {
 

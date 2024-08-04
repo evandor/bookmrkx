@@ -94,7 +94,7 @@
   </q-footer>
 </template>
 <script setup lang="ts">
-import {SidePanelView, useUiStore} from "src/stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 import {onMounted, ref, watch, watchEffect} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import NavigationService from "src/services/NavigationService";
@@ -115,6 +115,7 @@ import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftBut
 import {useTabsStore} from "../bookmarks/stores/tabsStore";
 import {useFeaturesStore} from "src/features/stores/featuresStore";
 import SidePanelStatsMarkupTable from "components/helper/SidePanelStatsMarkupTable.vue";
+import {SidePanelViews} from "src/models/SidePanelViews";
 
 const {handleSuccess, handleError} = useNotificationHandler()
 
@@ -158,7 +159,7 @@ watchEffect(() => {
   //console.log("watcheffect for", suggestions)
   showSuggestionButton.value =
     doShowSuggestionButton.value ||
-    (useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+    (useUiStore().sidePanelActiveViewIs(SidePanelViews.MAIN) &&
       _.findIndex(suggestions, s => {
         return s.state === SuggestionState.NEW ||
           (s.state === SuggestionState.NOTIFICATION && !useFeaturesStore().hasFeature(FeatureIdent.NOTIFICATIONS))
@@ -166,7 +167,7 @@ watchEffect(() => {
 
   showSuggestionIcon.value =
     !doShowSuggestionButton.value &&
-    useUiStore().sidePanelActiveViewIs(SidePanelView.MAIN) &&
+    useUiStore().sidePanelActiveViewIs(SidePanelViews.MAIN) &&
     _.findIndex(suggestions, s => {
       return s.state === SuggestionState.DECISION_DELAYED
     }) >= 0

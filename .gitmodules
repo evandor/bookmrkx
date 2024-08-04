@@ -18,3 +18,7 @@
 	path = src/core
 	url = https://github.com/evandor/submodule-core.git
 	branch = main
+[submodule "src/ui"]
+	path = src/ui
+	url = https://github.com/evandor/submodule-ui.git
+	branch = main

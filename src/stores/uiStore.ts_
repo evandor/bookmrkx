@@ -75,7 +75,7 @@ export class SidePanel {
 
   constructor(
     public activeView: SidePanelView = SidePanelView.MAIN) {
-    this.relevantViews.push(SidePanelView.BOOKMARKS)
+    this.relevantViews.push(SidePanelViews.BOOKMARKS)
   }
 
   public enabledViewsCount() {

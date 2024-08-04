@@ -2,7 +2,7 @@ import {IDBPDatabase, openDB, deleteDB} from "idb";
 import _ from "lodash";
 import {INDEX_DB_VERSION} from "boot/constants";
 import PersistenceService from "src/services/PersistenceService";
-import {useUiStore} from "src/stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 
 class IndexedDbPersistenceService implements PersistenceService {
   private db: IDBPDatabase = null as unknown as IDBPDatabase

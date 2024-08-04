@@ -45,7 +45,7 @@
 <script setup lang="ts">
 
 import {useQuasar} from "quasar";
-import {useUiStore} from "src/stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import {FeatureIdent} from "src/models/FeatureIdent";
 import {useFeaturesStore} from "src/features/stores/featuresStore";

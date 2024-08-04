@@ -165,7 +165,7 @@ import {Tab} from "src/models/Tab";
 import ShareTabsetPubliclyDialog from "components/dialogues/ShareTabsetPubliclyDialog.vue";
 import NewWindowDialog from "components/dialogues/NewWindowDialog.vue";
 import {useRouter} from "vue-router";
-import {SidePanelView, useUiStore} from "stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 import {NotificationType} from "src/core/services/ErrorHandler";
 import NewSubfolderDialog from "components/dialogues/NewSubfolderDialog.vue";
 import {useFeaturesStore} from "src/features/stores/featuresStore";

@@ -11,7 +11,7 @@
 
 
   <SidePanelFooterLeftButton v-if="unreadMessagesCount > 0"
-                             :side-panel-view="SidePanelView.MESSAGES"
+                             :side-panel-view="SidePanelViews.MESSAGES"
                              icon="o_chat"
                              :size="props.size"
                              tooltip="Your messages">
@@ -20,12 +20,12 @@
 
 </template>
 <script setup lang="ts">
-import {SidePanel, SidePanelView, useUiStore} from "stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 import SidePanelFooterLeftButton from "components/helper/SidePanelFooterLeftButton.vue";
-import {usePermissionsStore} from "stores/permissionsStore";
 import {ref, watchEffect} from "vue";
 import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
 import {SuggestionState} from "src/suggestions/models/Suggestion";
+import {SidePanelViews} from "src/models/SidePanelViews";
 
 const props = defineProps({
   showSuggestionIcon: {type: Boolean, required: true},

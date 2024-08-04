@@ -10,7 +10,7 @@ import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {Router} from "vue-router";
 import {useAppStore} from "stores/appStore";
 import PersistenceService from "src/services/PersistenceService";
-import {useUiStore} from "stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 import {useWindowsStore} from "src/windows/stores/windowsStore";
 import {FeatureIdent} from "src/models/FeatureIdent";
 import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";

@@ -77,7 +77,7 @@
 <script lang="ts" setup>
 import {ref, watchEffect} from "vue";
 import {useRoute} from "vue-router";
-import {DrawerTabs, useUiStore} from "src/stores/uiStore";
+import {DrawerTabs, useUiStore} from "src/ui/stores/uiStore";
 import Features from "components/Features.vue";
 import TabsetHelp from "components/TabsetHelp.vue";
 import BookmarksTree from "src/bookmarks/components/BookmarksTree.vue";
