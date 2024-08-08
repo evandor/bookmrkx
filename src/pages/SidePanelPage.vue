@@ -116,7 +116,7 @@ import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
 import Analytics from "src/core/utils/google-analytics";
 import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import {TITLE_IDENT} from "boot/constants";
-import AppService from "src/services/AppService";
+import AppService from "src/app/AppService";
 import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
 import {useI18n} from 'vue-i18n'
 import {useFeaturesStore} from "src/features/stores/featuresStore";
