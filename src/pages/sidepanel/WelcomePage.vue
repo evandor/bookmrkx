@@ -111,8 +111,8 @@ import {STRIP_CHARS_IN_USER_INPUT, TITLE_IDENT} from "boot/constants";
 import Analytics from "src/core/utils/google-analytics";
 import DialogButton from "src/core/dialog/buttons/DialogButton.vue";
 import {LocalStorage, openURL} from "quasar";
-import {FeatureIdent} from "src/models/FeatureIdent";
-import {AppFeatures} from "src/models/AppFeatures";
+import {FeatureIdent} from "src/app/models/FeatureIdent";
+import {AppFeatures} from "src/app/models/AppFeatures";
 import {GrantPermissionCommand} from "src/domain/commands/GrantPermissionCommand";
 import {usePermissionsStore} from "stores/permissionsStore";
 import {useI18n} from 'vue-i18n'

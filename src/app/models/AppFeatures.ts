@@ -1,5 +1,5 @@
 import _ from "lodash"
-import {FeatureIdent, FeatureType} from "src/models/FeatureIdent";
+import {FeatureIdent, FeatureType} from "src/app/models/FeatureIdent";
 import {Feature} from "src/features/models/Feature";
 
 export class AppFeatures {

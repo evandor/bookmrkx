@@ -109,17 +109,14 @@
 import {onMounted, onUnmounted, ref, watchEffect} from "vue";
 import {useRouter} from "vue-router";
 import {useUtils} from "src/core/services/Utils";
-import {LocalStorage, scroll} from "quasar";
 import {useUiStore} from "src/ui/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
 import Analytics from "src/core/utils/google-analytics";
-import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
-import {TITLE_IDENT} from "boot/constants";
 import AppService from "src/app/AppService";
-import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
 import {useI18n} from 'vue-i18n'
 import {useFeaturesStore} from "src/features/stores/featuresStore";
+import SidePanelToolbarButton from "components/buttons_/SidePanelToolbarButton.vue";
 
 const {t} = useI18n({locale: navigator.language, useScope: "global"})
 
@@ -187,19 +184,19 @@ if (inBexMode()) {
     } else if (message.name === "tab-being-dragged") {
       useUiStore().draggingTab(message.data.tabId, null as unknown as any)
     } else if (message.name === "note-changed") {
-      if (message.data.noteId) {
-        console.log("updating note", message.data.noteId)
-        //.then((res: TabAndTabsetId | undefined) => {
-        if (res) {
-          const note = res.tab
-          note.title = message.data.tab.title
-          note.description = message.data.tab.description
-          note.longDescription = message.data.tab.longDescription
-        }
-        //    })
-      } else {
-        console.log("adding tab", message.data.tab)
-      }
+      // if (message.data.noteId) {
+      //   console.log("updating note", message.data.noteId)
+      //   //.then((res: TabAndTabsetId | undefined) => {
+      //   if (res) {
+      //     const note = res.tab
+      //     note.title = message.data.tab.title
+      //     note.description = message.data.tab.description
+      //     note.longDescription = message.data.tab.longDescription
+      //   }
+      //   //    })
+      // } else {
+      //   console.log("adding tab", message.data.tab)
+      // }
     } else if (message.name === "tab-added") {
       // hmm - getting this twice...
       console.log(" > got message '" + message.name + "'", message)

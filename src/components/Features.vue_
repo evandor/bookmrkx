@@ -94,7 +94,7 @@ import {AppFeatures} from "src/models/AppFeatures";
 import {useSettingsStore} from "src/stores/settingsStore";
 import {useQuasar} from "quasar";
 import {AppFeature} from "src/models/AppFeature";
-import {FeatureIdent, FeatureType} from "src/models/FeatureIdent";
+import {FeatureIdent, FeatureType} from "src/app/models/FeatureIdent";
 import {useFeaturesStore} from "src/features/stores/featuresStore";
 
 const router = useRouter()

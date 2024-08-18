@@ -139,7 +139,7 @@ import Command from "src/core/domain/Command";
 import NavigationService from "src/services/NavigationService";
 import {useUtils} from "src/core/services/Utils";
 import {AppFeature} from "src/models/AppFeature";
-import {FeatureIdent, FeatureType} from "src/models/FeatureIdent";
+import {FeatureIdent, FeatureType} from "src/app/models/FeatureIdent";
 
 const route = useRoute();
 const router = useRouter();

@@ -4,7 +4,7 @@ import {AppFeatures} from "src/models/AppFeatures";
 import {useUtils} from "src/core/services/Utils";
 import PersistenceService from "src/services/PersistenceService";
 import {LocalStorage} from "quasar";
-import {FeatureIdent} from "src/models/FeatureIdent";
+import {FeatureIdent} from "src/app/models/FeatureIdent";
 
 export const usePermissionsStore = defineStore('permissions', () => {
 

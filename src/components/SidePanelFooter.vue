@@ -106,13 +106,11 @@ import WindowsMarkupTable from "src/windows/components/WindowsMarkupTable.vue";
 import {WindowAction, WindowHolder} from "src/windows/models/WindowHolder"
 import {Window} from "src/windows/models/Window"
 import {useWindowsStore} from "src/windows/stores/windowsStore";
-import {FeatureIdent} from "src/models/FeatureIdent";
-import {usePermissionsStore} from "stores/permissionsStore";
+import {FeatureIdent} from "src/app/models/FeatureIdent";
 import {useSuggestionsStore} from "src/suggestions/stores/suggestionsStore";
 import {SuggestionState} from "src/suggestions/models/Suggestion";
 import SuggestionDialog from "src/suggestions/dialogues/SuggestionDialog.vue";
 import SidePanelFooterLeftButtons from "components/helper/SidePanelFooterLeftButtons.vue";
-import {useTabsStore} from "../bookmarks/stores/tabsStore";
 import {useFeaturesStore} from "src/features/stores/featuresStore";
 import SidePanelStatsMarkupTable from "components/helper/SidePanelStatsMarkupTable.vue";
 import {SidePanelViews} from "src/models/SidePanelViews";

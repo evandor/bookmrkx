@@ -3,7 +3,7 @@ import {useWindowsStore} from "src/windows/stores/windowsStore";
 import JsUtils from "src/utils/JsUtils";
 import {ExecutionResult} from "src/core/domain/ExecutionResult";
 import {useNotificationHandler} from "src/core/services/ErrorHandler";
-import {FeatureIdent} from "src/models/FeatureIdent";
+import {FeatureIdent} from "src/app/models/FeatureIdent";
 import {useFeaturesStore} from "src/features/stores/featuresStore";
 
 class NavigationService {
