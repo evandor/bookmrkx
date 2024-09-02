@@ -1,4 +1,3 @@
-import {useSearchStore} from "src/search/stores/searchStore";
 
 /**
  * meant for inter-submodule communication.
@@ -15,12 +14,6 @@ class AppEventDispatcher {
     // console.debug(" >>> dispatching event", name, params)
     try {
       switch (name) {
-        case 'add-to-search':
-          useSearchStore().addObjectToIndex(params)
-          break
-        case 'upsert-in-search':
-          useSearchStore().upsertObject(params)
-          break
         default:
           console.log(`unknown event ${name}`)
       }
