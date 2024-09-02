@@ -22,3 +22,7 @@
 	path = src/ui
 	url = https://github.com/evandor/submodule-ui.git
 	branch = main
+[submodule "src/search"]
+	path = src/search
+	url = https://github.com/evandor/submodule-search.git
+	branch = main

@@ -16,6 +16,7 @@ git submodule add -b localstorage https://github.com/evandor/submodule-features.
 git submodule add -b chrome-extension https://github.com/evandor/submodule-bookmarks.git src/bookmarks
 git submodule add -b main https://github.com/evandor/submodule-windows.git src/windows
 git submodule add -b main https://github.com/evandor/submodule-suggestions.git src/suggestions
+git submodule add -b main https://github.com/evandor/submodule-search.git src/search
 ```
 
 
