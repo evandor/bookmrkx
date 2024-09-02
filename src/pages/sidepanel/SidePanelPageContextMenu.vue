@@ -12,7 +12,7 @@
                        icon="o_description"
                        label="Tabset Description..."/>
 
-      <template v-if="usePermissionsStore().hasFeature(FeatureIdent.TABSET_SUBFOLDER)">
+      <template v-if="useFeaturesStore().hasFeature(FeatureIdent.TABSET_SUBFOLDER)">
 
         <q-separator inset />
 
@@ -26,7 +26,7 @@
       <q-separator inset v-if="useTabsStore().tabsets.size > 1"/>
 
       <ContextMenuItem v-close-popup
-                       v-if="usePermissionsStore().hasFeature(FeatureIdent.NOTES)"
+                       v-if="useFeaturesStore().hasFeature(FeatureIdent.NOTES)"
                        @was-clicked="startTabsetNote(tabset)"
                        icon="o_add_circle"
                        label="Create Note"/>
@@ -43,7 +43,7 @@
           </q-item-section>
           <q-menu anchor="top end" self="top start">
             <q-list>
-              <q-item v-if="usePermissionsStore().hasFeature(FeatureIdent.AUTO_TAB_SWITCHER)"
+              <q-item v-if="useFeaturesStore().hasFeature(FeatureIdent.AUTO_TAB_SWITCHER)"
                       dense clickable v-close-popup @click="startAutoSwitchingTab(tabset.id)">
                 <q-item-section>switching tab</q-item-section>
               </q-item>
@@ -91,7 +91,7 @@
 
       </template>
 
-      <template v-if="usePermissionsStore().hasFeature(FeatureIdent.ARCHIVE_TABSET) &&
+      <template v-if="useFeaturesStore().hasFeature(FeatureIdent.ARCHIVE_TABSET) &&
         tabset.status === TabsetStatus.DEFAULT">
         <ContextMenuItem
           v-close-popup
@@ -103,7 +103,7 @@
 
       <q-separator inset/>
 
-      <ContextMenuItem v-if="usePermissionsStore().hasFeature(FeatureIdent.TABSETS_SHARING) && (tabset.sharing === TabsetSharing.UNSHARED || !tabset.sharing)"
+      <ContextMenuItem v-if="useFeaturesStore().hasFeature(FeatureIdent.TABSETS_SHARING) && (tabset.sharing === TabsetSharing.UNSHARED || !tabset.sharing)"
                        v-close-popup
                        @was-clicked="shareTabsetPubliclyDialog(tabset)"
                        icon="ios_share"
@@ -129,7 +129,7 @@
         <q-tooltip class="tooltip-small">Delete Shared Link</q-tooltip>
       </ContextMenuItem>
 
-      <q-separator inset v-if="usePermissionsStore().hasFeature(FeatureIdent.TABSETS_SHARING)" />
+      <q-separator inset v-if="useFeaturesStore().hasFeature(FeatureIdent.TABSETS_SHARING)" />
 
       <template v-if="useSettingsStore().isEnabled('dev')">
         <ContextMenuItem v-close-popup
@@ -148,15 +148,15 @@
 <script lang="ts" setup>
 
 import {usePermissionsStore} from "stores/permissionsStore";
-import {FeatureIdent} from "src/models/AppFeature";
+import {FeatureIdent} from "src/app/models/FeatureIdent";
 import {Tabset, TabsetSharing, TabsetStatus} from "src/models/Tabset";
 import {useSettingsStore} from "stores/settingsStore";
 import {useSearchStore} from "stores/searchStore";
 import NavigationService from "src/services/NavigationService";
 import EditTabsetDialog from "components/dialogues/EditTabsetDialog.vue";
 import {LocalStorage, openURL, useQuasar} from "quasar";
-import {useUtils} from "src/services/Utils";
-import {useCommandExecutor} from "src/services/CommandExecutor";
+import {useUtils} from "src/core/services/Utils";
+import {useCommandExecutor} from "src/core/services/CommandExecutor";
 import {RestoreTabsetCommand} from "src/domain/tabsets/RestoreTabset";
 import ContextMenuItem from "pages/sidepanel/helper/ContextMenuItem.vue";
 import {PropType} from "vue";
@@ -165,9 +165,10 @@ import {Tab} from "src/models/Tab";
 import ShareTabsetPubliclyDialog from "components/dialogues/ShareTabsetPubliclyDialog.vue";
 import NewWindowDialog from "components/dialogues/NewWindowDialog.vue";
 import {useRouter} from "vue-router";
-import {SidePanelView, useUiStore} from "stores/uiStore";
-import {NotificationType} from "src/services/ErrorHandler";
+import {useUiStore} from "src/ui/stores/uiStore";
+import {NotificationType} from "src/core/services/ErrorHandler";
 import NewSubfolderDialog from "components/dialogues/NewSubfolderDialog.vue";
+import {useFeaturesStore} from "src/features/stores/featuresStore";
 
 const {inBexMode} = useUtils()
 

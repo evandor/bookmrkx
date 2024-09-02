@@ -94,7 +94,7 @@
 
 
         <div class="text-subtitle1">
-          {{ toolbarTitle(tabsets as Tabset[]) }}
+         xxx
         </div>
 
       </FirstToolbarHelper>
@@ -108,18 +108,15 @@
 
 import {onMounted, onUnmounted, ref, watchEffect} from "vue";
 import {useRouter} from "vue-router";
-import {useUtils} from "src/services/Utils";
-import {LocalStorage, scroll} from "quasar";
-import {useUiStore} from "src/stores/uiStore";
+import {useUtils} from "src/core/services/Utils";
+import {useUiStore} from "src/ui/stores/uiStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
 import FirstToolbarHelper from "pages/sidepanel/helper/FirstToolbarHelper.vue";
-import Analytics from "src/utils/google-analytics";
-import {useBookmarksStore} from "stores/bookmarksStore";
-import {useSuggestionsStore} from "stores/suggestionsStore";
-import {TITLE_IDENT} from "boot/constants";
-import AppService from "src/services/AppService";
-import SidePanelToolbarButton from "components/buttons/SidePanelToolbarButton.vue";
+import Analytics from "src/core/utils/google-analytics";
+import AppService from "src/app/AppService";
 import {useI18n} from 'vue-i18n'
+import {useFeaturesStore} from "src/features/stores/featuresStore";
+import SidePanelToolbarButton from "components/buttons_/SidePanelToolbarButton.vue";
 
 const {t} = useI18n({locale: navigator.language, useScope: "global"})
 
@@ -130,8 +127,6 @@ const permissionsStore = usePermissionsStore()
 const uiStore = useUiStore()
 
 const showSearchBox = ref(false)
-const user = ref<any>()
-const tabsets = ref<Tabset[]>([])
 
 function updateOnlineStatus(e: any) {
   const {type} = e
@@ -158,17 +153,6 @@ watchEffect(() => {
   }
 })
 
-const getTabsetOrder =
-  [
-    function (o: Tabset) {
-      return o.status === TabsetStatus.FAVORITE ? 0 : 1
-    },
-    function (o: Tabset) {
-      return o.name?.toLowerCase()
-    }
-  ]
-
-
 function inIgnoredMessages(message: any) {
   return message.msg === "html2text" ||
     message.msg === "captureThumbnail" ||
@@ -192,35 +176,27 @@ if (inBexMode()) {
       }
       const tsId = message.data.tabsetId
     } else if (message.name === 'feature-activated') {
-      usePermissionsStore().addActivateFeature(message.data.feature)
-      if (message.data.feature === 'help') {
-      } else if (message.data.feature === 'bookmarks') {
-        usePermissionsStore().load()
-          .then(() => {
-            useBookmarksStore().init()
-            useBookmarksStore().loadBookmarks()
-          })
-      }
+      useFeaturesStore().activateFeature(message.data.feature)
     } else if (message.name === "feature-deactivated") {
-      usePermissionsStore().removeActivateFeature(message.data.feature)
+      useFeaturesStore().deactivateFeature(message.data.feature)
     } else if (message.name === "tabsets-imported") {
       // TODO reload
     } else if (message.name === "tab-being-dragged") {
       useUiStore().draggingTab(message.data.tabId, null as unknown as any)
     } else if (message.name === "note-changed") {
-      if (message.data.noteId) {
-        console.log("updating note", message.data.noteId)
-        //.then((res: TabAndTabsetId | undefined) => {
-        if (res) {
-          const note = res.tab
-          note.title = message.data.tab.title
-          note.description = message.data.tab.description
-          note.longDescription = message.data.tab.longDescription
-        }
-        //    })
-      } else {
-        console.log("adding tab", message.data.tab)
-      }
+      // if (message.data.noteId) {
+      //   console.log("updating note", message.data.noteId)
+      //   //.then((res: TabAndTabsetId | undefined) => {
+      //   if (res) {
+      //     const note = res.tab
+      //     note.title = message.data.tab.title
+      //     note.description = message.data.tab.description
+      //     note.longDescription = message.data.tab.longDescription
+      //   }
+      //   //    })
+      // } else {
+      //   console.log("adding tab", message.data.tab)
+      // }
     } else if (message.name === "tab-added") {
       // hmm - getting this twice...
       console.log(" > got message '" + message.name + "'", message)
@@ -229,28 +205,6 @@ if (inBexMode()) {
     } else if (message.name === "tabset-added") {
     } else if (message.name === "mark-tabset-deleted") {
     } else if (message.name === "tabset-renamed") {
-    } else if (message.name === "progress-indicator") {
-      if (message.percent) {
-        uiStore.progress = message.percent
-        // uiStore.progressLabel = message.label
-      }
-      if (message.status === "done") {
-        uiStore.progress = undefined
-        // uiStore.progressLabel = undefined
-      }
-      sendResponse("ui store progress set to " + uiStore.progress)
-    } else if (message.name === "detail-level-changed") {
-      console.log("setting list detail level to ", message.data.level)
-      useUiStore().setListDetailLevel(message.data.level)
-    } else if (message.name === "detail-level-perTabset-changed") {
-      console.log("setting list detail perTabset level to ", message.data.level)
-      useUiStore().showDetailsPerTabset = message.data.level
-    } else if (message.name === "fullUrls-changed") {
-      console.log("setting fullUrls to ", message.data.value)
-      useUiStore().setShowFullUrls(message.data.value)
-    } else if (message.name === "reload-suggestions") {
-      console.log("reload-suggestions message received")
-      useSuggestionsStore().loadSuggestionsFromDb()
     } else if (message.name === "reload-tabset") {
       console.log("reload-tabset message received")
     } else if (message.name === 'reload-application') {
@@ -274,12 +228,6 @@ function checkKeystroke(e: KeyboardEvent) {
     // searchBox.value.focus()
     // search.value = ''
   }
-}
-
-const toolbarTitle = (tabsets: Tabset[]) => {
-
-  const title = LocalStorage.getItem(TITLE_IDENT) || ('My Tabsets' + stageIdentifier())
-  return tabsets.length > 6 ? title + ' (' + tabsets.length.toString() + ')' : title
 }
 
 const stageIdentifier = () => process.env.TABSETS_STAGE !== 'PRD' ? ' (' + process.env.TABSETS_STAGE + ')' : ''

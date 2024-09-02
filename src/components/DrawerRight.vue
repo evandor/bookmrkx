@@ -59,53 +59,39 @@
   <div class="row greyBorderTop"></div>
 
 <!--  <UnassignedAndOpenTabs v-if="tab === DrawerTabs.UNASSIGNED_TABS"/>-->
-  <BookmarksTree v-if="tab === DrawerTabs.BOOKMARKS"/>
-  <!--      <OpenTabs v-else-if="tab ===  DrawerTabs.OPEN_TABS" :filter="filter"/>-->
-  <!--      <UnassignedTabs v-else-if="tab ===  DrawerTabs.UNASSIGNED_TABS" :filter="filter"/>-->
-  <ByDomainList v-else-if="tab ===  DrawerTabs.GROUP_BY_HOST_TABS"/>
-<!--  <SavedTabs v-else-if="tab ===  DrawerTabs.SAVED_TABS"/>-->
-  <SavedPdfs v-else-if="tab ===  DrawerTabs.SAVED_TABS_AS_PDF"/>
-<!--  <TabsetAsSidebar v-else-if="tab ===  DrawerTabs.SIDEBAR"/>-->
-<!--  <NewTabUrls v-else-if="tab ===  DrawerTabs.NEW_TAB_URLS"/>-->
-  <!--      <ScheduledTabs v-else-if="tab ===  DrawerTabs.SCHEDULED"/>-->
-  <Features v-else-if="tab ===  DrawerTabs.FEATURES"/>
-  <TabDetails v-else-if="tab ===  DrawerTabs.TAB_DETAILS"/>
-  <TabsetDetails v-else-if="tab ===  DrawerTabs.TABSET_DETAILS"/>
+  <BookmarksTree v-if="tab === DrawerTabs.BOOKMARKS"
+    :nodes="showOnlyFolders ? useBookmarksStore().nonLeafNodes : useBookmarksStore().bookmarksNodes2"
+    :show-only-folders="showOnlyFolders"
+    @toggle-show-only-folders="toggleShowOnlyFolders()"
+    :in-side-panel="true"/>
 
-  <TagsListViewer v-else-if="tab ===  DrawerTabs.TAGS_VIEWER"/>
-  <TagListViewer v-else-if="tab ===  DrawerTabs.TAG_VIEWER"/>
+
+  <Features v-else-if="tab ===  DrawerTabs.FEATURES"/>
 
   <TabsetHelp v-else-if="tab ===  DrawerTabs.HELP"/>
-
-  <!-- only in sidepanel in chrome extension-->
-  <!--  <TagsViewer v-else-if="tab ===  DrawerTabs.TAGS_VIEWER"/>-->
 
   <div v-else>unknown tab name '{{ tab }}' {{ typeof tab }}</div>
 
 </template>
 
 <script lang="ts" setup>
-import {ref, watch, watchEffect} from "vue";
-import {useRoute, useRouter} from "vue-router";
-import {useSettingsStore} from "src/stores/settingsStore";
-import {DrawerTabs, useUiStore} from "src/stores/uiStore";
-import Features from "components/Features.vue";
-import BookmarksTree from "components/BookmarksTree.vue";
-import TabDetails from "components/views/TabDetails.vue";
+import {ref, watchEffect} from "vue";
+import {useRoute} from "vue-router";
+import {DrawerTabs, useUiStore} from "src/ui/stores/uiStore";
 import TabsetHelp from "components/TabsetHelp.vue";
-import TabsetDetails from "components/views/TabsetDetails.vue";
-import TagsListViewer from "components/views/TagsListViewer.vue";
-import TagListViewer from "components/views/TagListViewer.vue";
-import ByDomainList from "components/ByDomainList.vue";
-import SavedPdfs from "components/SavedPdfs.vue";
+import BookmarksTree from "src/bookmarks/components/BookmarksTree.vue";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 
 const route = useRoute()
 
-const settingsStore = useSettingsStore()
-
-const openTabsCountRatio = ref(0)
 const tab = ref<DrawerTabs>(useUiStore().rightDrawer.activeTab)
 const filter = ref<string>('')
+
+const showOnlyFolders = ref(true)
+
+const toggleShowOnlyFolders = () => {
+  showOnlyFolders.value = !showOnlyFolders.value
+}
 
 watchEffect(() => tab.value = useUiStore().rightDrawer.activeTab)
 
@@ -132,7 +118,7 @@ const drawerLabel = () => {
     case DrawerTabs.HISTORY:
       return "History"
     case DrawerTabs.FEATURES:
-      return "Add. Features"
+      return "Additional Features"
     case DrawerTabs.TAB_DETAILS:
       return "Tab Details"
     case DrawerTabs.TABSET_DETAILS:

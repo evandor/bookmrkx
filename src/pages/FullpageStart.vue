@@ -16,7 +16,7 @@
 import {useQuasar} from "quasar";
 import {useRouter} from "vue-router";
 import {onMounted} from "vue";
-import Analytics from "src/utils/google-analytics";
+import Analytics from "src/core/utils/google-analytics";
 
 const $q = useQuasar()
 const router = useRouter()

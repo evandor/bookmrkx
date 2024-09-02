@@ -1,33 +1,10 @@
 import {bexBackground} from 'quasar/wrappers';
 import OnInstalledReason = chrome.runtime.OnInstalledReason;
 
-// https://stackoverflow.com/questions/49739438/when-and-how-does-a-pwa-update-itself
-const updateTrigger = 10
-
-// https://developer.chrome.com/docs/extensions/mv3/tut_analytics/
-//console.log("ga: installing google analytics")
-
 addEventListener('unhandledrejection', async (event) => {
   console.log("[service-worker] ga: fire error event", event)
   // getting error: Service worker registration failed. Status code: 15
   //Analytics.fireErrorEvent(event.reason);
-});
-
-chrome.runtime.onInstalled.addListener((callback) => {
-  console.log("[service-worker] ga: fire event install", callback.reason, callback.previousVersion)
-  // getting error: "Service worker registration failed. Status code: 15"
-  // Analytics.fireEvent('install-' + callback.reason);
-  if (callback.reason !== OnInstalledReason.CHROME_UPDATE) {
-    chrome.tabs.create({
-      active: true,
-      url: callback.previousVersion ?
-        "https://docs.tabsets.net/release-notes" :
-        "https://tabsets.web.app/#/installed/"
-    })
-  }
-  if (chrome.runtime.lastError) {
-    console.warn("got runtime error", chrome.runtime.lastError)
-  }
 });
 
 // @ts-ignore
@@ -68,8 +45,6 @@ chrome.runtime.onStartup.addListener(() => {
   if (chrome.action) {
     // @ts-ignore
     chrome.action.onClicked.addListener((tab) => {
-      // Opens our extension in a new browser window.
-      // Only if a popup isn't defined in the manifest.
 
       chrome.tabs.create(
         {
@@ -82,16 +57,6 @@ chrome.runtime.onStartup.addListener(() => {
     });
   }
 })
-
-chrome.runtime.onConnect.addListener(function (port) {
-  if (port.name === 'tabsetsSidepanel') {
-    //console.log("[service-worker] port3", port)
-    port.onDisconnect.addListener(async () => {
-      //alert('Sidepanel closed.');
-    });
-  }
-});
-
 
 export default bexBackground((bridge, cons/* , allActiveConnections */) => {
 

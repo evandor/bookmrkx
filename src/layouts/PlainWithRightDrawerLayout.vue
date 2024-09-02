@@ -14,6 +14,6 @@
   </q-layout>
 </template>
 <script setup lang="ts">
-import {useUiStore} from "src/stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 import DrawerRight from "components/DrawerRight.vue";
 </script>

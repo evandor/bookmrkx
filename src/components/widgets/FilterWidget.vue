@@ -19,8 +19,8 @@
 import {ref, watchEffect} from "vue";
 import {useSearchStore} from "src/stores/searchStore";
 import {usePermissionsStore} from "src/stores/permissionsStore";
-import {FeatureIdent} from "src/models/AppFeature";
-import {useUiStore} from "stores/uiStore";
+import {FeatureIdent} from "src/app/models/FeatureIdent";
+import {useUiStore} from "src/ui/stores/uiStore";
 
 const search = ref('')
 

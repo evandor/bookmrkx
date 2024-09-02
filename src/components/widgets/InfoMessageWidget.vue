@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import {useUiStore} from "src/stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 
 const props = defineProps({
   ident: {type: String, required: true},

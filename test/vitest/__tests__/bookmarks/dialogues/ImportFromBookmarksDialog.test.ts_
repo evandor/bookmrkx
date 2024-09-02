@@ -1,0 +1,33 @@
+import {installQuasarPlugin} from '@quasar/quasar-app-extension-testing-unit-vitest';
+import {DOMWrapper, mount, VueWrapper} from '@vue/test-utils';
+import {beforeEach, describe, expect, it} from 'vitest';
+import {createPinia, setActivePinia} from "pinia";
+import IndexedDbPersistenceService from "src/services/IndexedDbPersistenceService";
+import {Dialog} from "quasar";
+import ImportFromBookmarksDialog from "src/bookmarks/dialogues/ImportFromBookmarksDialog.vue";
+
+installQuasarPlugin({plugins: {Dialog}})
+
+describe('ImportFromBookmarks', () => {
+
+
+    beforeEach(async () => {
+        setActivePinia(createPinia())
+    })
+
+    it('should be mounted', async () => {
+        let wrapper: VueWrapper<InstanceType<typeof ImportFromBookmarksDialog>>;
+
+        await IndexedDbPersistenceService.init("db")
+        wrapper = mount(ImportFromBookmarksDialog, {
+            props: {},
+        });
+
+        const bodyWrapper = new DOMWrapper(document.body);
+        // @ts-ignore
+        wrapper.vm.isDialogOpen = true;
+        console.log("xxx", wrapper.html())
+    });
+
+
+});

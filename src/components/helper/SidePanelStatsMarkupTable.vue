@@ -65,12 +65,14 @@
 
 <script lang="ts" setup>
 
-import {useWindowsStore} from "stores/windowsStore";
+import {useWindowsStore} from "src/windows/stores/windowsStore";
 import {onMounted, ref, watch, watchEffect} from "vue";
 import {date, useQuasar} from "quasar";
 import {useSettingsStore} from "stores/settingsStore";
-import {useBookmarksStore} from "stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 import NavigationService from "src/services/NavigationService";
+import {useFeaturesStore} from "src/features/stores/featuresStore";
+import {FeatureIdent} from "src/app/models/FeatureIdent";
 
 const localstorage = useQuasar().localStorage
 
@@ -79,8 +81,6 @@ const settingsStore = useSettingsStore()
 const rows = ref<object[]>([])
 const currentWindowName = ref('---')
 const statsSnapshot = ref<object | undefined>(undefined)
-
-const devMode = ref<boolean>(settingsStore.isEnabled('dev'))
 
 onMounted(() => {
   statsSnapshot.value = localstorage.getItem("stats") as object || undefined

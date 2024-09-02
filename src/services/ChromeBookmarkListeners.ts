@@ -1,5 +1,6 @@
-import {useBookmarksStore} from "src/stores/bookmarksStore";
+import {useBookmarksStore} from "src/bookmarks/stores/bookmarksStore";
 
+// TODO move to src/bookmarks submodule!
 class ChromeBookmarkListeners {
 
   inProgress = false;

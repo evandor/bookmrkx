@@ -103,20 +103,20 @@
 
 <script lang="ts" setup>
 
-import {SidePanelView, useUiStore} from "src/stores/uiStore";
+import {useUiStore} from "src/ui/stores/uiStore";
 import {onMounted, ref, UnwrapRef, watchEffect} from "vue";
 import {useRouter} from "vue-router";
-import {useCommandExecutor} from "src/services/CommandExecutor";
-import {CreateTabsetCommand} from "src/domain/tabsets/CreateTabset";
+import {useCommandExecutor} from "src/core/services/CommandExecutor";
 import {STRIP_CHARS_IN_USER_INPUT, TITLE_IDENT} from "boot/constants";
-import Analytics from "src/utils/google-analytics";
-import DialogButton from "components/buttons/DialogButton.vue";
+import Analytics from "src/core/utils/google-analytics";
+import DialogButton from "src/core/dialog/buttons/DialogButton.vue";
 import {LocalStorage, openURL} from "quasar";
-import {FeatureIdent} from "src/models/AppFeature";
-import {AppFeatures} from "src/models/AppFeatures";
+import {FeatureIdent} from "src/app/models/FeatureIdent";
+import {AppFeatures} from "src/app/models/AppFeatures";
 import {GrantPermissionCommand} from "src/domain/commands/GrantPermissionCommand";
 import {usePermissionsStore} from "stores/permissionsStore";
 import {useI18n} from 'vue-i18n'
+import {SidePanelViews} from "src/models/SidePanelViews";
 
 const {t} = useI18n()
 const router = useRouter()
@@ -173,7 +173,7 @@ const addFirstTabset = () => {
   useCommandExecutor()
     .executeFromUi(new CreateTabsetCommand(tabsetName.value, []))
     .then((res) => {
-      useUiStore().sidePanelSetActiveView(SidePanelView.MAIN)
+      useUiStore().sidePanelSetActiveView(SidePanelViews.MAIN)
       router.push("/sidepanel?first=true")
     })
 }
@@ -193,7 +193,7 @@ const firebaseActive = () => {
 }
 
 const openBookmarksView = () => {
-  useUiStore().sidePanelSetActiveView(SidePanelView.BOOKMARKS)
+  useUiStore().sidePanelSetActiveView(SidePanelViews.BOOKMARKS)
   router.push("/sidepanel/" + SidePanelView.BOOKMARKS)
 }
 

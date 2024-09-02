@@ -51,11 +51,6 @@
         </q-tooltip>
         </span>
         </div>
-        <q-badge color="warning" v-if="existsInTabset(props.bookmark.chromeBookmark.url)" floating>
-          <q-icon name="tab" size="16px" color="white">
-            <q-tooltip>This bookmark is saved in a tabset</q-tooltip>
-          </q-icon>
-        </q-badge>
       </q-item-label>
 
       <q-item-label caption>{{ props.bookmark.chromeBookmark?.url }}</q-item-label>
@@ -76,12 +71,12 @@
 
 <script setup lang="ts">
 import {PropType, ref} from "vue";
-import {useUtils} from "src/services/Utils"
-import {Bookmark} from "src/models/Bookmark";
+import {useUtils} from "src/core/services/Utils"
+import {Bookmark} from "src/bookmarks/models/Bookmark";
 import {useRouter} from "vue-router";
 import {date} from "quasar";
 import NavigationService from "src/services/NavigationService";
-import BookmarksService from "src/services/BookmarksService";
+import BookmarksService from "src/bookmarks/services/BookmarksService";
 
 const {formatDate} = useUtils()
 
