@@ -60,7 +60,7 @@ class AppService {
     await bookmarksStore.init()
     await BookmarksService.init()
 
-    settingsStore.initialize(quasar.localStorage);
+    //settingsStore.initialize(quasar.localStorage);
 
     // init db
     await IndexedDbPersistenceService.init("db")

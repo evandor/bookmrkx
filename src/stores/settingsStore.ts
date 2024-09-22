@@ -1,12 +1,11 @@
 import {defineStore} from 'pinia';
 import _ from 'lodash'
 import {computed, ref, watch} from "vue";
-import {LocalStorage, useQuasar} from "quasar";
+import {useQuasar} from "quasar";
 
 export const useSettingsStore = defineStore('settings', () => {
 
   const localStorage= useQuasar().localStorage
-  //let localStorage: LocalStorage = null as unknown as LocalStorage
 
   const activeToggles = ref<string[]>([])
   const thresholds = ref( {
@@ -22,7 +21,6 @@ export const useSettingsStore = defineStore('settings', () => {
     thresholds,
     (thresholdsVal: Object) => {
       localStorage.set("thresholds", thresholdsVal)
-      //console.log("thresholds set to ", thresholdsVal)
     }, {deep: true}
   )
 
@@ -30,11 +28,10 @@ export const useSettingsStore = defineStore('settings', () => {
 
   function initialize(localStorage: any) {
     console.debug(" ...initializing settingsStore")
-    //this.localStorage = localStorage
     const fts: string | undefined = localStorage.getItem("settings")
     if (fts) {
-      console.log("determining activeToggles from", fts)
-      activeToggles.value = _.map(fts.split(","), e => e.trim())
+      console.debug(` ...determining activeToggles from '${fts}'`)
+      activeToggles.value = _.map(fts.split(","), (e:any) => e.trim())
     }
     const ths = localStorage.getItem('thresholds')
     if (ths) {

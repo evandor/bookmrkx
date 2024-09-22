@@ -6,10 +6,26 @@
 
 import {setCssVar, useQuasar} from "quasar";
 import AppService from "src/app/AppService";
-import {useRouter} from "vue-router";
+import {useRouter,useRoute} from "vue-router";
+import {useAppStore} from "stores/appStore";
+import {useNotificationHandler} from "src/core/services/ErrorHandler";
+import {useSettingsStore} from "stores/settingsStore";
+import {useLogger} from "src/services/Logger";
 
 const $q = useQuasar()
 const router = useRouter()
+const route = useRoute()
+
+const {handleError} = useNotificationHandler()
+
+const settingsStore = useSettingsStore()
+settingsStore.initialize($q.localStorage)
+//const localMode = settingsStore.isEnabled('localMode')
+//console.log(` ...config: localMode=${localMode}`)
+
+useAppStore().init()
+
+const {info} = useLogger()
 
 // https://stackoverflow.com/questions/9768444/possible-eventemitter-memory-leak-detected
 // const emitter = new EventEmitter()
@@ -43,5 +59,7 @@ if (useDarkMode === "true") {
 }
 
 AppService.init($q, router, false)
+
+info(`bookmrkx started: mode=${process.env.MODE}, version=${import.meta.env.PACKAGE_VERSION}`)
 
 </script>
